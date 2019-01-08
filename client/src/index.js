@@ -4,7 +4,10 @@ import App from './App';
 import { Drizzle, generateStore } from 'drizzle';
 
 import Election from './contracts/Election.json';
-const options = { contracts: [Election] };
+const options = {
+  contracts: [Election],
+  events: { Election: ['VoteTracker'] }
+};
 const drizzleStore = generateStore(options);
 const drizzle = new Drizzle(options, drizzleStore);
 
