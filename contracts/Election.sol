@@ -10,6 +10,9 @@ contract Election {
     mapping(uint => Candidate) public candidates;
     uint public candidatesCount;
 
+    constructor () public {
+        addCandidate("Anthony Applegate");
+    }
 
     function addCandidate(string memory _name) private {
         candidatesCount++;
