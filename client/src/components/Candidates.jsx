@@ -13,7 +13,10 @@ class Candidates extends Component {
   }
   componentDidMount() {
     const { Election } = this.props.drizzle.contracts;
-    const candiBoiz = Election.methods.candidates(1);
+    const candiBoiz = Election.methods
+      .candidates(1)
+      .call()
+      .then(console.log);
     console.log(candiBoiz);
   }
 }
