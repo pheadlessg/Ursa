@@ -26,11 +26,11 @@ contract('Election', accounts => {
         assert.equal(candidate[2], 0, 'contains the correct voteCount');
       });
   });
-  it('vote count increments by one', async () => {
+  it('vote count increments + 1', async () => {
     const instance = await Election.deployed();
     let candidate = await instance.candidates(1);
     assert.equal(candidate.voteCount, 0);
-    await instance.incrementVote(1);
+    await instance.incrementVote(1, 1);
     candidate = await instance.candidates(1);
     assert.equal(candidate.voteCount, 1);
   });

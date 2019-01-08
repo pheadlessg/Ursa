@@ -22,6 +22,7 @@ class Candidates extends Component {
       .candidates(1)
       .call()
       .then(candidates => {
+        console.log(candidates);
         this.setState({ isLoaded: true, candidates });
       });
   }
