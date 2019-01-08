@@ -6,12 +6,17 @@ class Candidates extends Component {
     isLoaded: false
   };
   render() {
+    const { isLoaded, candidates } = this.state;
     return (
       <div>
-        {this.state.isLoaded
-          ? `${this.state.candidates[1].name}, votes: ${
-              this.state.candidates[1].voteCount
-            }`
+        {isLoaded
+          ? candidates.map(candidate => (
+              <>
+                <p>{candidate.name}</p>
+                <br />
+                <p>{candidate.voteCount}</p>
+              </>
+            ))
           : 'loading...'}
       </div>
     );
@@ -23,8 +28,8 @@ class Candidates extends Component {
       .call()
       .then(candidate => {
         const copy = [...this.state.candidates];
-        copy[candidate.id] = candidate;
-        this.setState({ isLoaded: true, candidates: copy });
+        copy[candidate.id - 1] = candidate;
+        this.setState({ candidates: copy });
       })
       .then(() => {
         Election.methods
@@ -32,8 +37,9 @@ class Candidates extends Component {
           .call()
           .then(candidate => {
             const copy = [...this.state.candidates];
-            copy[candidate.id] = candidate;
+            copy[candidate.id - 1] = candidate;
             this.setState({ isLoaded: true, candidates: copy });
+            console.log(this.state.candidates);
           });
       });
   }
