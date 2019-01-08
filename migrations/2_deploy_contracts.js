@@ -1,5 +1,5 @@
-const MyStringStore = artifacts.require('MyStringStore');
+const Election = artifacts.require('Election');
 
 module.exports = function(deployer) {
-  deployer.deploy(MyStringStore);
+  deployer.deploy(Election);
 };

@@ -1,10 +1,10 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import './index.css';
 import App from './App';
 import { Drizzle, generateStore } from 'drizzle';
-import MyStringStore from './contracts/MyStringStore.json';
-const options = { contracts: [MyStringStore] };
+
+import Election from './contracts/Election.json';
+const options = { contracts: [Election] };
 const drizzleStore = generateStore(options);
 const drizzle = new Drizzle(options, drizzleStore);
 
