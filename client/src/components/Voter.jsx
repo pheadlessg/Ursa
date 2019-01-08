@@ -22,7 +22,6 @@ class Voter extends Component {
   }
   componentDidMount() {
     const { Election } = this.props.drizzle.contracts;
-    console.log(Election.methods.candidatesCount());
     Election.methods
       .candidatesCount()
       .call()

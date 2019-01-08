@@ -10,10 +10,11 @@ contract Election {
     mapping(uint => Candidate) public candidates;
     uint public candidatesCount;
 
+    event VoteTracker(uint id, uint tally);
+
     constructor () public {
         addCandidate("Anthony Applegate");
         addCandidate("Barbara Bananahammock");
-
     }
 
     function addCandidate(string memory _name) private {
@@ -23,5 +24,6 @@ contract Election {
 
     function incrementVote(uint _id, uint _inc) public {
         candidates[_id].voteCount = candidates[_id].voteCount + _inc;
+        emit VoteTracker(_id, candidates[_id].voteCount);
     }
 }
