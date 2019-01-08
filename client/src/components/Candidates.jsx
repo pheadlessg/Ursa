@@ -9,7 +9,9 @@ class Candidates extends Component {
     return (
       <div>
         {this.state.isLoaded
-          ? `${this.state.candidates.name}, ${this.state.candidates.voteCount}`
+          ? `${this.state.candidates.name}, votes: ${
+              this.state.candidates.voteCount
+            }`
           : 'loading...'}
       </div>
     );
