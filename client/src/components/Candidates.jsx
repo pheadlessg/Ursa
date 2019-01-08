@@ -8,13 +8,15 @@ class Candidates extends Component {
   render() {
     return (
       <div>
-        {this.state.isLoaded ? this.state.candidates.name : 'loading...'}
+        {this.state.isLoaded
+          ? `${this.state.candidates.name}, ${this.state.candidates.voteCount}`
+          : 'loading...'}
       </div>
     );
   }
   componentDidMount() {
     const { Election } = this.props.drizzle.contracts;
-    const candidates = Election.methods
+    Election.methods
       .candidates(1)
       .call()
       .then(candidates => {
