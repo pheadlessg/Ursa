@@ -9,6 +9,7 @@ class App extends Component {
     return (
       <div className="App">
         <h1>page</h1>
+        <Candidates drizzleState={this.state.drizzleState} />
       </div>
     );
   }
@@ -18,8 +19,6 @@ class App extends Component {
     this.unsubscribe = drizzle.store.subscribe(() => {
       const drizzleState = drizzle.store.getState();
       if (drizzleState.drizzleStatus.initialized) {
-        console.log(drizzleState);
-        console.log(this.state);
         this.setState({ loading: false, drizzleState });
       }
     });
