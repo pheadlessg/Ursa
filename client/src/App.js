@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
-import ReadString from './ReadString';
-import SetString from './SetString';
+import Candidates from './components/Candidates';
 
 class App extends Component {
   state = { loading: true, drizzleState: null };
@@ -20,8 +19,8 @@ class App extends Component {
       const drizzleState = drizzle.store.getState();
       if (drizzleState.drizzleStatus.initialized) {
         console.log(drizzleState);
-        this.setState({ loading: false, drizzleState });
         console.log(this.state);
+        this.setState({ loading: false, drizzleState });
       }
     });
   }
