@@ -2,15 +2,15 @@ import React, { Component } from 'react';
 
 class Candidates extends Component {
   state = {
-    candidates: null,
+    candidates: [],
     isLoaded: false
   };
   render() {
     return (
       <div>
         {this.state.isLoaded
-          ? `${this.state.candidates.name}, votes: ${
-              this.state.candidates.voteCount
+          ? `${this.state.candidates[1].name}, votes: ${
+              this.state.candidates[1].voteCount
             }`
           : 'loading...'}
       </div>
@@ -21,9 +21,20 @@ class Candidates extends Component {
     Election.methods
       .candidates(1)
       .call()
-      .then(candidates => {
-        console.log(candidates);
-        this.setState({ isLoaded: true, candidates });
+      .then(candidate => {
+        const copy = [...this.state.candidates];
+        copy[candidate.id] = candidate;
+        this.setState({ isLoaded: true, candidates: copy });
+      })
+      .then(() => {
+        Election.methods
+          .candidates(2)
+          .call()
+          .then(candidate => {
+            const copy = [...this.state.candidates];
+            copy[candidate.id] = candidate;
+            this.setState({ isLoaded: true, candidates: copy });
+          });
       });
   }
 }

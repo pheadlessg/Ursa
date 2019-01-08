@@ -14,7 +14,6 @@ class Voter extends Component {
   }
   vote(increment) {
     const { methods } = this.props.drizzle.contracts.Election;
-    console.log(methods);
     methods.incrementVote(increment);
   }
 }
