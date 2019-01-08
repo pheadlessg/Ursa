@@ -26,4 +26,29 @@ contract('Election', accounts => {
         assert.equal(candidate[2], 0, 'contains the correct voteCount');
       });
   });
+  it('vote count increments by one', async () => {
+    const instance = await Election.deployed();
+    let candidate = await instance.candidates(1);
+    assert.equal(candidate.voteCount, 0);
+    await instance.incrementVote(1);
+    candidate = await instance.candidates(1);
+    assert.equal(candidate.voteCount, 1);
+  });
+  // it('vote count increments by one', () => {
+  //   return Election.deployed()
+  //     .then(instance => {
+  //       return instance.candidates(1);
+  //     })
+  //     .then(candidate => {
+  //       assert.equal(candidate.voteCount, 0);
+  //       return instance
+  //         .incrementVote(1)
+  //         .then(() => {
+  //           return instance.candidates(1);
+  //         })
+  //         .then(candidate => {
+  //           assert.equal(candidate.voteCount, 1);
+  //         });
+  //     });
+  // });
 });

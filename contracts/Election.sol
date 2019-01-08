@@ -19,7 +19,7 @@ contract Election {
         candidates[candidatesCount] = Candidate(candidatesCount, _name, 0);
     }
 
-    function incrementVote(uint _id) private {
+    function incrementVote(uint _id) public {
         candidates[_id].voteCount++;
     }
 }
