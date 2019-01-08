@@ -3,19 +3,18 @@ import React, { Component } from 'react';
 class Candidates extends Component {
   state = {
     candidates: [],
-    isLoaded: false
+    isLoading: true
   };
   render() {
-    const { isLoaded, candidates } = this.state;
+    const { isLoading, candidates } = this.state;
     return (
       <div>
-        {isLoaded
-          ? candidates.map(candidate => (
-              <>
+        {!isLoading
+          ? candidates.map((candidate, i) => (
+              <div key={i}>
                 <p>{candidate.name}</p>
-                <br />
                 <p>{candidate.voteCount}</p>
-              </>
+              </div>
             ))
           : 'loading...'}
       </div>
@@ -38,8 +37,7 @@ class Candidates extends Component {
           .then(candidate => {
             const copy = [...this.state.candidates];
             copy[candidate.id - 1] = candidate;
-            this.setState({ isLoaded: true, candidates: copy });
-            console.log(this.state.candidates);
+            this.setState({ isLoading: false, candidates: copy });
           });
       });
   }

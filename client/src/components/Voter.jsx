@@ -1,20 +1,37 @@
 import React, { Component } from 'react';
 
 class Voter extends Component {
+  state = {
+    candCount: null,
+    isLoading: true
+  };
   render() {
+    const { isLoading, candCount } = this.state;
     return (
       <div>
-        Vote for Applegate 2020
-        <button onClick={() => this.vote(1)}>vote</button>
+        {!isLoading ? (
+          <>
+            <p>{`there are ${candCount} candidates to choose from`}</p>
+            <button onClick={() => this.vote(1, 1)}>vote</button>
+          </>
+        ) : (
+          'loading...'
+        )}
       </div>
     );
   }
   componentDidMount() {
-    console.log('vote');
+    const { Election } = this.props.drizzle.contracts;
+    console.log(Election.methods.candidatesCount());
+    Election.methods
+      .candidatesCount()
+      .call()
+      .then(candCount => this.setState({ candCount, isLoading: false }));
   }
-  vote(increment) {
+  vote(cand, increment) {
+    console.log('voting');
     const { methods } = this.props.drizzle.contracts.Election;
-    methods.incrementVote(increment);
+    methods.incrementVote(cand, increment);
   }
 }
 
