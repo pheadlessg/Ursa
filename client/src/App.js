@@ -1,17 +1,18 @@
 import React, { Component } from 'react';
+import ReadString from './ReadString';
 
 class App extends Component {
   state = { loading: true, drizzleState: null };
 
   render() {
+    if (this.state.loading) return 'Loading Drizzle...';
     return (
-      <>
-        <h1>
-          {this.state.loading
-            ? 'Loading Drizzle...'
-            : 'Drizzle loaded - check the console'}
-        </h1>
-      </>
+      <div className="App">
+        <ReadString
+          drizzle={this.props.drizzle}
+          drizzleState={this.state.drizzleState}
+        />
+      </div>
     );
   }
 
