@@ -2,22 +2,24 @@ import React, { Component } from 'react';
 
 class Candidates extends Component {
   state = {
-    candidates: null
+    candidates: null,
+    isLoaded: false
   };
   render() {
     return (
       <div>
-        <p />
+        {this.state.isLoaded ? this.state.candidates.name : 'loading...'}
       </div>
     );
   }
   componentDidMount() {
     const { Election } = this.props.drizzle.contracts;
-    const candiBoiz = Election.methods
+    const candidates = Election.methods
       .candidates(1)
       .call()
-      .then(console.log);
-    console.log(candiBoiz);
+      .then(candidates => {
+        this.setState({ isLoaded: true, candidates });
+      });
   }
 }
 
