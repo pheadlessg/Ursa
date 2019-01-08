@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import ReadString from './ReadString';
+import SetString from './SetString';
 
 class App extends Component {
   state = { loading: true, drizzleState: null };
@@ -9,6 +10,10 @@ class App extends Component {
     return (
       <div className="App">
         <ReadString
+          drizzle={this.props.drizzle}
+          drizzleState={this.state.drizzleState}
+        />
+        <SetString
           drizzle={this.props.drizzle}
           drizzleState={this.state.drizzleState}
         />
