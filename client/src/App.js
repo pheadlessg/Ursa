@@ -9,7 +9,7 @@ class App extends Component {
     return (
       <div className="App">
         <h1>page</h1>
-        <Candidates drizzleState={this.state.drizzleState} />
+        <Candidates drizzle={this.props.drizzle} />
       </div>
     );
   }
