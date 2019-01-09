@@ -1,13 +1,13 @@
 const Election = artifacts.require('./Election.sol');
 
 contract('Election', accounts => {
-  it('initializes with one candidate', () => {
+  it('initializes with two candidates', () => {
     return Election.deployed()
       .then(instance => {
         return instance.candidatesCount();
       })
       .then(count => {
-        assert.equal(count, 1);
+        assert.equal(count, 2);
       });
   });
   it('initalizes the candidates with the correct values', () => {
