@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import Voter from "./Voter";
 import VoteTracker from "./VoteTracker";
 import VotersDisplay from "./VotersDisplay";
+import AddVoter from "./AddVoter";
 
 class Candidates extends Component {
   state = {
@@ -26,6 +27,7 @@ class Candidates extends Component {
             <Voter drizzle={this.props.drizzle} vote={this.vote} />
             <VoteTracker drizzle={this.props.drizzle} />
             <VotersDisplay drizzle={this.props.drizzle} />
+            <AddVoter drizzle={this.props.drizzle} />
           </>
         ) : (
           "loading..."

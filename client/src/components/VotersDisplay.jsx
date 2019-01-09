@@ -24,7 +24,6 @@ class VotersDisplay extends Component {
           for (let i = 1; i <= voterNumber; i++) {
             promiseArray.push(methods.voters(i).call());
           }
-          // console.log(promiseArray);
           Promise.all([promiseArray]).then(console.log);
         });
       });

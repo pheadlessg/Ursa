@@ -23,11 +23,6 @@ contract Election {
     constructor () public {
         addCandidate("Anthony Applegate");
         addCandidate("Barbara Bananahammock");
-        addVoter("Voter 1");
-        addVoter("Voter 2");
-        addVoter("Voter 3");
-        addVoter("Voter 4");
-        addVoter("Voter 5");
     }
 
     function addCandidate(string memory _name) public {
