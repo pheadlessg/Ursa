@@ -20,19 +20,14 @@ class VotersDisplay extends Component {
       .call()
       .then(voterNumber => {
         this.setState({ voterNumber }, () => {
+          const promiseArray = [];
           for (let i = 1; i <= voterNumber; i++) {
-            methods
-              .voters(i)
-              .call()
-              .then(voter => {
-                console.log(voter);
-              });
+            promiseArray.push(methods.voters(i).call());
           }
+          // console.log(promiseArray);
+          Promise.all([promiseArray]).then(console.log);
         });
-      }); // methods
-    //   .voters(1)
-    //   .call()
-    //   .then(console.log);
+      });
   }
 }
 
