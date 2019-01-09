@@ -1,7 +1,5 @@
 import React, { Component } from 'react';
 import Candidates from './components/Candidates';
-import Voter from './components/Voter';
-import VoteTracker from './components/VoteTracker';
 
 class App extends Component {
   state = { loading: true, drizzleState: null };
@@ -12,8 +10,6 @@ class App extends Component {
       <div className="App">
         <h1>page</h1>
         <Candidates drizzle={this.props.drizzle} />
-        <Voter drizzle={this.props.drizzle} />
-        <VoteTracker drizzle={this.props.drizzle} />
       </div>
     );
   }
