@@ -60,9 +60,9 @@ class Candidates extends Component {
       });
   }
 
-  vote = async (cand, increment) => {
+  vote = async cand => {
     const { methods } = this.props.drizzle.contracts.Election;
-    const votes = await methods.incrementVote.cacheSend(cand, increment);
+    const votes = await methods.vote.cacheSend(cand);
     const old = Number(this.state[cand]);
     this.setState({ [cand]: old + 1 });
   };

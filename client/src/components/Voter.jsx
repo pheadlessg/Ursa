@@ -13,8 +13,8 @@ class Voter extends Component {
         {!isLoading ? (
           <>
             <p>{`there are ${candCount} candidates to choose from`}</p>
-            <button onClick={() => vote(1, 1)}>vote for AA</button>
-            <button onClick={() => vote(2, 1)}>vote for BB</button>
+            <button onClick={() => vote(1)}>vote for AA</button>
+            <button onClick={() => vote(2)}>vote for BB</button>
           </>
         ) : (
           'loading...'
