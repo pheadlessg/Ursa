@@ -12,7 +12,7 @@ class AddCandidate extends Component {
   setValue = value => {
     const { drizzle, drizzleState } = this.props;
     const contract = drizzle.contracts.Election;
-    const stackId = contract.methods['addCandidate'].cacheSend(value, {
+    const stackId = contract.methods['addOwnerCandidate'].cacheSend(value, {
       from: drizzleState.accounts[0]
     });
 

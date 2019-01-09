@@ -15,7 +15,7 @@ class App extends Component {
         <Voter drizzle={this.props.drizzle} />
         <AddCandidate
           drizzle={this.props.drizzle}
-          drizzleState={this.props.drizzleState}
+          drizzleState={this.state.drizzleState}
         />
       </div>
     );
@@ -23,6 +23,8 @@ class App extends Component {
 
   componentDidMount() {
     const { drizzle } = this.props;
+    console.log(drizzle);
+    console.log(this.state.drizzleState);
     this.unsubscribe = drizzle.store.subscribe(() => {
       const drizzleState = drizzle.store.getState();
       if (drizzleState.drizzleStatus.initialized) {

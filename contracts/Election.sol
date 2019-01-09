@@ -1,6 +1,19 @@
 pragma solidity ^0.5.0;
 
-contract Election {
+contract owned {
+    address public owner;
+
+    constructor () public {
+        owner = msg.sender;
+    }
+
+    modifier onlyOwner {
+        require(msg.sender == owner);
+        _;
+    }
+}
+
+contract Election is owned {
 
     struct Candidate {
         uint id;
@@ -19,6 +32,11 @@ contract Election {
     }
 
     function addCandidate(string memory _name) public {
+        candidatesCount++;
+        candidates[candidatesCount] = Candidate(candidatesCount, _name, 0);
+    }
+
+    function addOwnerCandidate(string memory _name) public onlyOwner {
         candidatesCount++;
         candidates[candidatesCount] = Candidate(candidatesCount, _name, 0);
     }
