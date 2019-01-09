@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import Voter from './Voter';
+import VoteTracker from './VoteTracker';
 
 class Candidates extends Component {
   state = {
@@ -22,6 +23,7 @@ class Candidates extends Component {
             <p>{`votes for A: ${this.state[1]}`}</p>
             <p>{`votes for B: ${this.state[2]}`}</p>
             <Voter drizzle={this.props.drizzle} vote={this.vote} />
+            <VoteTracker drizzle={this.props.drizzle} />
           </>
         ) : (
           'loading...'
@@ -57,12 +59,12 @@ class Candidates extends Component {
           });
       });
   }
+
   vote = async (cand, increment) => {
     const { methods } = this.props.drizzle.contracts.Election;
     const votes = await methods.incrementVote.cacheSend(cand, increment);
-    const old = this.state[cand];
-    const total = votes + Number(old);
-    this.setState({ [cand]: total });
+    const old = Number(this.state[cand]);
+    this.setState({ [cand]: old + 1 });
   };
 }
 

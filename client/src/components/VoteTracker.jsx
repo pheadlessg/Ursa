@@ -9,14 +9,11 @@ class VoteTracker extends Component {
   }
   componentDidMount() {
     const { web3 } = this.props.drizzle;
-    // console.log(web3);
-    // web3.subscribe('VoteTracker', {},(err, data) => {
-    //   console.log(data);
-    // });
-    // Election.methods
-    //   .candidatesCount()
-    //   .call()
-    //   .then(candCount => this.setState({ candCount, isLoading: false }));
+    web3.eth.subscribe('logs', {}, (err, data) => {
+      if (err) {
+        console.log(err);
+      }
+    });
   }
 }
 
