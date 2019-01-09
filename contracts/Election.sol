@@ -8,6 +8,7 @@ contract Election {
         uint voteCount;
     }
     mapping(uint => Candidate) public candidates;
+    
     uint public candidatesCount;
 
     event VoteTracker(uint id, uint tally);

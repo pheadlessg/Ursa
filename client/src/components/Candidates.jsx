@@ -59,7 +59,7 @@ class Candidates extends Component {
   }
   vote = async (cand, increment) => {
     const { methods } = this.props.drizzle.contracts.Election;
-    const votes = await methods['incrementVote'].cacheSend(cand, increment);
+    const votes = await methods.incrementVote.cacheSend(cand, increment);
     const old = this.state[cand];
     const total = votes + Number(old);
     this.setState({ [cand]: total });
