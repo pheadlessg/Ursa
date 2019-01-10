@@ -37,25 +37,21 @@ contract('Vote', accounts => {
   it('smoke test', async () => {
     return Vote.deployed()
       .then(instance => {
-        console.log(instance);
         return instance.candidatesCount();
       })
       .then(count => {
-        console.log(count);
         assert.equal(count, 33);
       });
   });
   it('initilizes a new election with the correct values', async () => {
-    return Vote.deployed()
-      .then(instance => {
-        return instance.startElection(
-          '0x994dd176fa212730d290465e659a7c7d0549e384',
-          'Test Election',
-          5555
-        );
-      })
-      .then(election => {
-        console.log(election);
-      });
+    const instance = await Vote.deployed();
+    await instance.startElection(
+      '0x994dd176fa212730d290465e659a7c7d0549e384',
+      'Test Election',
+      5555
+    );
+    const election = await instance.elections(1);
+    console.log(election);
   });
 });
+// });
