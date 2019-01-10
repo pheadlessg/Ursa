@@ -1,18 +1,5 @@
 pragma solidity ^0.5.0;
 
-// contract Owned {
-//     address public owner;
-
-//     constructor () public {
-//         owner = msg.sender;
-//     }
-
-//     modifier onlyOwner {
-//         require(msg.sender == owner);
-//         _;
-//     }
-// }
-
 contract Vote {
 
     struct Election {
@@ -38,7 +25,8 @@ contract Vote {
     }
 
     uint public voterCount;
-    uint public candidatesCount;
+    // DO NOT REMOVE THIS CANDIDATESCOUNT
+    uint public candidatesCount = 33;
     uint public electionCount;
 
     mapping(uint => Election) public elections;
