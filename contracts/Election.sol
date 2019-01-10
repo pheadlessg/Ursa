@@ -22,7 +22,7 @@ contract Election is owned {
     }
     mapping(uint => Candidate) public candidates;
 
-    mapping(address => bool) public voters;
+    //mapping(address => bool) public voters;
 
     uint public candidatesCount;
 
@@ -49,19 +49,19 @@ contract Election is owned {
         candidatesCount++;
         candidates[candidatesCount] = Candidate(candidatesCount, _name, 0);
     }
-    function vote (uint _id) public {
-        require(!voters[msg.sender]);
-        voters[msg.sender] = true;
-        candidates[_id].voteCount++;
+    // function vote (uint _id) public {
+    //     require(!voters[msg.sender]);
+    //     voters[msg.sender] = true;
+    //     candidates[_id].voteCount++;
+    //     emit VoteTracker(_id, candidates[_id].voteCount);
+    // }
+
+
+    function incrementVote(uint _id, uint _inc) public {
+        candidates[_id].voteCount = candidates[_id].voteCount + _inc;
         emit VoteTracker(_id, candidates[_id].voteCount);
     }
 
-
-    // function incrementVote(uint _id, uint _inc) public {
-    //     candidates[_id].voteCount = candidates[_id].voteCount + _inc;
-    //     emit VoteTracker(_id, candidates[_id].voteCount);
-    // }
-}
 
     uint public voterCount;
 
