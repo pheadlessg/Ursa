@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
-import ReadString from './ReadString';
-import SetString from './SetString';
+import Candidates from './components/Candidates';
 
 class App extends Component {
   state = { loading: true, drizzleState: null };
@@ -9,14 +8,8 @@ class App extends Component {
     if (this.state.loading) return 'Loading Drizzle...';
     return (
       <div className="App">
-        <ReadString
-          drizzle={this.props.drizzle}
-          drizzleState={this.state.drizzleState}
-        />
-        <SetString
-          drizzle={this.props.drizzle}
-          drizzleState={this.state.drizzleState}
-        />
+        <h1>page</h1>
+        <Candidates drizzle={this.props.drizzle} />
       </div>
     );
   }
@@ -26,9 +19,7 @@ class App extends Component {
     this.unsubscribe = drizzle.store.subscribe(() => {
       const drizzleState = drizzle.store.getState();
       if (drizzleState.drizzleStatus.initialized) {
-        console.log(drizzleState);
         this.setState({ loading: false, drizzleState });
-        console.log(this.state);
       }
     });
   }
