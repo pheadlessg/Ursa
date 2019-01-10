@@ -25,6 +25,7 @@ contract Election is owned {
     //mapping(address => bool) public voters;
 
     uint public candidatesCount;
+    uint256 public StartTime = now;
 
     struct Voter {
         uint id;
@@ -62,6 +63,10 @@ contract Election is owned {
         // require(!voters[msg.sender]);
         candidates[_id].voteCount = candidates[_id].voteCount + _inc;
         emit VoteTracker(_id, candidates[_id].voteCount);
+    }
+
+    function setEndTime(uint _voteLength) public view returns (uint) {
+        return StartTime + _voteLength;
     }
 
 

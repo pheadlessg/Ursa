@@ -3,6 +3,7 @@ import Voter from './Voter';
 import VoteTracker from './VoteTracker';
 import VotersDisplay from './VotersDisplay';
 import AddVoter from './AddVoter';
+import Timer from './Timer';
 
 class Candidates extends Component {
   state = {
@@ -28,6 +29,7 @@ class Candidates extends Component {
             <VoteTracker drizzle={this.props.drizzle} />
             <VotersDisplay drizzle={this.props.drizzle} />
             <AddVoter drizzle={this.props.drizzle} />
+            <Timer drizzle={this.props.drizzle}/>
           </>
         ) : (
           'loading...'
