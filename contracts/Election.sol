@@ -22,8 +22,8 @@ contract Vote {
         address[] voters;
         uint expirationTime;
         address[] candidates;
-        mapping(address => Voter) voterInfo;
-        mapping(uint => Candidate) candidateInfo;
+        mapping(address => Voter) votersInfo;
+        mapping(uint => Candidate) candidatesInfo;
     }
 
     struct Candidate {
@@ -51,11 +51,6 @@ contract Vote {
     }
 
     function addCandidate(string memory _name) public {
-        candidatesCount++;
-        candidates[candidatesCount] = Candidate(candidatesCount, _name, 0);
-    }
-
-    function addOwnerCandidate(string memory _name) public onlyOwner {
         candidatesCount++;
         candidates[candidatesCount] = Candidate(candidatesCount, _name, 0);
     }
