@@ -26,6 +26,13 @@ contract Election is owned {
 
     uint public candidatesCount;
 
+    struct Voter {
+        uint id;
+        string name;
+        bool hasVoted;
+    }
+    mapping(uint => Voter) public voters;
+
     event VoteTracker(uint id, uint tally);
 
     constructor () public {
@@ -49,8 +56,18 @@ contract Election is owned {
         emit VoteTracker(_id, candidates[_id].voteCount);
     }
 
+
     // function incrementVote(uint _id, uint _inc) public {
     //     candidates[_id].voteCount = candidates[_id].voteCount + _inc;
     //     emit VoteTracker(_id, candidates[_id].voteCount);
     // }
+}
+
+    uint public voterCount;
+
+    function addVoter(string memory _name) public {
+        voterCount++;
+        voters[voterCount] = Voter(voterCount, _name, false);
+    }
+
 }
