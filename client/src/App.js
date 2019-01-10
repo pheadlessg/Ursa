@@ -12,7 +12,6 @@ class App extends Component {
       <div className="App">
         <h1>page</h1>
         <Candidates drizzle={this.props.drizzle} />
-        <Voter drizzle={this.props.drizzle} />
         <AddCandidate
           drizzle={this.props.drizzle}
           drizzleState={this.state.drizzleState}

@@ -1,14 +1,14 @@
-import React, { Component } from "react";
-import Voter from "./Voter";
-import VoteTracker from "./VoteTracker";
-import VotersDisplay from "./VotersDisplay";
-import AddVoter from "./AddVoter";
+import React, { Component } from 'react';
+import Voter from './Voter';
+import VoteTracker from './VoteTracker';
+import VotersDisplay from './VotersDisplay';
+import AddVoter from './AddVoter';
 
 class Candidates extends Component {
   state = {
     candidates: [],
-    "1": null,
-    "2": null,
+    '1': null,
+    '2': null,
     isLoading: true
   };
   render() {
@@ -30,7 +30,7 @@ class Candidates extends Component {
             <AddVoter drizzle={this.props.drizzle} />
           </>
         ) : (
-          "loading..."
+          'loading...'
         )}
       </div>
     );
@@ -66,7 +66,7 @@ class Candidates extends Component {
 
   vote = async cand => {
     const { methods } = this.props.drizzle.contracts.Election;
-    const votes = await methods.vote.cacheSend(cand);
+    const votes = await methods.incrementVote.cacheSend(cand, 1);
     const old = Number(this.state[cand]);
     this.setState({ [cand]: old + 1 });
   };
