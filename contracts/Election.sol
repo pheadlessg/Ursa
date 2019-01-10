@@ -67,6 +67,6 @@ contract Vote {
     //     voters[voterCount] = Voter(voterCount, _name, false);
     // }
 
-    constructor () public {}
-
+    constructor () public {
+    }
 }
