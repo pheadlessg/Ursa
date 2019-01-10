@@ -39,11 +39,15 @@ contract Vote {
 
     uint public voterCount;
     uint public candidatesCount;
+    uint public electionCount;
 
-    event VoteTracker(uint id, uint tally);
+    mapping(uint => Election) public elections;
 
-    function startElection(string memory _electionName) public {
+    event VoteTracker(uint id, uint voteCount);
 
+    function startElection(address _creator, string memory _electionName, address[] memory _voters, uint _expirationTime, address[] memory _candidates) public {
+        electionCount++;
+        elections[electionCount] = Election(_creator, _electionName, 0, _voters, _expirationTime, _candidates);
     }
 
     function addCandidate(string memory _name) public {
