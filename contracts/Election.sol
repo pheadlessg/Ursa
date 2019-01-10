@@ -45,25 +45,27 @@ contract Vote {
 
     event VoteTracker(uint id, uint voteCount);
 
-    function startElection(address _creator, string memory _electionName, address[] memory _voters, uint _expirationTime, address[] memory _candidates) public {
+    function startElection(address _creator, string memory _electionName, uint _expirationTime) public {
         electionCount++;
-        elections[electionCount] = Election(_creator, _electionName, 0, _voters, _expirationTime, _candidates);
+        address[] memory voters;
+        address[] memory candidates;
+        elections[electionCount] = Election(_creator, _electionName, 0, voters, _expirationTime, candidates);
     }
 
-    function addCandidate(string memory _name) public {
-        candidatesCount++;
-        candidates[candidatesCount] = Candidate(candidatesCount, _name, 0);
-    }
+    // function addCandidate(string memory _name) public {
+    //     candidatesCount++;
+    //     candidates[candidatesCount] = Candidate(candidatesCount, _name, 0);
+    // }
 
-    function incrementVote(uint _id, uint _inc) public {
-        candidates[_id].voteCount = candidates[_id].voteCount + _inc;
-        emit VoteTracker(_id, candidates[_id].voteCount);
-    }
+    // function incrementVote(uint _id, uint _inc) public {
+    //     candidates[_id].voteCount = candidates[_id].voteCount + _inc;
+    //     emit VoteTracker(_id, candidates[_id].voteCount);
+    // }
 
-    function addVoter(address _name) public {
-        voterCount++;
-        voters[voterCount] = Voter(voterCount, _name, false);
-    }
+    // function addVoter(address _name) public {
+    //     voterCount++;
+    //     voters[voterCount] = Voter(voterCount, _name, false);
+    // }
 
     constructor () public {}
 
