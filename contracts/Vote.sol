@@ -2,18 +2,23 @@ pragma solidity ^0.5.0;
 
 contract Vote {
 
+    string public testString = "Im here for testing, leave me be!";
+    // please do not remove testString
+    uint public electionCount;
+    mapping(uint => Election) public elections;
+
     struct Election {
         address creator;
         string electionName;
         uint voteCount;
         address[] voters;
         uint expirationTime;
-        address[] candidates;
+        uint candidatesCount;
         mapping(address => Voter) votersInfo;
-        mapping(uint => Candidate) candidatesInfo;
+        mapping(uint => Candidate) candidates;
     }
 
-    struct Candidate {
+    struct Candidate  {
         uint id;
         string name;
         uint voteCount;
@@ -25,20 +30,25 @@ contract Vote {
     }
 
     uint public voterCount;
-    // DO NOT REMOVE THIS CANDIDATESCOUNT
-    uint public candidatesCount = 33;
-    uint public electionCount;
-
-    mapping(uint => Election) public elections;
+    uint public candidatesCount;
 
     event VoteTracker(uint id, uint voteCount);
 
     function startElection(address _creator, string memory _electionName, uint _expirationTime) public {
         electionCount++;
         address[] memory voters;
-        address[] memory candidates;
-        elections[electionCount] = Election(_creator, _electionName, 0, voters, _expirationTime, candidates);
+        elections[electionCount] = Election(_creator, _electionName, 0, voters, _expirationTime, 0);
     }
+
+    function addElectionCandidate(uint _electionId, string memory _candidateName) public {
+        elections[_electionId].candidatesCount++;
+        uint i = elections[_electionId].candidatesCount;
+        Candidate memory newCand;
+        newCand.id = i;
+        newCand.name = _candidateName;
+        elections[_electionId].candidates[i] = newCand;
+    }
+
 
     // function addCandidate(string memory _name) public {
     //     candidatesCount++;

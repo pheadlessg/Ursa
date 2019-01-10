@@ -37,10 +37,10 @@ contract('Vote', accounts => {
   it('smoke test', async () => {
     return Vote.deployed()
       .then(instance => {
-        return instance.candidatesCount();
+        return instance.testString();
       })
-      .then(count => {
-        assert.equal(count, 33);
+      .then(test => {
+        assert.equal(test, 'Im here for testing, leave me be!');
       });
   });
   it('initilizes a new election with the correct values', async () => {
@@ -48,10 +48,29 @@ contract('Vote', accounts => {
     await instance.startElection(
       '0x994dd176fa212730d290465e659a7c7d0549e384',
       'Test Election',
-      5555
+      5
     );
     const election = await instance.elections(1);
-    console.log(election);
+    expect(typeof election).to.eql('object');
+    expect(election).to.have.all.keys([
+      '0',
+      '1',
+      '2',
+      '3',
+      '4',
+      'creator',
+      'electionName',
+      'expirationTime',
+      'voteCount',
+      'candidatesCount'
+    ]);
+  });
+  it('add a candidate to an election', async () => {
+    const instance = await Vote.deployed();
+    await instance.addElectionCandidate(1, 'Test Candidate');
+    const election = await instance.elections(1);
+    const cand = election.candidates;
+    console.log(cand);
+    expect(typeof election.candidatesCount).to.eql('object');
   });
 });
-// });
