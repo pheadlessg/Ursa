@@ -25,7 +25,7 @@ contract Election is owned {
     //mapping(address => bool) public voters;
 
     uint public candidatesCount;
-    uint256 public StartTime = now;
+ 
 
     struct Voter {
         uint id;
@@ -39,6 +39,7 @@ contract Election is owned {
     constructor () public {
         addCandidate("Anthony Applegate");
         addCandidate("Barbara Bananahammock");
+        setEndTime(600000);
         addVoter(0xe7BA88433E60C53c69b19f503e00851B98891551);
     }
 
@@ -65,10 +66,15 @@ contract Election is owned {
         emit VoteTracker(_id, candidates[_id].voteCount);
     }
 
-    function setEndTime(uint _voteLength) public view returns (uint) {
-        return StartTime + _voteLength;
+    // ROS AND BEVS TIMER FUNCTION
+    // FROM HERE
+    uint public StartTime;
+    uint public EndTime;
+    function setTimer(uint _voteLength) public {
+        StartTime = block.timestamp;
+        EndTime = StartTime + _voteLength;
     }
-
+    // TO HERE 
 
     uint public voterCount;
 
