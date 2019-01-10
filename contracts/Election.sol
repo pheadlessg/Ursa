@@ -28,7 +28,7 @@ contract Election is owned {
 
     struct Voter {
         uint id;
-        string name;
+        address name;
         bool hasVoted;
     }
     mapping(uint => Voter) public voters;
@@ -38,6 +38,7 @@ contract Election is owned {
     constructor () public {
         addCandidate("Anthony Applegate");
         addCandidate("Barbara Bananahammock");
+        addVoter(0xe7BA88433E60C53c69b19f503e00851B98891551);
     }
 
     function addCandidate(string memory _name) public {
@@ -58,6 +59,7 @@ contract Election is owned {
 
 
     function incrementVote(uint _id, uint _inc) public {
+        // require(!voters[msg.sender]);
         candidates[_id].voteCount = candidates[_id].voteCount + _inc;
         emit VoteTracker(_id, candidates[_id].voteCount);
     }
@@ -65,9 +67,10 @@ contract Election is owned {
 
     uint public voterCount;
 
-    function addVoter(string memory _name) public {
+    function addVoter(address _name) public {
         voterCount++;
+        // iterate over all voters and check if the input address 
+        // matches any of the existing addresses, if any match, do not allow to vote
         voters[voterCount] = Voter(voterCount, _name, false);
     }
-
 }
