@@ -1,6 +1,6 @@
 pragma solidity ^0.5.0;
 
-contract owned {
+contract Owned {
     address public owner;
 
     constructor () public {
@@ -20,8 +20,9 @@ contract Election is owned {
         string name;
         uint voteCount;
     }
-    mapping(uint => Candidate) public candidates;
 
+    mapping(uint => Candidate) public candidates;
+    require(msg.sender == owner);require(msg.sender == owner);
     //mapping(address => bool) public voters;
 
     uint public candidatesCount;
@@ -50,13 +51,6 @@ contract Election is owned {
         candidatesCount++;
         candidates[candidatesCount] = Candidate(candidatesCount, _name, 0);
     }
-    // function vote (uint _id) public {
-    //     require(!voters[msg.sender]);
-    //     voters[msg.sender] = true;
-    //     candidates[_id].voteCount++;
-    //     emit VoteTracker(_id, candidates[_id].voteCount);
-    // }
-
 
     function incrementVote(uint _id, uint _inc) public {
         // require(!voters[msg.sender]);
@@ -73,4 +67,30 @@ contract Election is owned {
         // matches any of the existing addresses, if any match, do not allow to vote
         voters[voterCount] = Voter(voterCount, _name, false);
     }
+}
+
+
+contract Vote {
+
+    struct Election is Owned {
+        address creator;
+        uint voteCount;
+        address[] voters;
+        uint expirationTime;
+        address[] candidates;
+        mapping(address => Voter) voterInfo;
+    }
+
+    struct Candidate {
+        uint id;
+        string name;
+        uint voteCount;
+    }
+
+    struct Voter {
+        uint id;
+        address name;
+        bool hasVoted;
+    }
+
 }
