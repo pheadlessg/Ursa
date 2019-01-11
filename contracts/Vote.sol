@@ -18,9 +18,15 @@ contract Vote {
     uint public electionCount;
     mapping(uint => Election) public elections;
 
-    function startElection(address _creator, string memory _electionName, uint _expirationTime) public {
+    function startElection(address _creator, string memory _electionName, uint _voteLength) public {
+
         electionCount++;
-        elections[electionCount] = Election(_creator, _electionName, 0, _expirationTime, 0);
+        
+        // input vote length
+        // set Timer returning expiration time
+        uint expirationTime = setTimer(_voteLength);
+        // initiating a new Election with the final expiration time
+        elections[electionCount] = Election(_creator, _electionName, 0, expirationTime, 0);
     }
 
     struct Candidate  {
@@ -42,9 +48,18 @@ contract Vote {
         e.candidates[e.candidatesCount++] = Candidate(e.candidatesCount, _candidateName, 0);
     }
 
+
     function showElectionCandidates(uint _electionId) public returns (string memory name){
         return elections[_electionId].candidates[1].name;
     }
+
+    // ROS AND BEVS TIMER FUNCTION
+    // FROM HERE
+    function setTimer(uint _voteLength) public returns (uint) {
+        uint StartTime = block.timestamp;
+        return StartTime + _voteLength;
+    }
+    // TO HERE 
 
     constructor () public {
     }
