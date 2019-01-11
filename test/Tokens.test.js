@@ -18,9 +18,4 @@ contract('VoteToken', () => {
     );
     assert.equal(data, 1);
   });
-  it('adds a candidate', async () => {
-    const instance = await VoteToken.deployed();
-    const data = await instance.addCandidate('test');
-    console.log(data);
-  });
 });
