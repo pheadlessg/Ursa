@@ -1,5 +1,7 @@
 pragma solidity ^0.5.0;
 
+import "./VoteToken.sol";
+
 contract Vote {
 
     string public testString = "Im here for testing, leave me be!";
@@ -53,6 +55,9 @@ contract Vote {
         return elections[_electionId].candidates[1].name;
     }
 
+    function addVoter(address name) public {
+        transfer(name, 1) public returns bool;
+    }
     // ROS AND BEVS TIMER FUNCTION
     // FROM HERE
     function setTimer(uint _voteLength) public returns (uint) {
