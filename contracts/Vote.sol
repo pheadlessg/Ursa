@@ -1,6 +1,8 @@
 pragma solidity ^0.5.0;
 
-contract Vote {
+import "./VoteToken.sol";
+
+contract Vote is VoteToken {
 
     string public testString = "Im here for testing, leave me be!";
     // please do not remove testString
@@ -11,7 +13,6 @@ contract Vote {
         uint voteCount;
         uint expirationTime;
         uint candidatesCount;
-        mapping(address => Voter) votersInfo;
         mapping(uint => Candidate) candidates;
     }
 
@@ -19,6 +20,7 @@ contract Vote {
     mapping(uint => Election) public elections;
 
     function startElection(address _creator, string memory _electionName, uint _expirationTime) public {
+        
         electionCount++;
         elections[electionCount] = Election(_creator, _electionName, 0, _expirationTime, 0);
     }
@@ -29,12 +31,6 @@ contract Vote {
         uint voteCount;
     }
 
-    struct Voter {
-        address name;
-        bool hasVoted;
-    }
-
-    uint public voterCount;
     uint public candidatesCount;
 
     function addElectionCandidate(uint _electionId, string memory _candidateName) public {
@@ -46,6 +42,7 @@ contract Vote {
         return elections[_electionId].candidates[1].name;
     }
 
-    constructor () public {
+    function addVoter(address name) public {
+        transfer(name, 1);
     }
 }

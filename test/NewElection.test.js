@@ -45,4 +45,12 @@ contract('Vote', accounts => {
       'this function needs to actually return the candidate names, maybe with events on the contract'
     );
   });
+  it('registers a voter by transferring them a token', async () => {
+    const instance = await Vote.deployed();
+    await instance.addVoter('0xfe07bbaB27DBb64A155b5DFAF51f66049931EEaC');
+    const voter = await instance.balanceOf(
+      '0xfe07bbaB27DBb64A155b5DFAF51f66049931EEaC'
+    );
+    assert.equal(voter, 1);
+  });
 });
