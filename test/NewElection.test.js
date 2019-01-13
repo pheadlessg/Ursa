@@ -37,13 +37,12 @@ contract('Vote', accounts => {
       '0x994DD176fA212730D290465e659a7c7D0549e384'
     );
     expect(election.electionName).to.eql('Test Election');
-    const candidates1 = await instance.candidatesStorage(0);
-    const candidates2 = await instance.candidatesStorage(1);
-    expect(candidates1.name).to.eql(
+    const cand = await instance.getCandidate(
       '0x63616e646964617465206f6e6500000000000000000000000000000000000000'
     );
-    expect(candidates2.name).to.eql(
-      '0x63616e6469646174652074776f00000000000000000000000000000000000000'
+    expect(cand[1]).to.eql(
+      '0x63616e646964617465206f6e6500000000000000000000000000000000000000'
     );
+    expect(cand[2].toNumber()).to.eql(0);
   });
 });
