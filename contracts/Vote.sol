@@ -20,7 +20,8 @@ contract Vote {
 
     function startElection(address _creator, string memory _electionName, uint _expirationTime, bytes32[] memory newCandidates) public {
         electionCount++;
-        elections[electionCount] = Election(_creator, _electionName, 0, _expirationTime, newCandidates.length, new bytes32[](0));
+        uint _voteLength = setTimer(_expirationTime);
+        elections[electionCount] = Election(_creator, _electionName, 0, _voteLength, newCandidates.length, new bytes32[](0));
         for (uint i = 0; i < newCandidates.length; i++) {
             candidateNames.push(newCandidates[i]);
             candidateStorage[newCandidates[i]] = Candidate(
@@ -51,6 +52,10 @@ contract Vote {
         uint voteCount;
     }
 
+    function setTimer(uint _voteLength) public view returns (uint) {
+        uint StartTime = block.timestamp;
+        return StartTime + _voteLength;
+    }
 
     constructor () public {
     }

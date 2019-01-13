@@ -78,4 +78,15 @@ contract('Vote', accounts => {
     );
     expect(cand[2].toNumber()).to.eql(0);
   });
+  it('set timer converts user input to unix timestamp', async () => {
+    const instance = await Vote.deployed();
+    await instance.startElection(
+      '0x994dd176fa212730d290465e659a7c7d0549e384',
+      'Test Election',
+      5,
+      ['0x63616e646964617465206f6e65', '0x63616e6469646174652074776f']
+    );
+    const election = await instance.elections(1);
+    expect(typeof election.expirationTime.toNumber() === 'number');
+  });
 });
