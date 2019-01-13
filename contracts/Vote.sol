@@ -43,12 +43,6 @@ contract Vote {
         uint voteCount;
     }
 
-    struct Voter {
-        address name;
-        bool hasVoted;
-    }
-
-    uint public voterCount;
     uint public candidatesCount;
 
     function addElectionCandidate(uint _electionId, string memory _candidateName) public {
