@@ -24,11 +24,9 @@ contract('Vote', accounts => {
       '1',
       '2',
       '3',
-      '4',
       'creator',
       'electionName',
       'expirationTime',
-      'voteCount',
       'candidatesCount'
     ]);
     // the function changes letters to upper case!
@@ -45,12 +43,10 @@ contract('Vote', accounts => {
       'this function needs to actually return the candidate names, maybe with events on the contract'
     );
   });
-  it('registers a voter by transferring them a token', async () => {
+  it('sets an expiration time of the vote based on input', async () => {
     const instance = await Vote.deployed();
-    await instance.addVoter('0xfe07bbaB27DBb64A155b5DFAF51f66049931EEaC');
-    const voter = await instance.balanceOf(
-      '0xfe07bbaB27DBb64A155b5DFAF51f66049931EEaC'
-    );
-    assert.equal(voter, 1);
+    const expireTime = await instance.setTimer.call(600);
+    expect(expireTime.toNumber()).to.be.below(Date.now() + 600000);
+    expect(expireTime.toNumber()).to.not.be.above(Date.now() + 600000);
   });
 });
