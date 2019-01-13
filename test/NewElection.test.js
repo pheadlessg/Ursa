@@ -15,7 +15,8 @@ contract('Vote', accounts => {
     await instance.startElection(
       '0x994dd176fa212730d290465e659a7c7d0549e384',
       'Test Election',
-      5
+      5,
+      ['0x63616e646964617465206f6e65', '0x63616e6469646174652074776f']
     );
     const election = await instance.elections(1);
     expect(typeof election).to.eql('object');
@@ -31,18 +32,18 @@ contract('Vote', accounts => {
       'voteCount',
       'candidatesCount'
     ]);
-    // the function changes letters to upper case!
+    // the function changes address letters to upper case!
     expect(election.creator).to.eql(
       '0x994DD176fA212730D290465e659a7c7D0549e384'
     );
     expect(election.electionName).to.eql('Test Election');
-  });
-  it('add a candidate to an election', async () => {
-    const instance = await Vote.deployed();
-    await instance.addElectionCandidate(1, 'Test Candidate');
-    const candidates = await instance.showElectionCandidates(1);
-    console.log(
-      'this function needs to actually return the candidate names, maybe with events on the contract'
+    const candidates1 = await instance.candidatesStorage(1);
+    const candidates2 = await instance.candidatesStorage(1);
+    expect(candidates1.name).to.eql(
+      '0x63616e6469646174652074776f00000000000000000000000000000000000000'
+    );
+    expect(candidates2.name).to.eql(
+      '0x63616e6469646174652074776f00000000000000000000000000000000000000'
     );
   });
 });

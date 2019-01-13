@@ -11,21 +11,29 @@ contract Vote {
         uint voteCount;
         uint expirationTime;
         uint candidatesCount;
-        mapping(address => Voter) votersInfo;
-        mapping(uint => Candidate) candidates;
+        // bytes32[] candidates;
     }
 
     uint public electionCount;
     mapping(uint => Election) public elections;
+    Candidate[] public candidatesStorage;
 
-    function startElection(address _creator, string memory _electionName, uint _expirationTime) public {
+
+    function startElection(address _creator, string memory _electionName, uint _expirationTime, bytes32[] memory newCandidates) public {
         electionCount++;
+        for (uint i = 0; i < newCandidates.length; i++) {
+            candidatesStorage.push(Candidate({
+                id: i,
+                name: newCandidates[i],
+                voteCount: 0
+            }));
+        }
         elections[electionCount] = Election(_creator, _electionName, 0, _expirationTime, 0);
     }
 
     struct Candidate  {
         uint id;
-        string name;
+        bytes32 name;
         uint voteCount;
     }
 
@@ -37,15 +45,13 @@ contract Vote {
     uint public voterCount;
     uint public candidatesCount;
 
-    function addElectionCandidate(uint _electionId, string memory _candidateName) public {
-        Election storage e = elections[_electionId];
-        e.candidates[e.candidatesCount++] = Candidate(e.candidatesCount, _candidateName, 0);
-    }
-
-    function showElectionCandidates(uint _electionId) public returns (string memory name){
-        return elections[_electionId].candidates[1].name;
-    }
 
     constructor () public {
     }
 }
+
+// bytes32
+//  [
+//     '0x63616e646964617465206f6e65',
+//     '0x63616e6469646174652074776f'
+//   ]
