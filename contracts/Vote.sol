@@ -1,6 +1,8 @@
 pragma solidity ^0.5.0;
 
-contract Vote {
+import "./VoteToken.sol";
+
+contract Vote is VoteToken {
 
     string public testString = "Im here for testing";
 
