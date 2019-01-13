@@ -4,7 +4,7 @@ contract('Vote', accounts => {
   it('smoke test', async () => {
     const instance = await Vote.deployed();
     const test = await instance.testString();
-    expect(test).to.eql('Im here for testing, leave me be!');
+    expect(test).to.eql('Im here for testing');
   });
   it('initilizes a new election with the correct values', async () => {
     const instance = await Vote.deployed();
@@ -40,6 +40,8 @@ contract('Vote', accounts => {
       '0x63616e646964617465206f6e6500000000000000000000000000000000000000'
     );
     expect(cand[2].toNumber()).to.eql(0);
+    const candidates = await instance.getElectionCandidates(1);
+    console.log(candidates);
   });
   it('vote for candidate function increases candidate vote count by one', async () => {
     const instance = await Vote.deployed();

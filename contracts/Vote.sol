@@ -2,8 +2,7 @@ pragma solidity ^0.5.0;
 
 contract Vote {
 
-    string public testString = "Im here for testing, leave me be!";
-    // please do not remove testString
+    string public testString = "Im here for testing";
 
     struct Election {
         address creator;
@@ -11,6 +10,7 @@ contract Vote {
         uint voteCount;
         uint expirationTime;
         uint candidatesCount;
+        bytes32[] candidateData;
     }
 
     uint public electionCount;
@@ -28,7 +28,12 @@ contract Vote {
                 0
             );
         }
-        elections[electionCount] = Election(_creator, _electionName, 0, _expirationTime, newCandidates.length);
+        elections[electionCount] = Election(_creator, _electionName, 0, _expirationTime, newCandidates.length, new bytes32[](0));
+        elections[electionCount].candidateData.push(newCandidates[0]);
+    }
+
+    function getElectionCandidates(uint i) public view returns (bytes32[] memory){
+        return elections[i].candidateData;
     }
 
     function getCandidate(bytes32 _name) public view returns (uint, bytes32, uint) {
