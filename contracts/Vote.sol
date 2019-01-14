@@ -52,7 +52,15 @@ contract Vote is ERC20 {
         return (candidateStorage[_name].id, candidateStorage[_name].name, candidateStorage[_name].voteCount);
     }
 
-    function voteForCandidate(bytes32 _name) public returns (uint, bytes32, uint) {
+    function voteForCandidate(bytes32 _name, uint _electionCount) public returns (uint, bytes32, uint) {
+        address[] memory array = elections[_electionCount].whiteList;
+        for (uint i = 0; i < array.length ; i++) {
+            if(array[i] == msg.sender) {
+                //accept the transaction
+            } else {
+                //reject the transaction
+            }
+        }
         candidateStorage[_name].voteCount++;
         return (candidateStorage[_name].id, candidateStorage[_name].name, candidateStorage[_name].voteCount);
     }
