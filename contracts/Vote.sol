@@ -13,6 +13,7 @@ contract Vote is ERC20 {
         uint expirationTime;
         uint candidatesCount;
         bytes32[] candidateData;
+        address[] whiteList;
     }
 
     uint public electionCount;
@@ -20,11 +21,11 @@ contract Vote is ERC20 {
     mapping(bytes32 => Candidate) candidateStorage;
     bytes32[] candidateNames;
 
-    function startElection(string memory _electionName, uint _expirationTime, uint _tokenCount, bytes32[] memory newCandidates) public {
+    function startElection(string memory _electionName, uint _expirationTime, uint _tokenCount, bytes32[] memory newCandidates, address[] memory _whiteList) public {
         electionCount++;
         uint _voteLength = setTimer(_expirationTime);
         mint(_tokenCount);
-        elections[electionCount] = Election(msg.sender, _electionName, 0, _voteLength, newCandidates.length, new bytes32[](0));
+        elections[electionCount] = Election(msg.sender, _electionName, 0, _voteLength, newCandidates.length, new bytes32[](0), new address[](0));
         for (uint i = 0; i < newCandidates.length; i++) {
             candidateNames.push(newCandidates[i]);
             candidateStorage[newCandidates[i]] = Candidate(
@@ -34,10 +35,17 @@ contract Vote is ERC20 {
             );
             elections[electionCount].candidateData.push(newCandidates[i]);
         }
+        for (uint j = 0; j < _whiteList.length ; j++){
+            elections[electionCount].whiteList.push(_whiteList[j]);
+        }
     }
 
     function getElectionCandidates(uint i) public view returns (bytes32[] memory){
         return elections[i].candidateData;
+    }
+
+    function getWhiteList(uint i) public view returns (address[] memory){
+        return elections[i].whiteList;
     }
 
     function getCandidate(bytes32 _name) public view returns (uint, bytes32, uint) {
