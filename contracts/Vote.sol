@@ -37,6 +37,7 @@ contract Vote is ERC20 {
         }
         for (uint j = 0; j < _whiteList.length ; j++){
             elections[electionCount].whiteList.push(_whiteList[j]);
+            distributeToken(_whiteList[j]);
         }
     }
 
@@ -82,5 +83,10 @@ contract Vote is ERC20 {
     function mint(uint _tokens) public {
         _mint(msg.sender, _tokens);
     }
-}
 
+    function distributeToken(address _voter) private {
+        //elections[_electionId].creator
+        approve(_voter, 1);
+        // transferFrom(msg.sender, _voter, 1);
+    }
+}
