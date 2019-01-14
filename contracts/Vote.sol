@@ -85,7 +85,6 @@ contract Vote is ERC20 {
     }
 
     function distributeToken(address _voter) private {
-        //elections[_electionId].creator
         approve(_voter, 1);
         // transferFrom(msg.sender, _voter, 1);
     }

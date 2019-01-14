@@ -38,7 +38,8 @@ contract('Vote', accounts => {
     const whiteListMemberBalance = await instance.balanceOf(
       '0x994DD176fA212730D290465e659a7c7D0549e384'
     );
-    console.log(whiteListMemberBalance.toNumber());
+    console.log(whiteListMemberBalance);
+    expect(whiteListMemberBalance.toNumber()).to.eql(1);
     expect(whiteListMemberAllowance.toNumber()).to.eql(1);
     // expect(whiteListMemberBalance).to.eql(2);
     expect(whiteList[0]).to.eql('0x994DD176fA212730D290465e659a7c7D0549e384');
