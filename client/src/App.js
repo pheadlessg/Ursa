@@ -1,5 +1,7 @@
 import React, { Component } from 'react';
 import Candidates from './components/Candidates';
+import Voter from './components/Voter';
+import AddCandidate from './components/AddCandidate';
 
 class App extends Component {
   state = { loading: true, drizzleState: null };
@@ -10,12 +12,18 @@ class App extends Component {
       <div className="App">
         <h1>page</h1>
         <Candidates drizzle={this.props.drizzle} />
+        <AddCandidate
+          drizzle={this.props.drizzle}
+          drizzleState={this.state.drizzleState}
+        />
       </div>
     );
   }
 
   componentDidMount() {
     const { drizzle } = this.props;
+    console.log(drizzle);
+    console.log(this.state.drizzleState);
     this.unsubscribe = drizzle.store.subscribe(() => {
       const drizzleState = drizzle.store.getState();
       if (drizzleState.drizzleStatus.initialized) {

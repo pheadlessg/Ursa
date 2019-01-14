@@ -1,4 +1,4 @@
-import React, { Component } from "react";
+import React, { Component } from 'react';
 
 class AddVoter extends Component {
   state = {};
@@ -16,7 +16,7 @@ class AddVoter extends Component {
   addVoter = () => {
     const { methods } = this.props.drizzle.contracts.Election;
     // console.log(methods);
-    methods.addVoter.cacheSend("example");
+    methods.addVoter.cacheSend('0x994dd176fa212730d290465e659a7c7d0549e384');
   };
 }
 
