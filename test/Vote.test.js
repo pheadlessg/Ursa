@@ -64,8 +64,16 @@ contract("Vote", accounts => {
         expect(whiteList[2]).to.equal(accounts[3]);
       });
     });
-    describe("", () => {
-      it("", async () => {});
+    describe("mint", () => {
+      it("mints the appropriate number of tokens", async () => {
+        const tokenSupply = await instance.totalSupply();
+        expect(tokenSupply.toNumber()).to.equal(3);
+      });
     });
   });
 });
+
+// expect(await instance.balanceOf(accounts[0]).toNumber()).to.equal(0);
+// expect(await instance.balanceOf(accounts[1]).toNumber()).to.equal(1);
+// expect(await instance.balanceOf(accounts[2]).toNumber()).to.equal(1);
+// expect(await instance.balanceOf(accounts[3]).toNumber()).to.equal(1);
