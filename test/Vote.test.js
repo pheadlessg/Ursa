@@ -40,21 +40,11 @@ contract("Vote", accounts => {
       expect(testElection.expirationTime.toNumber()).to.equal(time.toNumber());
       expect(testElection.candidatesCount.toNumber()).to.equal(3);
     });
-  });
-  describe("getElectionCandidates", () => {
-    it("returns an array containing the candidates id for a particular election", async () => {
-      expect(electionCandidates[0].toNumber()).to.equal(1);
-      expect(electionCandidates[1].toNumber()).to.equal(2);
-    });
-  });
-  describe("getCandidate", () => {
-    it("returns an object containing numbered keys with corresponding candidate information", async () => {
-      const electionCandidate = await instance.getCandidate(1);
-      expect(electionCandidate["0"].toNumber()).to.equal(1);
-      expect(electionCandidate["1"]).to.equal(
-        "0x63616e646964617465206f6e6500000000000000000000000000000000000000"
-      );
-      expect(electionCandidate["2"].toNumber()).to.equal(0);
+    describe("getElectionCandidates", () => {
+      it("returns an array containing the candidates id for a particular election", async () => {
+        expect(electionCandidates[0].toNumber()).to.equal(1);
+        expect(electionCandidates[1].toNumber()).to.equal(2);
+      });
     });
   });
 });
