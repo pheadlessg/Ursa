@@ -70,10 +70,17 @@ contract("Vote", accounts => {
         expect(tokenSupply.toNumber()).to.equal(3);
       });
     });
+    describe("distributeToken", () => {
+      it("gives the supply of tokens to the correct accounts", async () => {
+        let balance = await instance.balanceOf(accounts[0]);
+        expect(balance.toNumber()).to.equal(0);
+        balance = await instance.balanceOf(accounts[1]);
+        expect(balance.toNumber()).to.equal(1);
+        balance = await instance.balanceOf(accounts[2]);
+        expect(balance.toNumber()).to.equal(1);
+        balance = await instance.balanceOf(accounts[3]);
+        expect(balance.toNumber()).to.equal(1);
+      });
+    });
   });
 });
-
-// expect(await instance.balanceOf(accounts[0]).toNumber()).to.equal(0);
-// expect(await instance.balanceOf(accounts[1]).toNumber()).to.equal(1);
-// expect(await instance.balanceOf(accounts[2]).toNumber()).to.equal(1);
-// expect(await instance.balanceOf(accounts[3]).toNumber()).to.equal(1);
