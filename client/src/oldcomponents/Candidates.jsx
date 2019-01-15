@@ -1,15 +1,12 @@
-import React, { Component } from 'react';
-import Voter from './Voter';
-import VoteTracker from './VoteTracker';
-import VotersDisplay from './VotersDisplay';
-import AddVoter from './AddVoter';
-import Timer from './Timer';
+import React, { Component } from "react";
+import Voter from "./Voter";
+import VoteTracker from "./VoteTracker";
+import VotersDisplay from "./VotersDisplay";
+import AddVoter from "./AddVoter";
 
 class Candidates extends Component {
   state = {
     candidates: [],
-    '1': null,
-    '2': null,
     isLoading: true
   };
   render() {
@@ -29,10 +26,9 @@ class Candidates extends Component {
             <VoteTracker drizzle={this.props.drizzle} />
             <VotersDisplay drizzle={this.props.drizzle} />
             <AddVoter drizzle={this.props.drizzle} />
-            <Timer drizzle={this.props.drizzle}/>
           </>
         ) : (
-          'loading...'
+          "loading..."
         )}
       </div>
     );
