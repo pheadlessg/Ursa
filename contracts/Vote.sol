@@ -54,24 +54,16 @@ contract Vote is ERC20 {
 
     function voteForCandidate(bytes32 _name, uint _electionCount) public returns (uint, bytes32, uint) {
         address[] memory array = getWhiteList(_electionCount);
-        if(balanceOf(msg.sender) > 0){
-            for (uint i = 0; i < array.length ; i++) {
-                if(array[i] == msg.sender) {
+        for (uint i = 0; i < array.length ; i++) {
+            if(array[i] == msg.sender) {
+                approve(msg.sender, 1);
+                if(transfer(elections[_electionCount].creator, 1)) {
                     candidateStorage[_name].voteCount++;
-                    approve(msg.sender, 1);
-                    transfer(elections[_electionCount].creator, 1);
                     return (candidateStorage[_name].id, candidateStorage[_name].name, candidateStorage[_name].voteCount);
                 }
+                }
             }
-        }
     }
-
-
-    // function voteForCandidate(bytes32 _name, uint _electionCount) public returns (uint, bytes32, uint) {
-    //     candidateStorage[_name].voteCount++;
-    //     // transfer(elections[_electionCount].creator, 1);
-    //     return (candidateStorage[_name].id, candidateStorage[_name].name, candidateStorage[_name].voteCount);
-    // }
 
     struct Candidate  {
         uint id;
@@ -93,6 +85,6 @@ contract Vote is ERC20 {
 
     function distributeToken(address _voter) public {
         transfer(_voter, 1);
-        approve(_voter, 0);
+        // approve(_voter, 0);
     }
 }

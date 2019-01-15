@@ -14,7 +14,10 @@ contract('Vote', accounts => {
       'Test Election',
       5,
       ['0x63616e646964617465206f6e65', '0x63616e6469646174652074776f'],
-      ['0x994DD176fA212730D290465e659a7c7D0549e384']
+      [
+        '0x994DD176fA212730D290465e659a7c7D0549e384',
+        '0xe7BA88433E60C53c69b19f503e00851B98891551'
+      ]
     );
     const election = await instance.elections(1);
     expect(typeof election).to.eql('object');
@@ -38,9 +41,9 @@ contract('Vote', accounts => {
       '0x994DD176fA212730D290465e659a7c7D0549e384'
     );
     expect(whiteListMemberBalance.toNumber()).to.eql(1);
-    expect(whiteListMemberAllowance.toNumber()).to.eql(1);
+    expect(whiteListMemberAllowance.toNumber()).to.eql(0);
     expect(whiteList[0]).to.eql('0x994DD176fA212730D290465e659a7c7D0549e384');
-    expect(Number(total)).to.eql(1);
+    expect(Number(total)).to.eql(2);
     expect(election.electionName).to.eql('Test Election');
   });
   it('vote for candidate function increases candidate vote count by one', async () => {
@@ -56,7 +59,7 @@ contract('Vote', accounts => {
     const candAfterVote = await instance.getCandidate(
       '0x63616e646964617465206f6e6500000000000000000000000000000000000000'
     );
-    expect(candAfterVote[2].toNumber()).to.eql(1);
+    expect(candAfterVote['2'].toNumber()).to.eql(1);
     // get ganache to simulate voter behaviour via address
   });
   it('getElectionCandidates function returns array of candidates originally passed into startElection constructor', async () => {
