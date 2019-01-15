@@ -80,7 +80,7 @@ contract Vote is ERC20 {
     constructor () public {
     }
     
-    function mint(uint _tokens) public {
+    function mint(uint _tokens) private {
         _mint(msg.sender, _tokens);
     }
 
