@@ -71,6 +71,7 @@ contract Vote is ERC20 {
         candidateStorage[_name].voteCount++;
         return (candidateStorage[_name].id, candidateStorage[_name].name, candidateStorage[_name].voteCount);
         //transferFrom(msg.sender, elections[_electionCount].creator, 1);
+        //vote for candidates will not pass tests for token voting until function is called from voter account
     }
 
     struct Candidate  {
