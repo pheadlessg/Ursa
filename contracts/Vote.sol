@@ -9,7 +9,6 @@ contract Vote is ERC20 {
     struct Election {
         address creator;
         string electionName;
-        uint tokenCount;
         uint expirationTime;
         uint candidatesCount;
         bytes32[] candidateData;
@@ -21,11 +20,11 @@ contract Vote is ERC20 {
     mapping(bytes32 => Candidate) candidateStorage;
     bytes32[] candidateNames;
 
-    function startElection(string memory _electionName, uint _expirationTime, uint _tokenCount, bytes32[] memory newCandidates, address[] memory _whiteList) public {
+    function startElection(string memory _electionName, uint _expirationTime, bytes32[] memory newCandidates, address[] memory _whiteList) public {
         electionCount++;
         uint _voteLength = setTimer(_expirationTime);
-        mint(_tokenCount);
-        elections[electionCount] = Election(msg.sender, _electionName, 0, _voteLength, newCandidates.length, new bytes32[](0), new address[](0));
+        mint(_whiteList.length);
+        elections[electionCount] = Election(msg.sender, _electionName, 0, _voteLength, new bytes32[](0), new address[](0));
         for (uint i = 0; i < newCandidates.length; i++) {
             candidateNames.push(newCandidates[i]);
             candidateStorage[newCandidates[i]] = Candidate(
@@ -60,7 +59,7 @@ contract Vote is ERC20 {
     //             if(array[i] == msg.sender) {
     //                 candidateStorage[_name].voteCount++;
     //                 return (candidateStorage[_name].id, candidateStorage[_name].name, candidateStorage[_name].voteCount);
-    //                 transferFrom(msg.sender, elections[_electionCount].creator, 1);
+    //                 transfer(elections[_electionCount].creator, 1);
     //             }
     //         }
     //     }
@@ -69,9 +68,8 @@ contract Vote is ERC20 {
 
     function voteForCandidate(bytes32 _name, uint _electionCount) public returns (uint, bytes32, uint) {
         candidateStorage[_name].voteCount++;
+        // transfer(elections[_electionCount].creator, 1);
         return (candidateStorage[_name].id, candidateStorage[_name].name, candidateStorage[_name].voteCount);
-        //transferFrom(msg.sender, elections[_electionCount].creator, 1);
-        //vote for candidates will not pass tests for token voting until function is called from voter account
     }
 
     struct Candidate  {

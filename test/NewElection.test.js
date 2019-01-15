@@ -1,6 +1,8 @@
 const Vote = artifacts.require('./Vote.sol');
 
 contract('Vote', accounts => {
+  // PLUG IN YOUR LOCAL GANACHE ACCOUNTS TO RUN TESTS
+
   it('smoke test', async () => {
     const instance = await Vote.deployed();
     const test = await instance.testString();
@@ -11,7 +13,6 @@ contract('Vote', accounts => {
     await instance.startElection(
       'Test Election',
       5,
-      10,
       ['0x63616e646964617465206f6e65', '0x63616e6469646174652074776f'],
       ['0x994DD176fA212730D290465e659a7c7D0549e384']
     );
@@ -22,11 +23,9 @@ contract('Vote', accounts => {
       '1',
       '2',
       '3',
-      '4',
       'creator',
       'electionName',
       'expirationTime',
-      'tokenCount',
       'candidatesCount'
     ]);
     const total = await instance.totalSupply();
@@ -41,7 +40,7 @@ contract('Vote', accounts => {
     expect(whiteListMemberBalance.toNumber()).to.eql(1);
     expect(whiteListMemberAllowance.toNumber()).to.eql(1);
     expect(whiteList[0]).to.eql('0x994DD176fA212730D290465e659a7c7D0549e384');
-    expect(Number(total)).to.eql(10);
+    expect(Number(total)).to.eql(1);
     expect(election.electionName).to.eql('Test Election');
   });
   it('vote for candidate function increases candidate vote count by one', async () => {
@@ -58,13 +57,13 @@ contract('Vote', accounts => {
       '0x63616e646964617465206f6e6500000000000000000000000000000000000000'
     );
     expect(candAfterVote[2].toNumber()).to.eql(1);
+    // get ganache to simulate voter behaviour via address
   });
   it('getElectionCandidates function returns array of candidates originally passed into startElection constructor', async () => {
     const instance = await Vote.deployed();
     await instance.startElection(
       'Test Election',
       5,
-      10,
       ['0x63616e646964617465206f6e65', '0x63616e6469646174652074776f'],
       ['0x994DD176fA212730D290465e659a7c7D0549e384']
     );
@@ -82,7 +81,6 @@ contract('Vote', accounts => {
     await instance.startElection(
       'Test Election',
       5,
-      10,
       ['0x63616e646964617465206f6e65', '0x63616e6469646174652074776f'],
       ['0x994DD176fA212730D290465e659a7c7D0549e384']
     );
@@ -99,7 +97,6 @@ contract('Vote', accounts => {
     await instance.startElection(
       'Test Election',
       5,
-      10,
       ['0x63616e646964617465206f6e65', '0x63616e6469646174652074776f'],
       ['0x994DD176fA212730D290465e659a7c7D0549e384']
     );
