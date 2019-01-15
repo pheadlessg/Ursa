@@ -4,7 +4,7 @@ import "../node_modules/openzeppelin-solidity/contracts/token/ERC20/ERC20.sol";
 
 contract Vote is ERC20 {
 
-    string public testString = "Im here for testing";
+    string public smokeTest = "smokeTest";
 
     struct Election {
         address creator;
