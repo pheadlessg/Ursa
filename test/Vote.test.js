@@ -56,5 +56,16 @@ contract("Vote", accounts => {
         expect(electionCandidate["2"].toNumber()).to.equal(0);
       });
     });
+    describe("getWhiteList", () => {
+      it("returns an array of addresses of the eligable voters", async () => {
+        const whiteList = await instance.getWhiteList(1);
+        expect(whiteList[0]).to.equal(accounts[1]);
+        expect(whiteList[1]).to.equal(accounts[2]);
+        expect(whiteList[2]).to.equal(accounts[3]);
+      });
+    });
+    describe("", () => {
+      it("", async () => {});
+    });
   });
 });
