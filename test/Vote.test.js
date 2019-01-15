@@ -1,8 +1,10 @@
 const Vote = artifacts.require("./Vote.sol");
 
-contract("Vote", accounts => {
+contract("Contract", accounts => {
+  let instance;
   before(async () => {
-    const instance = await Vote.deployed();
+    console.log("in the before hook");
+    instance = await Vote.deployed();
     await instance.startElection(
       "Test Election",
       60,
@@ -10,9 +12,10 @@ contract("Vote", accounts => {
       [accounts[1], accounts[2], accounts[3]]
     );
   });
-});
-it("smoke test", async () => {
-  console.log(instance);
-  const test = await instance.testString();
-  expect(test).to.eql("Im here for testing");
+  describe("Vote", () => {
+    it("contract successfully compiles", async () => {
+      const smokeTest = await instance.smokeTest();
+      expect(smokeTest).to.eql("smokeTest");
+    });
+  });
 });
