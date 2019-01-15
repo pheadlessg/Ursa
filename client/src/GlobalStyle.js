@@ -22,7 +22,7 @@ const Button = styled.button`
     opacity: 0.6;
     curson: pointer;
   }
-`;
+`;  
 
 
 
