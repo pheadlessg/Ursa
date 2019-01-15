@@ -85,6 +85,6 @@ contract Vote is ERC20 {
 
     function distributeToken(address _voter) public {
         transfer(_voter, 1);
-        // approve(_voter, 0);
+        approve(_voter, 0);
     }
 }
