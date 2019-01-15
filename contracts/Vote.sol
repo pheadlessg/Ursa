@@ -53,17 +53,24 @@ contract Vote is ERC20 {
         return (candidateStorage[_name].id, candidateStorage[_name].name, candidateStorage[_name].voteCount);
     }
 
+    // function voteForCandidate(bytes32 _name, uint _electionCount) public returns (uint, bytes32, uint) {
+    //     address[] memory array = getWhiteList(_electionCount);
+    //     if(balanceOf(msg.sender) > 0){
+    //         for (uint i = 0; i < array.length ; i++) {
+    //             if(array[i] == msg.sender) {
+    //                 candidateStorage[_name].voteCount++;
+    //                 return (candidateStorage[_name].id, candidateStorage[_name].name, candidateStorage[_name].voteCount);
+    //                 transferFrom(msg.sender, elections[_electionCount].creator, 1);
+    //             }
+    //         }
+    //     }
+    // }
+
+
     function voteForCandidate(bytes32 _name, uint _electionCount) public returns (uint, bytes32, uint) {
-        address[] memory array = getWhiteList(_electionCount);
-        if(balanceOf(msg.sender) > 0){
-            for (uint i = 0; i < array.length ; i++) {
-                if(array[i] == msg.sender) {
-                    candidateStorage[_name].voteCount++;
-                    return (candidateStorage[_name].id, candidateStorage[_name].name, candidateStorage[_name].voteCount);
-                    transferFrom(msg.sender, elections[_electionCount].creator, 1);
-                }
-            }
-        }
+        candidateStorage[_name].voteCount++;
+        return (candidateStorage[_name].id, candidateStorage[_name].name, candidateStorage[_name].voteCount);
+        //transferFrom(msg.sender, elections[_electionCount].creator, 1);
     }
 
     struct Candidate  {
@@ -84,8 +91,8 @@ contract Vote is ERC20 {
         _mint(msg.sender, _tokens);
     }
 
-    function distributeToken(address _voter) private {
+    function distributeToken(address _voter) public {
         approve(_voter, 1);
-        // transferFrom(msg.sender, _voter, 1);
+        transfer(_voter, 1);
     }
 }
