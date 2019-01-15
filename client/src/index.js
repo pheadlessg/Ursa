@@ -3,6 +3,8 @@ import ReactDOM from "react-dom";
 import App from "./App";
 import { Drizzle, generateStore } from "drizzle";
 
+// Hiya Ros
+
 import Vote from "./contracts/Vote.json";
 const options = {
   contracts: [Vote]
