@@ -8,7 +8,7 @@ class Home extends Component {
     return (
       <div>
         <Button primary><Link to="/create">Create New Election</Link></Button>
-        <Button><Link to="/election-list">Choose an Election</Link></Button>
+        <Button><Link to="/links">Choose an Election</Link></Button>
       </div>);
   }
 }

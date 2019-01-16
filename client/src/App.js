@@ -6,6 +6,7 @@ import './App.css';
 import Home from './components/Home';
 import Create from './components/Create';
 import Vote from './components/Vote';
+import Links from './components/Links'
 
 class App extends Component {
   state = { loading: true, drizzleState: null };
@@ -35,12 +36,16 @@ class App extends Component {
                 path="/vote"
                 render={() => <Vote loading={this.state.loading} parentState={this.props} />}
                 />
-                </Content>
-                </Router>
-                </MainContainer>
-                </div>
-                )
-    }
+              <Route 
+                path="/links"
+                render={() => <Links loading={this.state.loading} parentState={this.props} />}
+                />
+            </Content>
+          </Router>
+        </MainContainer>
+      </div>
+    )
+  }
                 
   componentDidMount() {
     const { drizzle } = this.props;
