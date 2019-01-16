@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { Content, Button } from '../GlobalStyle';
+import {Redirect} from 'react-router-dom';
 
 class Create extends Component {
   state = {
@@ -11,11 +12,16 @@ class Create extends Component {
       newVoter: '',
       whiteList: []
     },
+    electionId: 0,
+    electionConfirmed: false,
     loading: false,
     drizzleState: null
   };
 
   render() {
+    if (this.state.electionConfirmed) {
+      return <Redirect to={{pathname: '/vote', search: `?id=${this.state.electionId}`}} />
+    }
     return (
       <div>
         <h2>Create new Election</h2>
@@ -56,7 +62,7 @@ class Create extends Component {
             onKeyPress={this.handleKeyPress}
             onChange={this.handleChange}
           />
-          <Button>SUBMIT YOUR ELECTION & CHANGE THE FUTURE</Button>
+          <Button onClick={this.submitElection}>SUBMIT YOUR ELECTION & CHANGE THE FUTURE</Button>
         </form>
         <h5>Candidates:</h5>
         <ul>
@@ -70,24 +76,22 @@ class Create extends Component {
             <li>{voter}</li>
           ))}
         </ul>
-        <Button onClick={() => this.logNewElection()} />
-        <Button onClick={() => this.logElection()} />
       </div>
     );
   }
 
   componentDidMount() {
-    console.log(this.props);
     const { router, params, location, routes } = this.props;
-    console.log(params, router, location, routes);
   }
 
+  componentDidUpdate() {
+    
+  }
   handleChange = event => {
     const { value, name } = event.target;
     this.setState(prevState => ({
       election: { ...prevState.election, [name]: value }
     }));
-    console.log(this.state);
   };
 
   // prevent default on enter press and add to array in state
@@ -102,11 +106,11 @@ class Create extends Component {
         this.addVoter(this.state.election.newVoter);
         event.target.value = '';
       }
-      console.log(this.state.election);
     }
   };
 
   addCandidate = candidateName => {
+    const hexCandiBoi = this.stringTranslate(candidateName)
     this.setState(prevState => ({
       election: {
         ...prevState.election,
@@ -124,22 +128,54 @@ class Create extends Component {
     }));
   };
 
-  logNewElection = async () => {
-    // console.log(this.props.parentState.drizzle)
-    const { methods } = this.props.parentState.drizzle.contracts.Vote;
+  submitElection = async (event) => {
+    event.preventDefault();
+    const {election} = this.state
+    if(election.electionName && election.expirationTime && election.candidates.length > 0 && election.whiteList.length > 0) {
+    const {methods} = this.props.parentState.drizzle.contracts.Vote;
     const response = await methods
       .startElection(
-        'Test',
-        9999,
-        ['0x63616e646964617465206f6e65'],
-        [
-          '0x994DD176fA212730D290465e659a7c7D0549e384',
-          '0xe7BA88433E60C53c69b19f503e00851B98891551'
-        ]
+        election.electionName,
+        election.expirationTime,
+        election.candidates.map(candiBoi => this.stringTranslate(candiBoi)),
+        election.whiteList
       )
-      .send();
-    console.log(response);
+      .send()
+      .then(() => methods.electionCount()
+      .call())
+      .then((id) => {
+          this.setState({electionConfirmed: true, electionId: id})
+        })
+      }
+      else {
+        alert('please fill out all fields')
+      }
+
+  }
+
+  //         '0x994DD176fA212730D290465e659a7c7D0549e384',
+  //         '0xe7BA88433E60C53c69b19f503e00851B98891551'
+
+
+  hexTranslate(str) {
+    const array = [];
+    for (let i = 0; i < str.length; i++) {
+      const hex = Number(str.charCodeAt(i)).toString(16);
+      array.push(hex);
+    }
+    return array.join('');
+  }
+
+  stringTranslate = str => {
+    const out = [];
+    for (let i = 0; i < str.length; i++) {
+      let hex = Number(str.charCodeAt(i)).toString(16);
+      out.push(hex);
+    }
+    return `0x${out.join('')}`;
   };
+
+
 
   logElection = async () => {
     const { methods } = this.props.parentState.drizzle.contracts.Vote;

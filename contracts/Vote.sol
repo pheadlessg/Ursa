@@ -21,7 +21,7 @@ contract Vote is ERC20 {
     uint candidatesCount;
     uint[] candidateIds;
 
-    function startElection(string memory _electionName, uint _expirationTime, bytes32[] memory newCandidates, address[] memory _whiteList) public {
+    function startElection(string memory _electionName, uint _expirationTime, bytes32[] memory newCandidates, address[] memory _whiteList) public returns (uint) {
         electionCount++;
         uint _voteLength = setTimer(_expirationTime);
         mint(_whiteList.length);
@@ -40,6 +40,7 @@ contract Vote is ERC20 {
             elections[electionCount].whiteList.push(_whiteList[j]);
             distributeToken(_whiteList[j]);
         }
+        return electionCount;
     }
 
     function getElectionCandidates(uint i) public view returns (uint[] memory){
@@ -55,15 +56,17 @@ contract Vote is ERC20 {
     }
 
     function voteForCandidate(uint _id, uint _electionCount) public returns (uint, bytes32, uint) {
-        address[] memory array = getWhiteList(_electionCount);
-        for (uint i = 0; i < array.length ; i++) {
-            if(array[i] == msg.sender) {
-                if(transfer(elections[_electionCount].creator, 1)) {
-                    candidateStorage[_id].voteCount++;
-                    return (candidateStorage[_id].id, candidateStorage[_id].name, candidateStorage[_id].voteCount);
-                }
+        if(elections[_electionCount].expirationTime > block.timestamp) {
+            address[] memory array = getWhiteList(_electionCount);
+            for (uint i = 0; i < array.length ; i++) {
+                if(array[i] == msg.sender) {
+                    if(transfer(elections[_electionCount].creator, 1)) {
+                        candidateStorage[_id].voteCount++;
+                        return (candidateStorage[_id].id, candidateStorage[_id].name, candidateStorage[_id].voteCount);
+                    }
                 }
             }
+        }
     }
 
     struct Candidate  {
@@ -75,9 +78,6 @@ contract Vote is ERC20 {
     function setTimer(uint _voteLength) public view returns (uint) {
         uint StartTime = block.timestamp;
         return StartTime + _voteLength;
-    }
-
-    constructor () public {
     }
     
     function mint(uint _tokens) private {
