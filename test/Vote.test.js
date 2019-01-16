@@ -100,5 +100,18 @@ contract("Vote", accounts => {
         expect(voteCount.toNumber()).to.equal(1);
       });
     });
+    describe("setTimer", () => {
+      it("converts user input to unix timestamp", async () => {
+        const instance = await Vote.deployed();
+        await instance.startElection(
+          "Test Election",
+          5,
+          ["0x63616e646964617465206f6e65", "0x63616e6469646174652074776f"],
+          ["0x994DD176fA212730D290465e659a7c7D0549e384"]
+        );
+        const election = await instance.elections(1);
+        expect(typeof election.expirationTime.toNumber() === "number");
+      });
+    });
   });
 });
