@@ -8,6 +8,7 @@ class Create extends Component {
       expirationTime: '',
       newCandidate: '',
       candidates: [],
+      hexCandiBois: [],
       newVoter: '',
       whiteList: []
     },
@@ -77,17 +78,18 @@ class Create extends Component {
   }
 
   componentDidMount() {
-    console.log(this.props);
     const { router, params, location, routes } = this.props;
-    console.log(params, router, location, routes);
+    // console.log(params, router, location, routes);
   }
 
+  componentDidUpdate() {
+    console.log(this.state.election)
+  }
   handleChange = event => {
     const { value, name } = event.target;
     this.setState(prevState => ({
       election: { ...prevState.election, [name]: value }
     }));
-    console.log(this.state);
   };
 
   // prevent default on enter press and add to array in state
@@ -102,14 +104,15 @@ class Create extends Component {
         this.addVoter(this.state.election.newVoter);
         event.target.value = '';
       }
-      console.log(this.state.election);
     }
   };
 
   addCandidate = candidateName => {
+    const hexCandiBoi = this.stringTranslate(candidateName)
     this.setState(prevState => ({
       election: {
         ...prevState.election,
+        hexCandiBois: [...prevState.election.hexCandiBois, hexCandiBoi],
         candidates: [...prevState.election.candidates, candidateName]
       }
     }));
@@ -126,16 +129,29 @@ class Create extends Component {
 
   submitElection = async (event) => {
     event.preventDefault();
+
+    alert( 
+      'relax'
+      )
     const {methods} = this.props.parentState.drizzle.contracts.Vote;
+
+    // console.log(
+    //       this.state.election.electionName,
+    //       this.state.election.expirationTime,
+    //       this.state.election.hexCandiBois,
+    //       this.state.election.whiteList
+    //     )
     const response = await methods
       .startElection(
         this.state.election.electionName,
         this.state.election.expirationTime,
-        this.state.election.candidates.map(candiBoi => this.hexTranslate(candiBoi)),
+        // ['0x786176'
+        // // ,         '0x63616e646964617365206f6e65'
+        // ],
+        this.state.election.hexCandiBois,
         this.state.election.whiteList
       )
       .send()
-      alert(response)
   }
 
   hexTranslate(str) {
@@ -146,6 +162,15 @@ class Create extends Component {
     }
     return array.join('');
   }
+
+  stringTranslate = str => {
+    const out = [];
+    for (let i = 0; i < str.length; i++) {
+      let hex = Number(str.charCodeAt(i)).toString(16);
+      out.push(hex);
+    }
+    return `0x${out.join('')}`;
+  };
 
   logNewElection = async () => {
     // console.log(this.props.parentState.drizzle)
