@@ -130,17 +130,15 @@ class Create extends Component {
 
   submitElection = async (event) => {
     event.preventDefault();
-
-    alert( 
-      'relax'
-      )
+    const {election} = this.state
+    if(election.electionName && election.expirationTime && election.candidates.length > 0 && election.whiteList.length > 0) {
     const {methods} = this.props.parentState.drizzle.contracts.Vote;
     const response = await methods
       .startElection(
-        this.state.election.electionName,
-        this.state.election.expirationTime,
-        this.state.election.candidates.map(candiBoi => this.stringTranslate(candiBoi)),
-        this.state.election.whiteList
+        election.electionName,
+        election.expirationTime,
+        election.candidates.map(candiBoi => this.stringTranslate(candiBoi)),
+        election.whiteList
       )
       .send()
       .then(() => methods.electionCount()
@@ -148,6 +146,10 @@ class Create extends Component {
       .then((id) => {
           this.setState({electionConfirmed: true, electionId: id})
         })
+      }
+      else {
+        alert('please fill out all fields')
+      }
 
   }
 

@@ -7,7 +7,6 @@ class Vote extends Component {
     console.log(this.props.parentState.drizzle);
     return (
       <div>
-       VOTE
       </div>);
   }
 }
