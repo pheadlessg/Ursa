@@ -29,9 +29,9 @@ const Header = styled.img.attrs({
   `;
 
 const Content = styled.div`
-background-color: #FFBD19;
+// background-color: #FFBD19;
 display: flex;
-justify-content: center;
+text-align: center;
   grid-column: 2;
   grid-row: ${props => (props.main ? '2' : '2 / span 2')};
 `;
@@ -41,7 +41,7 @@ const Button = styled.button`
   color: ${props => (props.primary ? "#091316" : "#FEFEFE")};
   font-size: 1em;
   padding: 1em;
-  margin: auto;
+  margin: 30px;
   border: none;
   border-radius: 3px;
   &:hover {

@@ -1,6 +1,14 @@
 import React, { Component } from 'react';
 import { Content, Button } from '../GlobalStyle';
+import styled from "styled-components";
 import {Redirect} from 'react-router-dom';
+
+const CreateScreen = styled.div`
+margin: auto;
+`;
+
+const InputField = styled.div`
+margin: 10px;`;
 
 class Create extends Component {
   state = {
@@ -23,10 +31,12 @@ class Create extends Component {
       return <Redirect to={{pathname: '/vote', search: `?id=${this.state.electionId}`}} />
     }
     return (
-      <div>
+      <CreateScreen>
         <h2>Create new Election</h2>
         <form>
+          <InputField>
           <label htmlFor="electionName">Election Name</label>
+          <br />
           <input
             name="electionName"
             type="text"
@@ -34,11 +44,13 @@ class Create extends Component {
             onKeyPress={this.handleKeyPress}
             onChange={this.handleChange}
           />
-          <br />
+          </InputField>
+          
+          <InputField>
           <label htmlFor="expirationTime">
-            How long do you want the election to last for? Please enter time in
-            hours
+            How long do you want the election to last for?
           </label>
+          <br />
           <input
             name="expirationTime"
             type="text"
@@ -46,23 +58,28 @@ class Create extends Component {
             onKeyPress={this.handleKeyPress}
             onChange={this.handleChange}
           />
-          <br />
+          </InputField>
+          <InputField>
           <label htmlFor="newCandidate">Add Candidate</label>
+          <br />
           <input
             name="newCandidate"
             type="text"
             onKeyPress={this.handleKeyPress}
             onChange={this.handleChange}
           />
+          </InputField>
+          <InputField>
+          <label htmlFor="newVoter">Add Voter</label>
           <br />
-          <label htmlFor="newVoter">Voter</label>
           <input
             name="newVoter"
             type="text"
             onKeyPress={this.handleKeyPress}
             onChange={this.handleChange}
           />
-          <Button onClick={this.submitElection}>SUBMIT YOUR ELECTION & CHANGE THE FUTURE</Button>
+          </InputField>
+          <Button onClick={this.submitElection}>START ELECTION</Button>
         </form>
         <h5>Candidates:</h5>
         <ul>
@@ -76,7 +93,7 @@ class Create extends Component {
             <li>{voter}</li>
           ))}
         </ul>
-      </div>
+      </CreateScreen>
     );
   }
 

@@ -2,6 +2,8 @@ import styled, { css } from "styled-components";
 import media from "./media";
 
 const MainContainer = styled.div`
+@import url('https://fonts.googleapis.com/css?family=Muli');
+font-family: 'Muli', sans-serif;
   height: 100vh;
   width: 100vw;
   background-color: #C3D4DB;
