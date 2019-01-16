@@ -56,7 +56,7 @@ class Create extends Component {
             onKeyPress={this.handleKeyPress}
             onChange={this.handleChange}
           />
-          <Button>SUBMIT YOUR ELECTION & CHANGE THE FUTURE</Button>
+          <Button onClick={this.submitElection}>SUBMIT YOUR ELECTION & CHANGE THE FUTURE</Button>
         </form>
         <h5>Candidates:</h5>
         <ul>
@@ -123,6 +123,29 @@ class Create extends Component {
       }
     }));
   };
+
+  submitElection = async (event) => {
+    event.preventDefault();
+    const {methods} = this.props.parentState.drizzle.contracts.Vote;
+    const response = await methods
+      .startElection(
+        this.state.election.electionName,
+        this.state.election.expirationTime,
+        this.state.election.candidates.map(candiBoi => this.hexTranslate(candiBoi)),
+        this.state.election.whiteList
+      )
+      .send()
+      alert(response)
+  }
+
+  hexTranslate(str) {
+    const array = [];
+    for (let i = 0; i < str.length; i++) {
+      const hex = Number(str.charCodeAt(i)).toString(16);
+      array.push(hex);
+    }
+    return array.join('');
+  }
 
   logNewElection = async () => {
     // console.log(this.props.parentState.drizzle)
