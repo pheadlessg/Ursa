@@ -1,21 +1,33 @@
-import React, { Component } from 'react';
-import { Button } from '../../GlobalStyle';
+import React, { Component } from "react";
+import { Button } from "../../GlobalStyle";
+import styled from "styled-components";
 
 class CreateElection extends Component {
   state = {
-    election_id: null,
-    election_name: null,
-    expiration_time: null,
-    candidates: null,
-    hexCandidates: [],
-    whitelist: []
+    election: {
+      electionName: "",
+      expirationTime: "",
+      newCandidates: "",
+      whiteList: []
+    }
   };
+
+  handleChange(event, target) {
+    const { name, value } = event.target;
+    this.setState({ [name]: value });
+  }
+
+  handleSubmit(event) {
+    alert("thanks for submitting your election" + this.state.value);
+    event.preventDefault();
+  }
+
   render() {
     return (
-      <div>
+      <React.Fragment>
         <h2>Create new Election</h2>
-        <form>
-          {/* <label htmlFor="election-name">Election Name</label>
+        <form onSumbit={this.handleSubmit}>
+          <label htmlFor="election-name">Election Name</label>
           <input
             name="election-name"
             type="text"
@@ -33,42 +45,30 @@ class CreateElection extends Component {
             value={this.state.value}
             onChange={this.handleChange}
           />
-          <br /> */}
-          <label>Add Candidate</label>
+          <br />
+          <label htmlFor="new-candidates">Add Candidate</label>
           <input
+            name="new-candidates"
             type="text"
-            id="candidates"
             value={this.state.value}
-            onSubmit={this.handleCandidateSubmit}
+            onChange={this.handleChange}
           />
-          {/* <br />
+          <br />
           <label htmlFor="whitelist">Voter</label>
           <input
             name="whitelist"
             type="text"
             value={this.state.value}
             onChange={this.handleChange}
-          /> */}
+          />
           <Button>SUBMIT YOUR ELECTION & CHANGE THE FUTURE</Button>
         </form>
-        ;
-      </div>
+      </React.Fragment>
     );
   }
-  handleCandidateSubmit = event => {
-    console.log(event);
-    const { value } = event.target;
-    this.setState({ candidates: value });
-  };
 }
 
-function hexTranslate(str) {
-  const array = [];
-  for (let i = 0; i < str.length; i++) {
-    var hex = Number(str.charCodeAt(i)).toString(16);
-    array.push(hex);
-  }
-  return array.join('');
-}
-
+// const CreateElection = (
+//     <p>Test</p>
+// )
 export default CreateElection;

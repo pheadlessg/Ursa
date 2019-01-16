@@ -1,14 +1,13 @@
-import React from "react";
-import { BrowserRouter as Router, Route, Link } from "react-router-dom";
-import Home from "./pages/home";
-import CreateElection from './pages/createElection'
+import React from 'react';
+import { BrowserRouter as Router, Route, Link } from 'react-router-dom';
+import Home from './pages/home';
+import CreateElection from './pages/createElection';
 
-
-const Index = () => Home
+const Index = () => Home;
 const List = () => <h2>List of elections</h2>;
 const Vote = () => <h2>Vote</h2>;
 
-  const AppRouter = () => (
+const AppRouter = () => (
   <Router>
     <div>
       {/* <nav>
@@ -28,6 +27,7 @@ const Vote = () => <h2>Vote</h2>;
         </ul>
       </nav> */}
       <Route path="/" exact component={Index} />
+      <Route path="/about" render={() => <Index parentState={this.props} />} />
       <Route path="/createelection/" component={CreateElection} />
       <Route path="/list/" component={List} />
       <Route path="/vote" component={Vote} />
