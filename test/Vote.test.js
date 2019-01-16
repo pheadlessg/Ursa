@@ -90,6 +90,15 @@ contract("Vote", accounts => {
         balance = await instance.balanceOf(accounts[1]);
         expect(balance.toNumber()).to.equal(0);
       });
+      it("increments the correct candidates vote count by 1", async () => {
+        let candidate = await instance.getCandidate(2);
+        let voteCount = candidate["2"];
+        expect(voteCount.toNumber()).to.equal(0);
+        await instance.voteForCandidate(2, 1, { from: accounts[2] });
+        candidate = await instance.getCandidate(2);
+        voteCount = candidate["2"];
+        expect(voteCount.toNumber()).to.equal(1);
+      });
     });
   });
 });
