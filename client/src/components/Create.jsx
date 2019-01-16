@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { Content, Button } from '../GlobalStyle';
-import {Redirect} from 'react-router-dom';
+import { Redirect } from 'react-router-dom';
 
 class Create extends Component {
   state = {
@@ -19,8 +19,16 @@ class Create extends Component {
   };
 
   render() {
-    if (this.state.electionConfirmed) {
-      return <Redirect to={{pathname: '/vote', search: `?id=${this.state.electionId}`}} />
+    if (!this.state.electionConfirmed) {
+      return (
+        <Redirect
+          to={{
+            pathname: `/vote`,
+            search: `?id=${this.state.electionId}`,
+            state: { id: this.state.electionId }
+          }}
+        />
+      );
     }
     return (
       <div>
@@ -62,7 +70,9 @@ class Create extends Component {
             onKeyPress={this.handleKeyPress}
             onChange={this.handleChange}
           />
-          <Button onClick={this.submitElection}>SUBMIT YOUR ELECTION & CHANGE THE FUTURE</Button>
+          <Button onClick={this.submitElection}>
+            SUBMIT YOUR ELECTION & CHANGE THE FUTURE
+          </Button>
         </form>
         <h5>Candidates:</h5>
         <ul>
@@ -84,9 +94,7 @@ class Create extends Component {
     const { router, params, location, routes } = this.props;
   }
 
-  componentDidUpdate() {
-    
-  }
+  componentDidUpdate() {}
   handleChange = event => {
     const { value, name } = event.target;
     this.setState(prevState => ({
@@ -110,7 +118,7 @@ class Create extends Component {
   };
 
   addCandidate = candidateName => {
-    const hexCandiBoi = this.stringTranslate(candidateName)
+    const hexCandiBoi = this.stringTranslate(candidateName);
     this.setState(prevState => ({
       election: {
         ...prevState.election,
@@ -128,34 +136,35 @@ class Create extends Component {
     }));
   };
 
-  submitElection = async (event) => {
+  submitElection = async event => {
     event.preventDefault();
-    const {election} = this.state
-    if(election.electionName && election.expirationTime && election.candidates.length > 0 && election.whiteList.length > 0) {
-    const {methods} = this.props.parentState.drizzle.contracts.Vote;
-    const response = await methods
-      .startElection(
-        election.electionName,
-        election.expirationTime,
-        election.candidates.map(candiBoi => this.stringTranslate(candiBoi)),
-        election.whiteList
-      )
-      .send()
-      .then(() => methods.electionCount()
-      .call())
-      .then((id) => {
-          this.setState({electionConfirmed: true, electionId: id})
-        })
-      }
-      else {
-        alert('please fill out all fields')
-      }
-
-  }
+    const { election } = this.state;
+    if (
+      election.electionName &&
+      election.expirationTime &&
+      election.candidates.length > 0 &&
+      election.whiteList.length > 0
+    ) {
+      const { methods } = this.props.parentState.drizzle.contracts.Vote;
+      const response = await methods
+        .startElection(
+          election.electionName,
+          election.expirationTime,
+          election.candidates.map(candiBoi => this.stringTranslate(candiBoi)),
+          election.whiteList
+        )
+        .send()
+        .then(() => methods.electionCount().call())
+        .then(id => {
+          this.setState({ electionConfirmed: true, electionId: id });
+        });
+    } else {
+      alert('please fill out all fields');
+    }
+  };
 
   //         '0x994DD176fA212730D290465e659a7c7D0549e384',
   //         '0xe7BA88433E60C53c69b19f503e00851B98891551'
-
 
   hexTranslate(str) {
     const array = [];
@@ -174,8 +183,6 @@ class Create extends Component {
     }
     return `0x${out.join('')}`;
   };
-
-
 
   logElection = async () => {
     const { methods } = this.props.parentState.drizzle.contracts.Vote;
