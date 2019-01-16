@@ -5,6 +5,7 @@ import MainContainer from './grid';
 import './App.css';
 import Home from './components/Home';
 import Create from './components/Create';
+import Vote from './components/Vote';
 
 class App extends Component {
   state = { loading: true, drizzleState: null };
@@ -31,12 +32,8 @@ class App extends Component {
                 render={() => <Create parentState={this.props} />}
               />
 
-              {/* <Route
-            path="/elections/:election_id"
-            exact
-            component={SingleElection}
-            parentState={this.props}
-          /> */}
+              <Route exact path="/vote" render={() => <Vote parentState={this.props}/>} />
+              
             </Content>
           </Router>
         </MainContainer>

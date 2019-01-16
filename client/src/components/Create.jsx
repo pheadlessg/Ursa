@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { Content, Button } from '../GlobalStyle';
+import {Redirect} from 'react-router-dom';
 
 class Create extends Component {
   state = {
@@ -11,11 +12,15 @@ class Create extends Component {
       newVoter: '',
       whiteList: []
     },
+    electionConfirmed: false,
     loading: false,
     drizzleState: null
   };
 
   render() {
+    if (this.state.electionConfirmed) {
+      return <Redirect to="/vote" />
+    }
     return (
       <div>
         <h2>Create new Election</h2>
@@ -70,8 +75,9 @@ class Create extends Component {
             <li>{voter}</li>
           ))}
         </ul>
-        <Button onClick={() => this.logNewElection()} />
-        <Button onClick={() => this.logElection()} />
+        {/* <Button onClick={() => {
+          return <Redirect to="/vote" />
+        }} /> */}
       </div>
     );
   }
@@ -82,7 +88,7 @@ class Create extends Component {
   }
 
   componentDidUpdate() {
-    // console.log(this.state.election)
+    
   }
   handleChange = event => {
     const { value, name } = event.target;
@@ -140,8 +146,14 @@ class Create extends Component {
         this.state.election.candidates.map(candiBoi => this.stringTranslate(candiBoi)),
         this.state.election.whiteList
       )
-      .send().then(() => methods.electionCount().call());
-    console.log(response);
+      .send()
+      .then(() => methods.electionCount()
+      .call())
+      .then((id) => {
+          this.setState({electionConfirmed: true}, () => id)
+        })
+
+    // if (this.state.electionConfirmed) return <Redirect to={{pathname: '/vote', search: `?id=${response}`}} />;
   }
 
   //         '0x994DD176fA212730D290465e659a7c7D0549e384',
