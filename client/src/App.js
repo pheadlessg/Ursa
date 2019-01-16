@@ -6,7 +6,6 @@ import './App.css';
 import Home from './components/Home';
 import Create from './components/Create';
 
-
 class App extends Component {
   state = { loading: true, drizzleState: null };
 
@@ -14,37 +13,39 @@ class App extends Component {
     if (this.state.loading) return 'Loading Drizzle...';
     return (
       <div className="App">
-            <MainContainer>
-            <HeaderContainer><Header main/></HeaderContainer>
-        <Router>
+        <MainContainer>
+          <HeaderContainer>
+            <Header main />
+          </HeaderContainer>
+          <Router>
             <Content>
-            <Route exact path="/" render={() => <Home parentState={this.props} />} />
-            
-            <Route
-              exact path="/create"
-              render={() => <Create parentState={this.props} />}
-            />
+              <Route
+                exact
+                path="/"
+                render={() => <Home parentState={this.props} />}
+              />
 
-            
-            {/* <Route
+              <Route
+                exact
+                path="/create"
+                render={() => <Create parentState={this.props} />}
+              />
+
+              {/* <Route
             path="/elections/:election_id"
             exact
             component={SingleElection}
             parentState={this.props}
           /> */}
-
-          </Content>
-          
-        </Router>
-            </MainContainer>
+            </Content>
+          </Router>
+        </MainContainer>
       </div>
     );
   }
 
   componentDidMount() {
     const { drizzle } = this.props;
-    const { contracts } = drizzle;
-    console.log(drizzle)
 
     this.unsubscribe = drizzle.store.subscribe(() => {
       // Subscribe to changes of state in the drizzle store
@@ -55,12 +56,12 @@ class App extends Component {
           // const dataKey = drizzle.contracts.Vote.methods.testString.cacheCall();
           // const string = drizzleState.contracts.Vote.testString[dataKey];
           // console.log(drizzleState.contracts.Vote.testString[dataKey])
-          contracts.Vote.methods
-            .testString()
-            .call()
-            .then(testString => {
-              this.setState({ testString });
-            });
+          // contracts.Vote.methods
+          //   .testString()
+          //   .call()
+          //   .then(testString => {
+          //     this.setState({ testString });
+          //   });
         });
       }
     });

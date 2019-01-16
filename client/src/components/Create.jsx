@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import {Content, Button} from '../GlobalStyle'
+import { Content, Button } from '../GlobalStyle';
 
 class Create extends Component {
   state = {
@@ -58,55 +58,70 @@ class Create extends Component {
           />
           <Button>SUBMIT YOUR ELECTION & CHANGE THE FUTURE</Button>
         </form>
-         <h5>Candidates:</h5>
+        <h5>Candidates:</h5>
         <ul>
-          {this.state.election.candidates.map(candi => (<li>{candi}</li>))}
+          {this.state.election.candidates.map(candi => (
+            <li>{candi}</li>
+          ))}
         </ul>
         <h5>Voters:</h5>
         <ul>
-          {this.state.election.whiteList.map(voter => (<li>{voter}</li>))}
+          {this.state.election.whiteList.map(voter => (
+            <li>{voter}</li>
+          ))}
         </ul>
-        <Button onClick={() => this.logNewElection()}></Button>
+        <Button onClick={() => this.logNewElection()} />
+        <Button onClick={() => this.logElection()} />
       </div>
     );
   }
-  
+
   componentDidMount() {
     console.log(this.props);
     const { router, params, location, routes } = this.props;
     console.log(params, router, location, routes);
   }
 
-
-
-  handleChange = event => {  
+  handleChange = event => {
     const { value, name } = event.target;
-    this.setState(prevState => ({ election: {...prevState.election, [name] : value} }))
-    console.log(this.state)
-  }
+    this.setState(prevState => ({
+      election: { ...prevState.election, [name]: value }
+    }));
+    console.log(this.state);
+  };
 
   // prevent default on enter press and add to array in state
-    handleKeyPress = event => {
+  handleKeyPress = event => {
     if (event.key == 'Enter') {
-      event.preventDefault()
-      if(event.target.name == 'newCandidate') {
-        this.addCandidate(this.state.election.newCandidate)
+      event.preventDefault();
+      if (event.target.name == 'newCandidate') {
+        this.addCandidate(this.state.election.newCandidate);
         event.target.value = '';
       }
-      if(event.target.name == 'newVoter') {
-        this.addVoter(this.state.election.newVoter)
+      if (event.target.name == 'newVoter') {
+        this.addVoter(this.state.election.newVoter);
         event.target.value = '';
       }
-      console.log(this.state.election)
-      }
+      console.log(this.state.election);
     }
+  };
 
   addCandidate = candidateName => {
-    this.setState(prevState => ({ election: {...prevState.election, candidates: [...prevState.election.candidates, candidateName]}}));
+    this.setState(prevState => ({
+      election: {
+        ...prevState.election,
+        candidates: [...prevState.election.candidates, candidateName]
+      }
+    }));
   };
 
   addVoter = voter => {
-    this.setState(prevState => ({ election: {...prevState.election, whiteList: [...prevState.election.whiteList, voter]}}));
+    this.setState(prevState => ({
+      election: {
+        ...prevState.election,
+        whiteList: [...prevState.election.whiteList, voter]
+      }
+    }));
   };
 
   logNewElection = async () => {
@@ -124,6 +139,12 @@ class Create extends Component {
       )
       .send();
     console.log(response);
+  };
+
+  logElection = async () => {
+    const { methods } = this.props.parentState.drizzle.contracts.Vote;
+    const key = await methods.elections(1).call();
+    console.log(key);
   };
 
   handleSubmit = event => {
