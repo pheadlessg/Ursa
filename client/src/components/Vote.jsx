@@ -49,8 +49,8 @@ class Vote extends Component {
       let { expirationTime, electionName } = data;
       expirationTime = moment.unix(expirationTime).calendar();
       this.setState({ expirationTime, electionName });
+      this.retrieveCandidates();
     });
-    this.retrieveCandidates();
   }
 
   logString = async () => {
@@ -77,9 +77,9 @@ class Vote extends Component {
 
   voteForCandidate = async candId => {
     const { methods } = this.props.parentState.drizzle.contracts.Vote;
-    const response = await methods.voteForCandidate(candId, 1).call();
+    const response = await methods.voteForCandidate(candId, 1).send();
     console.log(response);
-    console.log('voting!');
+    await this.retrieveCandidates();
   };
 
   getElectionData = async () => {
@@ -89,15 +89,16 @@ class Vote extends Component {
   };
 
   retrieveCandidates = async () => {
+    console.log('retrieving');
     const { methods } = this.props.parentState.drizzle.contracts.Vote;
     const candidates = await methods.getElectionCandidates(1).call();
     const promiseArray = [];
     for (let i = 0; i < candidates.length; i++) {
-      const candidateData = methods.getCandidate(candidates[i]).call();
+      let candidateData = methods.getCandidate(candidates[i]).call();
       promiseArray.push(candidateData);
     }
     const candidatesData = await Promise.all(promiseArray);
-    candidatesData.map(c => c['1']);
+    console.log(candidatesData);
     this.setState({ candidatesData });
   };
 
