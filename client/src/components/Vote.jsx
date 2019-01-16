@@ -4,10 +4,12 @@ import { Content, Button } from '../GlobalStyle';
 class Vote extends Component {
   state = {
     loading: false,
-    drizzleState: null
+    drizzleState: null,
+    candidatesData: []
   };
 
   render() {
+    const { candidatesData } = this.state;
     return (
       <div>
         <h2>Vote on Election</h2>
@@ -40,7 +42,7 @@ class Vote extends Component {
       .startElection(
         'Test',
         9999,
-        ['0x63616e646964617465206f6e65'],
+        ['0x63616e646964617465206f6e65', '0x63616e6469646174652074776f'],
         [
           '0x994DD176fA212730D290465e659a7c7D0549e384',
           '0xe7BA88433E60C53c69b19f503e00851B98891551'
@@ -52,8 +54,17 @@ class Vote extends Component {
 
   retrieveCandidates = async () => {
     const { methods } = this.props.parentState.drizzle.contracts.Vote;
-    console.log(methods);
+    const candidates = await methods.getElectionCandidates(1).call();
+    const promiseArray = [];
+    for (let i = 0; i < candidates.length; i++) {
+      const candidateData = methods.getCandidate(candidates[i]).call();
+      promiseArray.push(candidateData);
+    }
+    const candidatesData = await Promise.all(promiseArray);
+    this.setState({ candidatesData });
+    console.log(this.state.candidatesData);
   };
+
   hexTranslate = str => {
     const out = [];
     for (let i = 0; i < str.length; i++) {
