@@ -1,18 +1,22 @@
 import React, { Component } from 'react';
 import { Content, Button } from '../GlobalStyle';
+const moment = require('moment');
 
 class Vote extends Component {
   state = {
+    electionName: null,
+    expirationTime: null,
     loading: false,
     drizzleState: null,
     candidatesData: []
   };
 
   render() {
-    const { candidatesData } = this.state;
+    const { candidatesData, electionName, expirationTime } = this.state;
     return (
       <div>
-        <h2>Vote on Election</h2>
+        <h2>{`vote on ${electionName}`}</h2>
+        <h3>{`end time: ${expirationTime}`}</h3>
         <Button onClick={() => this.logString()}>smoke test</Button>
         <Button onClick={() => this.callNewElection()}>
           call new election
@@ -20,15 +24,32 @@ class Vote extends Component {
         <Button onClick={() => this.retrieveCandidates()}>
           get the candidates
         </Button>
+        {candidatesData.length ? (
+          <div>
+            {candidatesData.map(candidate => (
+              <div key={candidate['0']}>
+                <div>{`id: ${candidate['0']}`}</div>
+                <div>{this.hexTranslate(candidate['1'])}</div>
+                <div>{`votes: ${candidate['2']}`}</div>
+              </div>
+            ))}
+          </div>
+        ) : (
+          'empty'
+        )}
       </div>
     );
   }
 
   componentDidMount() {
-    const { drizzle } = this.props.parentState;
     const { loading } = this.props;
     if (loading) return;
     console.log('loaded');
+    this.getElectionData().then(data => {
+      let { expirationTime, electionName } = data;
+      expirationTime = moment.unix(expirationTime).calendar();
+      this.setState({ expirationTime, electionName });
+    });
   }
 
   logString = async () => {
@@ -37,19 +58,26 @@ class Vote extends Component {
   };
 
   callNewElection = async () => {
+    console.log('uncomment me if you want another election instance');
+    // const { methods } = this.props.parentState.drizzle.contracts.Vote;
+    // const response = await methods
+    //   .startElection(
+    //     'Test',
+    //     9999,
+    //     ['0x63616e646964617465206f6e65', '0x63616e6469646174652074776f'],
+    //     [
+    //       '0x994DD176fA212730D290465e659a7c7D0549e384',
+    //       '0xe7BA88433E60C53c69b19f503e00851B98891551'
+    //     ]
+    //   )
+    //   .send();
+    // console.log(response);
+  };
+
+  getElectionData = async () => {
     const { methods } = this.props.parentState.drizzle.contracts.Vote;
-    const response = await methods
-      .startElection(
-        'Test',
-        9999,
-        ['0x63616e646964617465206f6e65', '0x63616e6469646174652074776f'],
-        [
-          '0x994DD176fA212730D290465e659a7c7D0549e384',
-          '0xe7BA88433E60C53c69b19f503e00851B98891551'
-        ]
-      )
-      .send();
-    console.log(response);
+    const data = await methods.elections(1).call();
+    return data;
   };
 
   retrieveCandidates = async () => {
@@ -61,11 +89,11 @@ class Vote extends Component {
       promiseArray.push(candidateData);
     }
     const candidatesData = await Promise.all(promiseArray);
+    candidatesData.map(c => c['1']);
     this.setState({ candidatesData });
-    console.log(this.state.candidatesData);
   };
 
-  hexTranslate = str => {
+  stringTranslate = str => {
     const out = [];
     for (let i = 0; i < str.length; i++) {
       let hex = Number(str.charCodeAt(i)).toString(16);
@@ -73,6 +101,14 @@ class Vote extends Component {
     }
     return out.join('');
   };
+  hexTranslate(str) {
+    let hex = str.toString();
+    let out = '';
+    for (let i = 0; i < hex.length; i += 2) {
+      out += String.fromCharCode(parseInt(hex.substr(i, 2), 16));
+    }
+    return out;
+  }
 }
 
 export default Vote;
