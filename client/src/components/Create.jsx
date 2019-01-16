@@ -12,6 +12,7 @@ class Create extends Component {
       newVoter: '',
       whiteList: []
     },
+    electionId: 0,
     electionConfirmed: false,
     loading: false,
     drizzleState: null
@@ -19,7 +20,7 @@ class Create extends Component {
 
   render() {
     if (this.state.electionConfirmed) {
-      return <Redirect to="/vote" />
+      return <Redirect to={{pathname: '/vote', search: `?id=${this.state.electionId}`}} />
     }
     return (
       <div>
@@ -75,16 +76,12 @@ class Create extends Component {
             <li>{voter}</li>
           ))}
         </ul>
-        {/* <Button onClick={() => {
-          return <Redirect to="/vote" />
-        }} /> */}
       </div>
     );
   }
 
   componentDidMount() {
     const { router, params, location, routes } = this.props;
-    // console.log(params, router, location, routes);
   }
 
   componentDidUpdate() {
@@ -117,7 +114,6 @@ class Create extends Component {
     this.setState(prevState => ({
       election: {
         ...prevState.election,
-        // hexCandiBois: [...prevState.election.hexCandiBois, hexCandiBoi],
         candidates: [...prevState.election.candidates, candidateName]
       }
     }));
@@ -150,10 +146,9 @@ class Create extends Component {
       .then(() => methods.electionCount()
       .call())
       .then((id) => {
-          this.setState({electionConfirmed: true}, () => id)
+          this.setState({electionConfirmed: true, electionId: id})
         })
 
-    // if (this.state.electionConfirmed) return <Redirect to={{pathname: '/vote', search: `?id=${response}`}} />;
   }
 
   //         '0x994DD176fA212730D290465e659a7c7D0549e384',
