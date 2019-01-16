@@ -4,35 +4,37 @@ import "../node_modules/openzeppelin-solidity/contracts/token/ERC20/ERC20.sol";
 
 contract Vote is ERC20 {
 
-    string public testString = "Im here for testing";
+    string public smokeTest = "smokeTest";
 
     struct Election {
         address creator;
         string electionName;
         uint expirationTime;
         uint candidatesCount;
-        bytes32[] candidateData;
+        uint[] candidateData;
         address[] whiteList;
     }
 
     uint public electionCount;
     mapping(uint => Election) public elections;
-    mapping(bytes32 => Candidate) candidateStorage;
-    bytes32[] candidateNames;
+    mapping(uint => Candidate) candidateStorage;
+    uint candidatesCount;
+    uint[] candidateIds;
 
     function startElection(string memory _electionName, uint _expirationTime, bytes32[] memory newCandidates, address[] memory _whiteList) public {
         electionCount++;
         uint _voteLength = setTimer(_expirationTime);
         mint(_whiteList.length);
-        elections[electionCount] = Election(msg.sender, _electionName, 0, _voteLength, new bytes32[](0), new address[](0));
+        elections[electionCount] = Election(msg.sender, _electionName, _voteLength, _whiteList.length, new uint[](0), new address[](0));
         for (uint i = 0; i < newCandidates.length; i++) {
-            candidateNames.push(newCandidates[i]);
-            candidateStorage[newCandidates[i]] = Candidate(
-                i,
+            candidatesCount++;
+            candidateIds.push(candidatesCount);
+            candidateStorage[candidatesCount] = Candidate(
+                candidatesCount,
                 newCandidates[i],
                 0
             );
-            elections[electionCount].candidateData.push(newCandidates[i]);
+            elections[electionCount].candidateData.push(candidatesCount);
         }
         for (uint j = 0; j < _whiteList.length ; j++){
             elections[electionCount].whiteList.push(_whiteList[j]);
@@ -40,7 +42,7 @@ contract Vote is ERC20 {
         }
     }
 
-    function getElectionCandidates(uint i) public view returns (bytes32[] memory){
+    function getElectionCandidates(uint i) public view returns (uint[] memory){
         return elections[i].candidateData;
     }
 
@@ -48,18 +50,17 @@ contract Vote is ERC20 {
         return elections[i].whiteList;
     }
 
-    function getCandidate(bytes32 _name) public view returns (uint, bytes32, uint) {
-        return (candidateStorage[_name].id, candidateStorage[_name].name, candidateStorage[_name].voteCount);
+    function getCandidate(uint _id) public view returns (uint, bytes32, uint) {
+        return (candidateStorage[_id].id, candidateStorage[_id].name, candidateStorage[_id].voteCount);
     }
 
-    function voteForCandidate(bytes32 _name, uint _electionCount) public returns (uint, bytes32, uint) {
+    function voteForCandidate(uint _id, uint _electionCount) public returns (uint, bytes32, uint) {
         address[] memory array = getWhiteList(_electionCount);
         for (uint i = 0; i < array.length ; i++) {
             if(array[i] == msg.sender) {
-                approve(msg.sender, 1);
                 if(transfer(elections[_electionCount].creator, 1)) {
-                    candidateStorage[_name].voteCount++;
-                    return (candidateStorage[_name].id, candidateStorage[_name].name, candidateStorage[_name].voteCount);
+                    candidateStorage[_id].voteCount++;
+                    return (candidateStorage[_id].id, candidateStorage[_id].name, candidateStorage[_id].voteCount);
                 }
                 }
             }
@@ -79,12 +80,11 @@ contract Vote is ERC20 {
     constructor () public {
     }
     
-    function mint(uint _tokens) public {
+    function mint(uint _tokens) private {
         _mint(msg.sender, _tokens);
     }
 
     function distributeToken(address _voter) public {
         transfer(_voter, 1);
-        approve(_voter, 0);
     }
 }
