@@ -21,7 +21,7 @@ contract Vote is ERC20 {
     uint candidatesCount;
     uint[] candidateIds;
 
-    function startElection(string memory _electionName, uint _expirationTime, bytes32[] memory newCandidates, address[] memory _whiteList) public {
+    function startElection(string memory _electionName, uint _expirationTime, bytes32[] memory newCandidates, address[] memory _whiteList) public returns (uint) {
         electionCount++;
         uint _voteLength = setTimer(_expirationTime);
         mint(_whiteList.length);
@@ -40,6 +40,7 @@ contract Vote is ERC20 {
             elections[electionCount].whiteList.push(_whiteList[j]);
             distributeToken(_whiteList[j]);
         }
+        return electionCount;
     }
 
     function getElectionCandidates(uint i) public view returns (uint[] memory){

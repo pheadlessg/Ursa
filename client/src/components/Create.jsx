@@ -8,7 +8,6 @@ class Create extends Component {
       expirationTime: '',
       newCandidate: '',
       candidates: [],
-      hexCandiBois: [],
       newVoter: '',
       whiteList: []
     },
@@ -83,7 +82,7 @@ class Create extends Component {
   }
 
   componentDidUpdate() {
-    console.log(this.state.election)
+    // console.log(this.state.election)
   }
   handleChange = event => {
     const { value, name } = event.target;
@@ -112,7 +111,7 @@ class Create extends Component {
     this.setState(prevState => ({
       election: {
         ...prevState.election,
-        hexCandiBois: [...prevState.election.hexCandiBois, hexCandiBoi],
+        // hexCandiBois: [...prevState.election.hexCandiBois, hexCandiBoi],
         candidates: [...prevState.election.candidates, candidateName]
       }
     }));
@@ -134,25 +133,20 @@ class Create extends Component {
       'relax'
       )
     const {methods} = this.props.parentState.drizzle.contracts.Vote;
-
-    // console.log(
-    //       this.state.election.electionName,
-    //       this.state.election.expirationTime,
-    //       this.state.election.hexCandiBois,
-    //       this.state.election.whiteList
-    //     )
     const response = await methods
       .startElection(
         this.state.election.electionName,
         this.state.election.expirationTime,
-        // ['0x786176'
-        // // ,         '0x63616e646964617365206f6e65'
-        // ],
-        this.state.election.hexCandiBois,
+        this.state.election.candidates.map(candiBoi => this.stringTranslate(candiBoi)),
         this.state.election.whiteList
       )
-      .send()
+      .send().then(() => methods.electionCount().call());
+    console.log(response);
   }
+
+  //         '0x994DD176fA212730D290465e659a7c7D0549e384',
+  //         '0xe7BA88433E60C53c69b19f503e00851B98891551'
+
 
   hexTranslate(str) {
     const array = [];
@@ -172,22 +166,7 @@ class Create extends Component {
     return `0x${out.join('')}`;
   };
 
-  logNewElection = async () => {
-    // console.log(this.props.parentState.drizzle)
-    const { methods } = this.props.parentState.drizzle.contracts.Vote;
-    const response = await methods
-      .startElection(
-        'Test',
-        9999,
-        ['0x63616e646964617465206f6e65'],
-        [
-          '0x994DD176fA212730D290465e659a7c7D0549e384',
-          '0xe7BA88433E60C53c69b19f503e00851B98891551'
-        ]
-      )
-      .send();
-    console.log(response);
-  };
+
 
   logElection = async () => {
     const { methods } = this.props.parentState.drizzle.contracts.Vote;
