@@ -31,16 +31,17 @@ class App extends Component {
                 path="/create"
                 render={() => <Create parentState={this.props} />}
               />
-
-              <Route exact path="/vote" render={() => <Vote parentState={this.props}/>} />
-              
-            </Content>
-          </Router>
-        </MainContainer>
-      </div>
-    );
-  }
-
+              <Route 
+                path="/vote"
+                render={() => <Vote loading={this.state.loading} parentState={this.props} />}
+                />
+                </Content>
+                </Router>
+                </MainContainer>
+                </div>
+                )
+    }
+                
   componentDidMount() {
     const { drizzle } = this.props;
 

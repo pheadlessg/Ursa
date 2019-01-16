@@ -56,15 +56,17 @@ contract Vote is ERC20 {
     }
 
     function voteForCandidate(uint _id, uint _electionCount) public returns (uint, bytes32, uint) {
-        address[] memory array = getWhiteList(_electionCount);
-        for (uint i = 0; i < array.length ; i++) {
-            if(array[i] == msg.sender) {
-                if(transfer(elections[_electionCount].creator, 1)) {
-                    candidateStorage[_id].voteCount++;
-                    return (candidateStorage[_id].id, candidateStorage[_id].name, candidateStorage[_id].voteCount);
-                }
+        if(elections[_electionCount].expirationTime > block.timestamp) {
+            address[] memory array = getWhiteList(_electionCount);
+            for (uint i = 0; i < array.length ; i++) {
+                if(array[i] == msg.sender) {
+                    if(transfer(elections[_electionCount].creator, 1)) {
+                        candidateStorage[_id].voteCount++;
+                        return (candidateStorage[_id].id, candidateStorage[_id].name, candidateStorage[_id].voteCount);
+                    }
                 }
             }
+        }
     }
 
     struct Candidate  {
@@ -76,9 +78,6 @@ contract Vote is ERC20 {
     function setTimer(uint _voteLength) public view returns (uint) {
         uint StartTime = block.timestamp;
         return StartTime + _voteLength;
-    }
-
-    constructor () public {
     }
     
     function mint(uint _tokens) private {
