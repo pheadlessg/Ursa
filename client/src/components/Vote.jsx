@@ -21,9 +21,6 @@ class Vote extends Component {
         <Button onClick={() => this.callNewElection()}>
           call new election
         </Button>
-        <Button onClick={() => this.retrieveCandidates()}>
-          get the candidates
-        </Button>
         {candidatesData.length ? (
           <div>
             {candidatesData.map(candidate => (
@@ -31,6 +28,9 @@ class Vote extends Component {
                 <div>{`id: ${candidate['0']}`}</div>
                 <div>{this.hexTranslate(candidate['1'])}</div>
                 <div>{`votes: ${candidate['2']}`}</div>
+                <Button onClick={() => this.voteForCandidate(candidate['0'])}>
+                  vote
+                </Button>
               </div>
             ))}
           </div>
@@ -50,6 +50,7 @@ class Vote extends Component {
       expirationTime = moment.unix(expirationTime).calendar();
       this.setState({ expirationTime, electionName });
     });
+    this.retrieveCandidates();
   }
 
   logString = async () => {
@@ -72,6 +73,13 @@ class Vote extends Component {
     //   )
     //   .send();
     // console.log(response);
+  };
+
+  voteForCandidate = async candId => {
+    const { methods } = this.props.parentState.drizzle.contracts.Vote;
+    const response = await methods.voteForCandidate(candId, 1).call();
+    console.log(response);
+    console.log('voting!');
   };
 
   getElectionData = async () => {
