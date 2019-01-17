@@ -1,10 +1,10 @@
 import React, { Component } from 'react';
 import { Content, Button } from '../GlobalStyle';
 const moment = require('moment');
-const electionId = 1;
 
 class Vote extends Component {
   state = {
+    electionId: null,
     electionName: null,
     loading: false,
     drizzleState: null,
@@ -51,15 +51,14 @@ class Vote extends Component {
   }
 
   componentDidMount() {
-    console.log(this.props.location);
-    this.clock();
-    const { loading } = this.props;
-    // if (loading) return;
-    this.getElectionData().then(data => {
-      let { expirationTime, electionName } = data;
-      let unixEnd = expirationTime;
-      this.setState({ electionName, unixEnd });
-      this.retrieveCandidates();
+    this.setState({ electionId: this.props.match.params.id }, () => {
+      this.clock();
+      this.getElectionData().then(data => {
+        let { expirationTime, electionName } = data;
+        let unixEnd = expirationTime;
+        this.setState({ electionName, unixEnd });
+        this.retrieveCandidates();
+      });
     });
   }
 
@@ -94,17 +93,20 @@ class Vote extends Component {
 
   voteForCandidate = async candId => {
     const { methods } = this.props.parentState.drizzle.contracts.Vote;
+    const { electionId } = this.state;
     const response = await methods.voteForCandidate(candId, electionId).send();
     await this.retrieveCandidates();
   };
 
   getElectionData = async () => {
+    const { electionId } = this.state;
     const { methods } = this.props.parentState.drizzle.contracts.Vote;
     const data = await methods.elections(electionId).call();
     return data;
   };
 
   retrieveCandidates = async () => {
+    const { electionId } = this.state;
     const { methods } = this.props.parentState.drizzle.contracts.Vote;
     const candidates = await methods.getElectionCandidates(electionId).call();
     const promiseArray = [];
