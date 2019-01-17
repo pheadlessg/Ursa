@@ -29,7 +29,6 @@ class Vote extends Component {
   state = {
     electionId: null,
     electionName: null,
-    loading: false,
     drizzleState: null,
     candidatesData: [],
     currentTime: null,
@@ -44,57 +43,64 @@ class Vote extends Component {
       electionName,
       unixEnd,
       currentTime,
-      isWhiteListed
+      isWhiteListed,
+      isLoaded
     } = this.state;
     let countDown = moment.unix(unixEnd - currentTime).format('H:mm:ss');
     return (
-      <Voter>
-        <h2>{`Poll: ${electionName}`}</h2>
-        <h3>{`polls close: ${moment.unix(unixEnd).calendar()}`}</h3>
-        <h3>
-          vote{' '}
-          {currentTime > unixEnd
-            ? 'now closed'
-            : `open: ${countDown} remaining`}
-        </h3>
-        {true ? (
-          <div>
-            <Table>
-              <tr>
-                <th>#id</th>
-                <th>Candidate</th>
-                <th>Count</th>
-              </tr>
-              <tbody>
-                {candidatesData.map(candidate => (
-                  <tr key={candidate['0']}>
-                    <th>
-                      <div>{candidate['0']}</div>
-                    </th>
-                    <th>
-                      <div>{this.hexTranslate(candidate['1'])}</div>
-                    </th>
-                    <th>
-                      <div>{candidate['2']}</div>
-                    </th>
-                    {isWhiteListed && currentTime < unixEnd ? (
-                      <VoteButton
-                        onClick={() => this.voteForCandidate(candidate['0'])}
-                      >
-                        vote
-                      </VoteButton>
-                    ) : null}
+      <>
+        {isLoaded ? (
+          <Voter>
+            <h2>{`Poll: ${electionName}`}</h2>
+            <h3>{`polls close: ${moment.unix(unixEnd).calendar()}`}</h3>
+            <h3>
+              vote{' '}
+              {currentTime > unixEnd
+                ? 'now closed'
+                : `open: ${countDown} remaining`}
+            </h3>
+            {true ? (
+              <div>
+                <Table>
+                  <tr>
+                    <th>#id</th>
+                    <th>Candidate</th>
+                    <th>Count</th>
                   </tr>
-                ))}
-              </tbody>
-            </Table>
-            {isWhiteListed ? null : 'you are not registered to vote'}
-          </div>
-        ) : (
-          'empty'
-        )}
-        <ResultChart data={this.formatCandidateData(candidatesData)} />
-      </Voter>
+                  <tbody>
+                    {candidatesData.map(candidate => (
+                      <tr key={candidate['0']}>
+                        <th>
+                          <div>{candidate['0']}</div>
+                        </th>
+                        <th>
+                          <div>{this.hexTranslate(candidate['1'])}</div>
+                        </th>
+                        <th>
+                          <div>{candidate['2']}</div>
+                        </th>
+                        {isWhiteListed && currentTime < unixEnd ? (
+                          <VoteButton
+                            onClick={() =>
+                              this.voteForCandidate(candidate['0'])
+                            }
+                          >
+                            vote
+                          </VoteButton>
+                        ) : null}
+                      </tr>
+                    ))}
+                  </tbody>
+                </Table>
+                {isWhiteListed ? null : 'you are not registered to vote'}
+              </div>
+            ) : (
+              'empty'
+            )}
+            <ResultChart data={this.formatCandidateData(candidatesData)} />
+          </Voter>
+        ) : null}
+      </>
     );
   }
 
@@ -147,22 +153,6 @@ class Vote extends Component {
     console.log(await methods.smokeTest().call());
   };
 
-  callNewElection = async () => {
-    console.log('uncomment me if you want another election instance');
-    const { methods } = this.props.parentState.drizzle.contracts.Vote;
-    const response = await methods
-      .startElection(
-        'Test',
-        9999,
-        ['0x63616e646964617465206f6e65', '0x63616e6469646174652074776f'],
-        [
-          '0x994DD176fA212730D290465e659a7c7D0549e384',
-          '0xe7BA88433E60C53c69b19f503e00851B98891551'
-        ]
-      )
-      .send();
-  };
-
   voteForCandidate = async candId => {
     const { methods } = this.props.parentState.drizzle.contracts.Vote;
     const { electionId } = this.state;
@@ -187,8 +177,11 @@ class Vote extends Component {
       promiseArray.push(candidateData);
     }
     const candidatesData = await Promise.all(promiseArray);
-    this.setState({ candidatesData, isLoaded: true }, () => {
-      this.formatCandidateData(this.state.candidatesData);
+    this.setState({ candidatesData }, () => {
+      setTimeout(() => {
+        console.log('one sec');
+        this.setState({ isLoaded: true });
+      }, 3000);
     });
   };
 

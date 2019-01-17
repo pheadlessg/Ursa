@@ -8,7 +8,9 @@
   },
   "dependencies": {
     "moment": "^2.23.0",
-    "openzeppelin-solidity": "2.1.1"
+    "openzeppelin-solidity": "2.1.1",
+    "react-chartjs": "^1.2.0",
+    "react-easy-chart": "^1.0.0"
   },
   "devDependencies": {},
   "scripts": {
