@@ -9,8 +9,8 @@ class Links extends Component {
   render() {
     return (
       <div>
-        {this.state.electionArr.map(data => {
-          return <ElectionCard electionid={data} />;
+        {this.state.electionArr.map((data, index) => {
+          return <ElectionCard electiondata={data} electionid={index} />;
         })}
       </div>
     );
