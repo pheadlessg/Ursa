@@ -6,7 +6,7 @@ const moment = require("moment");
 
 const Table = styled.table`
   width: 100%;
-  border: 1px solid black;
+  border-bottom: 1px solid black;
 `;
 
 const Voter = styled.div`
@@ -24,6 +24,10 @@ const ResultChart = styled(PieChart)`
   height: 50px;
 `;
 const TableColumn = styled.tc;
+
+const TableRow = styled.td `
+
+`;
 
 class Vote extends Component {
   state = {

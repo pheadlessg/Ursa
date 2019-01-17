@@ -1,10 +1,21 @@
 import styled from "styled-components";
 import media from "./media";
+import { Link } from "react-router-dom";
 import logo from "./logo.png";
+
+
+const StyledLink = styled(Link)`
+  text-decoration: none;
+  color: ${props => (props.main ? '#11414D' : '#efefef')};
+`;
 
 const HeaderContainer = styled.div`
   grid-column: 2;
   grid-row: 1;
+`;
+
+const Container = styled.div`
+margin: auto;
 `;
 
 const Header = styled.img.attrs({
@@ -18,17 +29,10 @@ const Header = styled.img.attrs({
     grid-row: 1;
     display: block;
     height: ${props => (props.main ? "250px" : "150px")};
-    /* // ${media.phone`
-    // height: ${props => (props.main ? "150px" : "80px")};
-    // ;
-    // `}
-    // ${media.desktop`
-    // height: ${props => (props.main ? "250px" : "150px")};
-    // `} */
   `;
 
 const Content = styled.div`
-  //background-color: #ffbd19;
+  // background-color: #ffbd19;
   display: flex;
   text-align: center;
   grid-column: 2;
@@ -44,24 +48,25 @@ const Button = styled.button`
   padding: 1em;
   margin: 5px;
   border: none;
-  border-radius: 3px;
+  border-radius: 8px;
   &:hover {
-    opacity: 0.9;
+    opacity: 0.8;
     cursor: pointer;
-    box-shadow: 3px 3px 10px #888888;
   }
 `;
 
-const wideButton = styled.button`
-  width: 100%;
-  border-radius: 3px;
+const WideButton = styled.button`
+background-color: #2EC1E2;
+opacity: 0.7;
+  width: 400px;
+  border: none;
+  border-radius: 8px;
   font-size: 1em;
   padding: 1em;
   margin: 5px;
   &:hover {
-    opacity: 0.9;
+    opacity: 1;
     cursor: pointer;
-    box-shadow: 3px 3px 10px #888888;
   }
 `;
 
@@ -86,7 +91,8 @@ const smallLabel = styled.body`
 `;
 
 const ListItem = styled.li`
-  border-radius: 10px;
+  border-radius: 8px;
+  padding: 5px;
   &:hover {
     cursor: pointer;
   }
@@ -99,11 +105,13 @@ const ListItem = styled.li`
 export {
   Button,
   Header,
+  Container,
   Content,
   HeaderContainer,
   List,
   HFive,
   ListItem,
-  wideButton,
-  smallLabel
+  WideButton,
+  smallLabel, 
+  StyledLink
 };

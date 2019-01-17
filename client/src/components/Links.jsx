@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import ElectionCard from './ElectionCard';
+import {Container} from '../GlobalStyle'
 
 class Links extends Component {
   state = {
@@ -8,11 +9,11 @@ class Links extends Component {
   };
   render() {
     return (
-      <div>
+      <Container >
         {this.state.electionArr.map((data, index) => {
           return <ElectionCard electiondata={data} electionid={index} />;
         })}
-      </div>
+      </Container>
     );
   }
   componentDidMount() {
