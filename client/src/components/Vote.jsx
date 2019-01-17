@@ -10,11 +10,18 @@ class Vote extends Component {
     drizzleState: null,
     candidatesData: [],
     currentTime: null,
-    unixEnd: null
+    unixEnd: null,
+    isWhiteListed: false
   };
 
   render() {
-    const { candidatesData, electionName, unixEnd, currentTime } = this.state;
+    const {
+      candidatesData,
+      electionName,
+      unixEnd,
+      currentTime,
+      isWhiteListed
+    } = this.state;
     let countDown = moment.unix(unixEnd - currentTime).format('H:mm:ss');
     return (
       <div>
@@ -26,10 +33,6 @@ class Vote extends Component {
             ? 'now closed'
             : `open: ${countDown} remaining`}
         </h3>
-        <Button onClick={() => this.logString()}>smoke test</Button>
-        <Button onClick={() => this.callNewElection()}>
-          call new election
-        </Button>
         {candidatesData.length ? (
           <div>
             {candidatesData.map(candidate => (
@@ -37,9 +40,13 @@ class Vote extends Component {
                 <div>{`id: ${candidate['0']}`}</div>
                 <div>{this.hexTranslate(candidate['1'])}</div>
                 <div>{`votes: ${candidate['2']}`}</div>
-                <Button onClick={() => this.voteForCandidate(candidate['0'])}>
-                  vote
-                </Button>
+                {isWhiteListed ? (
+                  <Button onClick={() => this.voteForCandidate(candidate['0'])}>
+                    vote
+                  </Button>
+                ) : (
+                  <div>you're not on the list</div>
+                )}
               </div>
             ))}
           </div>
@@ -53,10 +60,9 @@ class Vote extends Component {
   componentDidMount() {
     console.log('mounted');
     this.setState({ electionId: this.props.match.params.id }, () => {
+      this.isWhiteListed();
       this.clock();
-      console.log(this.state);
       this.getElectionData().then(data => {
-        console.log(data);
         let { expirationTime, electionName } = data;
         let unixEnd = expirationTime;
         this.setState({ electionName, unixEnd });
@@ -70,6 +76,18 @@ class Vote extends Component {
       let currentTime = moment(Date.now()).unix();
       this.setState({ currentTime });
     }, 1000);
+  };
+
+  isWhiteListed = async () => {
+    const user = this.props.parentState.drizzle.web3.eth.accounts.givenProvider
+      .selectedAddress;
+    const { electionId } = this.state;
+    const { methods } = this.props.parentState.drizzle.contracts.Vote;
+    const whiteList = await methods.getWhiteList(electionId).call();
+    whiteList.forEach(account => {
+      if (account.toLowerCase() === user.toLowerCase())
+        this.setState({ isWhiteListed: true });
+    });
   };
 
   logString = async () => {
