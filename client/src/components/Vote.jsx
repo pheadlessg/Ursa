@@ -15,11 +15,16 @@ class Vote extends Component {
 
   render() {
     const { candidatesData, electionName, unixEnd, time } = this.state;
+    let countDown = moment.unix(unixEnd - time).format('H:mm:ss');
+    console.log(countDown);
+
     return (
       <div>
         <h2>{`vote on ${electionName}`}</h2>
         <h3>{`end time: ${moment.unix(unixEnd).calendar()}`}</h3>
-        <h3>vote {time > unixEnd ? 'now closed' : 'still open'}</h3>
+        <h3>
+          vote {time > unixEnd ? 'now closed' : `open: ${countDown} remaining`}
+        </h3>
         <Button onClick={() => this.logString()}>smoke test</Button>
         <Button onClick={() => this.callNewElection()}>
           call new election
@@ -47,7 +52,7 @@ class Vote extends Component {
   componentDidMount() {
     this.clock();
     const { loading } = this.props;
-    if (loading) return;
+    // if (loading) return;
     this.getElectionData().then(data => {
       let { expirationTime, electionName } = data;
       let unixEnd = expirationTime;
