@@ -36,8 +36,8 @@ const Content = styled.div`
 `;
 
 const Button = styled.button`
-  /* @import url("https://fonts.googleapis.com/css?family=Montserrat|Montserrat+Alternates:400,800"); */
-  font-family: inherit;
+  @import url("https://fonts.googleapis.com/css?family=Montserrat:400,800");
+  font-family: "Montserrat", sans-serif;
   background: ${props => (props.primary ? "#2EC1E2" : "#11414D")};
   color: ${props => (props.primary ? "#091316" : "#FEFEFE")};
   font-size: 1em;
@@ -78,6 +78,13 @@ const HFive = styled.h5`
   text-align: left;
 `;
 
+const smallLabel = styled.body`
+  @import url("https://fonts.googleapis.com/css?family=Montserrat:700");
+  font-size: 0.5em;
+  margin: 0px;
+  padding: 0px;
+`;
+
 const ListItem = styled.li`
   border-radius: 10px;
   &:hover {
@@ -97,5 +104,6 @@ export {
   List,
   HFive,
   ListItem,
-  wideButton
+  wideButton,
+  smallLabel
 };

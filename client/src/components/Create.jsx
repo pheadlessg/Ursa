@@ -125,7 +125,7 @@ class Create extends Component {
               />
             </InputField>
             <InputField>
-              <label htmlFor="newVoter">Add Voter</label>
+              <label htmlFor="newVoter">Add Voter - hit return to add</label>
               <br />
               <Input
                 name="newVoter"
@@ -140,7 +140,7 @@ class Create extends Component {
           </Inputs>
         </CreateForm>
         <DisplayCandidates>
-          <HFive>Candidates:</HFive>
+          <HFive>Candidates: (Click to remove) </HFive>
           <List>
             {this.state.election.candidates.map(candi => (
               <ListItem
@@ -153,7 +153,7 @@ class Create extends Component {
           </List>
         </DisplayCandidates>
         <DisplayVoters>
-          <HFive>Voters:</HFive>
+          <HFive>Voters (Click to remove):</HFive>
           <List>
             {this.state.election.whiteList.map(voter => (
               <ListItem
