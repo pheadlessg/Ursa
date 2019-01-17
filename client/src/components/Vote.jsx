@@ -9,21 +9,22 @@ class Vote extends Component {
     loading: false,
     drizzleState: null,
     candidatesData: [],
-    time: null,
+    currentTime: null,
     unixEnd: null
   };
 
   render() {
-    const { candidatesData, electionName, unixEnd, time } = this.state;
-    let countDown = moment.unix(unixEnd - time).format('H:mm:ss');
-    console.log(countDown);
-
+    const { candidatesData, electionName, unixEnd, currentTime } = this.state;
+    let countDown = moment.unix(unixEnd - currentTime).format('H:mm:ss');
     return (
       <div>
         <h2>{`vote on ${electionName}`}</h2>
         <h3>{`end time: ${moment.unix(unixEnd).calendar()}`}</h3>
         <h3>
-          vote {time > unixEnd ? 'now closed' : `open: ${countDown} remaining`}
+          vote{' '}
+          {currentTime > unixEnd
+            ? 'now closed'
+            : `open: ${countDown} remaining`}
         </h3>
         <Button onClick={() => this.logString()}>smoke test</Button>
         <Button onClick={() => this.callNewElection()}>
@@ -50,6 +51,7 @@ class Vote extends Component {
   }
 
   componentDidMount() {
+    console.log(this.props.location);
     this.clock();
     const { loading } = this.props;
     // if (loading) return;
@@ -63,8 +65,8 @@ class Vote extends Component {
 
   clock = () => {
     setInterval(() => {
-      let time = moment(Date.now()).unix();
-      this.setState({ time });
+      let currentTime = moment(Date.now()).unix();
+      this.setState({ currentTime });
     }, 1000);
   };
 
