@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
-import { Content, Button } from '../GlobalStyle';
+import { Content } from '../GlobalStyle';
 import styled from 'styled-components';
+import { PieChart } from 'react-easy-chart';
 const moment = require('moment');
 
 const Table = styled.table`
@@ -12,6 +13,16 @@ const Voter = styled.div`
   width: 100%;
 `;
 
+const VoteButton = styled.button`
+  border: 1px solid black;
+  width: 30px;
+  height: 30px;
+  padding: 0px;
+`;
+
+const ResultChart = styled(PieChart)`
+  height: 50px;
+`;
 const TableColumn = styled.tc;
 
 class Vote extends Component {
@@ -23,7 +34,8 @@ class Vote extends Component {
     candidatesData: [],
     currentTime: null,
     unixEnd: null,
-    isWhiteListed: false
+    isWhiteListed: false,
+    isLoaded: false
   };
 
   render() {
@@ -37,8 +49,8 @@ class Vote extends Component {
     let countDown = moment.unix(unixEnd - currentTime).format('H:mm:ss');
     return (
       <Voter>
-        <h2>{`vote on ${electionName}`}</h2>
-        <h3>{`end time: ${moment.unix(unixEnd).calendar()}`}</h3>
+        <h2>{`Poll: ${electionName}`}</h2>
+        <h3>{`polls close: ${moment.unix(unixEnd).calendar()}`}</h3>
         <h3>
           vote{' '}
           {currentTime > unixEnd
@@ -49,52 +61,39 @@ class Vote extends Component {
           <div>
             <Table>
               <tr>
-                <th>id</th>
-                <th>cand</th>
-                <th>votes</th>
+                <th>#id</th>
+                <th>Candidate</th>
+                <th>Count</th>
               </tr>
-              {candidatesData.map(candidate => (
-                <tr key={candidate['0']}>
-                  <th>
-                    <div>{candidate['0']}</div>
-                  </th>
-                  <th>
-                    <div>{this.hexTranslate(candidate['1'])}</div>
-                  </th>
-                  <th>
-                    <div>{candidate['2']}</div>
-                  </th>
-                  {isWhiteListed && currentTime < unixEnd ? (
-                    <Button
-                      onClick={() => this.voteForCandidate(candidate['0'])}
-                    >
-                      vote
-                    </Button>
-                  ) : null}
-                </tr>
-              ))}
+              <tbody>
+                {candidatesData.map(candidate => (
+                  <tr key={candidate['0']}>
+                    <th>
+                      <div>{candidate['0']}</div>
+                    </th>
+                    <th>
+                      <div>{this.hexTranslate(candidate['1'])}</div>
+                    </th>
+                    <th>
+                      <div>{candidate['2']}</div>
+                    </th>
+                    {isWhiteListed && currentTime < unixEnd ? (
+                      <VoteButton
+                        onClick={() => this.voteForCandidate(candidate['0'])}
+                      >
+                        vote
+                      </VoteButton>
+                    ) : null}
+                  </tr>
+                ))}
+              </tbody>
             </Table>
             {isWhiteListed ? null : 'you are not registered to vote'}
           </div>
         ) : (
-          //   <div>
-          //     {candidatesData.map(candidate => (
-          //       <div key={candidate['0']}>
-          //         <div>{`id: ${candidate['0']}`}</div>
-          //         <div>{this.hexTranslate(candidate['1'])}</div>
-          //         <div>{`votes: ${candidate['2']}`}</div>
-          //         {isWhiteListed && currentTime < unixEnd ? (
-          //           <Button onClick={() => this.voteForCandidate(candidate['0'])}>
-          //             vote
-          //           </Button>
-          //         ) : (
-          //           <div>you're not on the list</div>
-          //         )}
-          //       </div>
-          //     ))}
-          //   </div>
           'empty'
         )}
+        <ResultChart data={this.formatCandidateData(candidatesData)} />
       </Voter>
     );
   }
@@ -112,6 +111,17 @@ class Vote extends Component {
       });
     });
   }
+
+  formatCandidateData = data => {
+    return data.reduce((acc, cand) => {
+      const result = {
+        key: cand['0'],
+        value: cand['2']
+      };
+      acc.push(result);
+      return acc;
+    }, []);
+  };
 
   clock = () => {
     setInterval(() => {
@@ -151,7 +161,6 @@ class Vote extends Component {
         ]
       )
       .send();
-    console.log(response);
   };
 
   voteForCandidate = async candId => {
@@ -178,7 +187,9 @@ class Vote extends Component {
       promiseArray.push(candidateData);
     }
     const candidatesData = await Promise.all(promiseArray);
-    this.setState({ candidatesData });
+    this.setState({ candidatesData, isLoaded: true }, () => {
+      this.formatCandidateData(this.state.candidatesData);
+    });
   };
 
   stringTranslate = str => {
