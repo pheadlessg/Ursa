@@ -1,6 +1,18 @@
 import React, { Component } from 'react';
 import { Content, Button } from '../GlobalStyle';
+import styled from 'styled-components';
 const moment = require('moment');
+
+const Table = styled.table`
+  width: 100%;
+  border: 1px solid black;
+`;
+
+const Voter = styled.div`
+  width: 100%;
+`;
+
+const TableColumn = styled.tc;
 
 class Vote extends Component {
   state = {
@@ -24,7 +36,7 @@ class Vote extends Component {
     } = this.state;
     let countDown = moment.unix(unixEnd - currentTime).format('H:mm:ss');
     return (
-      <div>
+      <Voter>
         <h2>{`vote on ${electionName}`}</h2>
         <h3>{`end time: ${moment.unix(unixEnd).calendar()}`}</h3>
         <h3>
@@ -33,27 +45,57 @@ class Vote extends Component {
             ? 'now closed'
             : `open: ${countDown} remaining`}
         </h3>
-        {candidatesData.length ? (
+        {true ? (
           <div>
-            {candidatesData.map(candidate => (
-              <div key={candidate['0']}>
-                <div>{`id: ${candidate['0']}`}</div>
-                <div>{this.hexTranslate(candidate['1'])}</div>
-                <div>{`votes: ${candidate['2']}`}</div>
-                {isWhiteListed ? (
-                  <Button onClick={() => this.voteForCandidate(candidate['0'])}>
-                    vote
-                  </Button>
-                ) : (
-                  <div>you're not on the list</div>
-                )}
-              </div>
-            ))}
+            <Table>
+              <tr>
+                <th>id</th>
+                <th>cand</th>
+                <th>votes</th>
+              </tr>
+              {candidatesData.map(candidate => (
+                <tr key={candidate['0']}>
+                  <th>
+                    <div>{candidate['0']}</div>
+                  </th>
+                  <th>
+                    <div>{this.hexTranslate(candidate['1'])}</div>
+                  </th>
+                  <th>
+                    <div>{candidate['2']}</div>
+                  </th>
+                  {isWhiteListed && currentTime < unixEnd ? (
+                    <Button
+                      onClick={() => this.voteForCandidate(candidate['0'])}
+                    >
+                      vote
+                    </Button>
+                  ) : null}
+                </tr>
+              ))}
+            </Table>
+            {isWhiteListed ? null : 'you are not registered to vote'}
           </div>
         ) : (
+          //   <div>
+          //     {candidatesData.map(candidate => (
+          //       <div key={candidate['0']}>
+          //         <div>{`id: ${candidate['0']}`}</div>
+          //         <div>{this.hexTranslate(candidate['1'])}</div>
+          //         <div>{`votes: ${candidate['2']}`}</div>
+          //         {isWhiteListed && currentTime < unixEnd ? (
+          //           <Button onClick={() => this.voteForCandidate(candidate['0'])}>
+          //             vote
+          //           </Button>
+          //         ) : (
+          //           <div>you're not on the list</div>
+          //         )}
+          //       </div>
+          //     ))}
+          //   </div>
           'empty'
         )}
-      </div>
+      </Voter>
     );
   }
 
