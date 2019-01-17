@@ -22,6 +22,7 @@ class App extends Component {
           <Router>
             <Content>
               <Route
+                exact
                 path="/"
                 render={({ match }) => (
                   <Home match={match} parentState={this.props} />
@@ -29,6 +30,7 @@ class App extends Component {
               />
 
               <Route
+                exact
                 path="/create"
                 render={() => <Create parentState={this.props} />}
               />
