@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { Content, Button, List, HFive, ListItem } from '../GlobalStyle';
 import styled from 'styled-components';
 import { Redirect } from 'react-router-dom';
+import loading from "../loading.gif";
 
 const CreateScreen = styled.div`
   margin: auto;
@@ -31,12 +32,22 @@ const InputField = styled.div`
 `;
 
 const LoadingScreen = styled.div`
-  z-index: 10;
+  z-index: 9;
   background: rgba(195, 212, 219, 0.4);
   opacity: 0.5;
   height: 100vh;
   width: 100vw;
 `;
+const Img = styled.img.attrs({
+  src: loading
+  
+})`
+margin-top: 150px;
+margin: auto;
+height: 200px;
+z-index: 10;
+`
+
 
 class Create extends Component {
   state = {
@@ -61,7 +72,10 @@ class Create extends Component {
     }
     // While waiting for a response, cover page with loadingscreen
     if (this.state.voteLoading) {
-      return <LoadingScreen />;
+      return <LoadingScreen>
+        <Img/>
+        <HFive>mining new block - this could take a few minutes...</HFive>
+      </LoadingScreen>;
     }
     return (
       // {this.state.voteLoading ? `<LoadingScreen></LoadingScreen>` : ''}
@@ -206,7 +220,7 @@ class Create extends Component {
       const response = await methods
         .startElection(
           election.electionName,
-          election.expirationTime,
+          election.expirationTime * 60,
           election.candidates.map(candiBoi => this.stringTranslate(candiBoi)),
           election.whiteList
         )
