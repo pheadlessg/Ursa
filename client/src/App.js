@@ -17,14 +17,16 @@ class App extends Component {
       <div className="App">
         <MainContainer>
           <HeaderContainer>
-            <Header main/>
+            <Header main />
           </HeaderContainer>
           <Router>
             <Content>
               <Route
                 exact
                 path="/"
-                render={() => <Home parentState={this.props} />}
+                render={({ match }) => (
+                  <Home match={match} parentState={this.props} />
+                )}
               />
 
               <Route
@@ -33,9 +35,13 @@ class App extends Component {
                 render={() => <Create parentState={this.props} />}
               />
               <Route
-                path="/vote"
-                render={() => (
-                  <Vote loading={this.state.loading} parentState={this.props} />
+                path="/vote/:id"
+                render={({ match }) => (
+                  <Vote
+                    match={match}
+                    loading={this.state.loading}
+                    parentState={this.props}
+                  />
                 )}
               />
               <Route
