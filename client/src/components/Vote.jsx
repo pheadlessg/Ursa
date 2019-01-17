@@ -119,6 +119,7 @@ class Vote extends Component {
         value: cand["2"]
       };
       acc.push(result);
+      console.log("yoo");
       return acc;
     }, []);
   };
