@@ -1,11 +1,12 @@
 import React, { Component } from "react";
-import { Content } from "../GlobalStyle";
+import { Content, LoadingScreen, Img, HFive } from "../GlobalStyle";
 import styled from "styled-components";
 import { PieChart } from "react-easy-chart";
 const moment = require("moment");
 
 const Table = styled.table`
   width: 100%;
+  // background: yellow;
   border-bottom: 1px solid black;
 `;
 
@@ -25,8 +26,8 @@ const ResultChart = styled(PieChart)`
 `;
 const TableColumn = styled.tc;
 
-const TableRow = styled.td `
-
+const TableHeader= styled.th`
+border-bottom: 1px solid black;
 `;
 
 class Vote extends Component {
@@ -39,7 +40,9 @@ class Vote extends Component {
     currentTime: null,
     unixEnd: null,
     isWhiteListed: false,
-    isLoaded: false
+    isLoaded: false,
+    voteLoading: false,
+
   };
 
   render() {
@@ -51,6 +54,14 @@ class Vote extends Component {
       isWhiteListed
     } = this.state;
     let countDown = moment.unix(unixEnd - currentTime - 3600).format("H:mm:ss");
+
+    if (this.state.voteLoading) {
+      return <LoadingScreen>
+        <Img/>
+        <HFive>mining a new block - this could take a few minutes...</HFive>
+      </LoadingScreen>;
+    }
+
     return (
       <Voter>
         <h2>{`Poll: ${electionName}`}</h2>
@@ -65,9 +76,9 @@ class Vote extends Component {
           <div>
             <Table>
               <tr>
-                <th>#id</th>
-                <th>Candidate</th>
-                <th>Count</th>
+                <TableHeader>#id</TableHeader>
+                <TableHeader>Candidate</TableHeader>
+                <TableHeader>Count</TableHeader>
               </tr>
               <tbody>
                 {candidatesData.map(candidate => (
@@ -115,6 +126,12 @@ class Vote extends Component {
       });
     });
   }
+  componentDidUpdate(prevProps, prevState){
+    if(this.state.candidatesData !== prevState.candidatesData){
+    this.setState({
+      voteLoading: false
+    })}
+  }
 
   formatCandidateData = data => {
     return data.reduce((acc, cand) => {
@@ -154,6 +171,10 @@ class Vote extends Component {
   voteForCandidate = async candId => {
     const { methods } = this.props.parentState.drizzle.contracts.Vote;
     const { electionId } = this.state;
+
+    // Loading Screen
+    this.setState({voteLoading: true})
+    // Not sure when to turn off
     const response = await methods.voteForCandidate(candId, electionId).send();
     await this.retrieveCandidates();
   };

@@ -1,8 +1,7 @@
 import React, { Component } from 'react';
-import { Content, Button, List, HFive, ListItem } from '../GlobalStyle';
+import { LoadingScreen, Img, Button, List, HFive, ListItem } from '../GlobalStyle';
 import styled from 'styled-components';
 import { Redirect } from 'react-router-dom';
-import loading from "../loading.gif";
 
 const CreateScreen = styled.div`
   margin: auto;
@@ -34,22 +33,8 @@ const InputField = styled.div`
   padding: 5px;
 `;
 
-const LoadingScreen = styled.div`
-  z-index: 9;
-  background: rgba(195, 212, 219, 0.4);
-  opacity: 0.5;
-  height: 100vh;
-  width: 100vw;
-`;
-const Img = styled.img.attrs({
-  src: loading
-  
-})`
-margin-top: 150px;
-margin: auto;
-height: 200px;
-z-index: 10;
-`
+
+
 
 
 const Inputs = styled.div`
@@ -94,7 +79,7 @@ class Create extends Component {
     if (this.state.voteLoading) {
       return <LoadingScreen>
         <Img/>
-        <HFive>mining new block - this could take a few minutes...</HFive>
+        <HFive>mining a new block - this could take a few minutes...</HFive>
       </LoadingScreen>;
     }
     return (
