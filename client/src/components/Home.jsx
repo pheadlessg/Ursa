@@ -1,7 +1,7 @@
-import React, { Component } from 'react';
-import styled from 'styled-components';
-import { Content, Button } from '../GlobalStyle';
-import { Link } from 'react-router-dom';
+import React, { Component } from "react";
+import styled from "styled-components";
+import { Content, Button } from "../GlobalStyle";
+import { Link } from "react-router-dom";
 
 const HomeScreen = styled.div`
   margin: auto;
@@ -18,14 +18,14 @@ class Home extends Component {
     return (
       <HomeScreen>
         <h2>welcome to ursa</h2>
-        <br />
         <h3>a blockchain voting application</h3>
-        <Button primary>
-          <StyledLink to="/create">Create New Election</StyledLink>
-        </Button>
-        <Button>
-          <StyledLink to="/links">Choose an Election</StyledLink>
-        </Button>
+        <StyledLink to="/create">
+          <Button primary>Create New Election</Button>
+        </StyledLink>
+
+        <StyledLink to="/links">
+          <Button primary>Choose an Election</Button>
+        </StyledLink>
       </HomeScreen>
     );
   }

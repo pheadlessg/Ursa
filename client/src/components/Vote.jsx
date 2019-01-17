@@ -1,6 +1,6 @@
-import React, { Component } from 'react';
-import { Content, Button } from '../GlobalStyle';
-const moment = require('moment');
+import React, { Component } from "react";
+import { Content, Button } from "../GlobalStyle";
+const moment = require("moment");
 
 class Vote extends Component {
   state = {
@@ -15,15 +15,15 @@ class Vote extends Component {
 
   render() {
     const { candidatesData, electionName, unixEnd, currentTime } = this.state;
-    let countDown = moment.unix(unixEnd - currentTime).format('H:mm:ss');
+    let countDown = moment.unix(unixEnd - currentTime).format("H:mm:ss");
     return (
       <div>
         <h2>{`vote on ${electionName}`}</h2>
         <h3>{`end time: ${moment.unix(unixEnd).calendar()}`}</h3>
         <h3>
-          vote{' '}
+          vote{" "}
           {currentTime > unixEnd
-            ? 'now closed'
+            ? "now closed"
             : `open: ${countDown} remaining`}
         </h3>
         <Button onClick={() => this.logString()}>smoke test</Button>
@@ -33,25 +33,25 @@ class Vote extends Component {
         {candidatesData.length ? (
           <div>
             {candidatesData.map(candidate => (
-              <div key={candidate['0']}>
-                <div>{`id: ${candidate['0']}`}</div>
-                <div>{this.hexTranslate(candidate['1'])}</div>
-                <div>{`votes: ${candidate['2']}`}</div>
-                <Button onClick={() => this.voteForCandidate(candidate['0'])}>
+              <div key={candidate["0"]}>
+                <div>{`id: ${candidate["0"]}`}</div>
+                <div>{this.hexTranslate(candidate["1"])}</div>
+                <div>{`votes: ${candidate["2"]}`}</div>
+                <Button onClick={() => this.voteForCandidate(candidate["0"])}>
                   vote
                 </Button>
               </div>
             ))}
           </div>
         ) : (
-          'empty'
+          "empty"
         )}
       </div>
     );
   }
 
   componentDidMount() {
-    console.log('mounted');
+    console.log("mounted");
     this.setState({ electionId: this.props.match.params.id }, () => {
       this.clock();
       console.log(this.state);
@@ -78,16 +78,16 @@ class Vote extends Component {
   };
 
   callNewElection = async () => {
-    console.log('uncomment me if you want another election instance');
+    console.log("uncomment me if you want another election instance");
     const { methods } = this.props.parentState.drizzle.contracts.Vote;
     const response = await methods
       .startElection(
-        'Test',
+        "Test",
         9999,
-        ['0x63616e646964617465206f6e65', '0x63616e6469646174652074776f'],
+        ["0x63616e646964617465206f6e65", "0x63616e6469646174652074776f"],
         [
-          '0x994DD176fA212730D290465e659a7c7D0549e384',
-          '0xe7BA88433E60C53c69b19f503e00851B98891551'
+          "0x994DD176fA212730D290465e659a7c7D0549e384",
+          "0xe7BA88433E60C53c69b19f503e00851B98891551"
         ]
       )
       .send();
@@ -127,11 +127,11 @@ class Vote extends Component {
       let hex = Number(str.charCodeAt(i)).toString(16);
       out.push(hex);
     }
-    return out.join('');
+    return out.join("");
   };
   hexTranslate(str) {
     let hex = str.toString();
-    let out = '';
+    let out = "";
     for (let i = 0; i < hex.length; i += 2) {
       out += String.fromCharCode(parseInt(hex.substr(i, 2), 16));
     }

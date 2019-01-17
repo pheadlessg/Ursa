@@ -2,10 +2,10 @@ import styled, { css } from "styled-components";
 import media from "./media";
 
 const MainContainer = styled.div`
-@import url('https://fonts.googleapis.com/css?family=Quicksand');
-font-family: 'Quicksand', sans-serif;
-  height: 100vh;
-  width: 100vw;
+@import url("https://fonts.googleapis.com/css?family=Montserrat+Alternates:400,800");
+font-family: 'Montserrat Alternates', sans-serif;
+  height: 100%;
+  width: 100%;
   background-color: #C3D4DB;
   display: grid;
   grid-template-rows: 2fr 4fr 2fr 0.5fr;

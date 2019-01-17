@@ -18,62 +18,84 @@ const Header = styled.img.attrs({
     grid-row: 1;
     display: block;
     height: ${props => (props.main ? "250px" : "150px")};
-    // ${media.phone`
+    /* // ${media.phone`
     // height: ${props => (props.main ? "150px" : "80px")};
     // ;
     // `}
     // ${media.desktop`
     // height: ${props => (props.main ? "250px" : "150px")};
-    // `}
+    // `} */
   `;
 
 const Content = styled.div`
-  // background-color: #FFBD19;
+  //background-color: #ffbd19;
   display: flex;
   text-align: center;
   grid-column: 2;
   grid-row: ${props => (props.main ? "2" : "2 / span 2")};
 `;
 
-const Form = styled.form``;
-
 const Button = styled.button`
-  @import url("https://fonts.googleapis.com/css?family=Montserrat|Montserrat+Alternates:400,800");
-  font-family: "Montserrat-Alternates", sans-serif;
+  /* @import url("https://fonts.googleapis.com/css?family=Montserrat|Montserrat+Alternates:400,800"); */
+  font-family: inherit;
   background: ${props => (props.primary ? "#2EC1E2" : "#11414D")};
   color: ${props => (props.primary ? "#091316" : "#FEFEFE")};
   font-size: 1em;
   padding: 1em;
-  margin: 30px;
+  margin: 5px;
   border: none;
   border-radius: 3px;
   &:hover {
     opacity: 0.9;
-    curson: pointer;
+    cursor: pointer;
+    box-shadow: 3px 3px 10px #888888;
+  }
+`;
+
+const wideButton = styled.button`
+  width: 100%;
+  border-radius: 3px;
+  font-size: 1em;
+  padding: 1em;
+  margin: 5px;
+  &:hover {
+    opacity: 0.9;
+    cursor: pointer;
     box-shadow: 3px 3px 10px #888888;
   }
 `;
 
 const List = styled.ul`
   list-style: none;
-  margin: 0px;
+  margin: 15px;
   padding: 0px;
   // Scrolling effect in here
 `;
 
 const HFive = styled.h5`
-  @import url("https://fonts.googleapis.com/css?family=Montserrat+Alternates:400,800");
+  @import url("https://fonts.googleapis.com/css?family=Montserrat:400,800");
   margin-bottom: 0px;
+  text-align: left;
 `;
 
 const ListItem = styled.li`
-&:hover {
-  curson: pointer;
-}
-@import url('https://fonts.googleapis.com/css?family=Montserrat');
-background: #2EC1E2
-margin-left: -10px;
-margin-top: 3px;
+  border-radius: 10px;
+  &:hover {
+    cursor: pointer;
+  }
+  @import url("https://fonts.googleapis.com/css?family=Montserrat");
+  background: #2ec1e2;
+  margin-left: -10px;
+  margin-top: 3px;
 `;
 
-export { Button, Header, Content, HeaderContainer, List, HFive, ListItem };
+export {
+  Button,
+  Header,
+  Content,
+  HeaderContainer,
+  List,
+  HFive,
+  ListItem,
+  wideButton
+};
