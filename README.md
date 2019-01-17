@@ -151,15 +151,15 @@ Front End
 
 ### Authors
 
-[Xavier Bruggen](https://github.com/xavierTL)
-
 [Ros Bell](https://github.com/rosbell)
+
+[Xavier Bruggen](https://github.com/xavierTL)
 
 [Brydie Caine](https://github.com/Bry-die)
 
-[Bevan Swanson](https://github.com/BevRivling)
-
 [Sean Fisher](https://github.com/pheadlessg)
+
+[Bevan Swanson](https://github.com/BevRivling)
 
 ### Acknowledgements
 
