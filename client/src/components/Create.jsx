@@ -57,7 +57,7 @@ class Create extends Component {
 
   render() {
     if (this.state.electionConfirmed) {
-      return <Redirect to={`/votes/${this.state.electionId}`} />;
+      return <Redirect to={`/vote/${this.state.electionId}`} />;
     }
     // While waiting for a response, cover page with loadingscreen
     if (this.state.voteLoading) {

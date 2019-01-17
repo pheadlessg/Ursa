@@ -51,9 +51,12 @@ class Vote extends Component {
   }
 
   componentDidMount() {
+    console.log('mounted');
     this.setState({ electionId: this.props.match.params.id }, () => {
       this.clock();
+      console.log(this.state);
       this.getElectionData().then(data => {
+        console.log(data);
         let { expirationTime, electionName } = data;
         let unixEnd = expirationTime;
         this.setState({ electionName, unixEnd });
