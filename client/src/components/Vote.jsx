@@ -16,7 +16,6 @@ class Vote extends Component {
   render() {
     const { candidatesData, electionName, unixEnd, time } = this.state;
     let countDown = moment.unix(unixEnd - time).format('H:mm:ss');
-    console.log(countDown);
 
     return (
       <div>
