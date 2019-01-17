@@ -2,7 +2,7 @@
 
 ## A BlockChain Voting application built on Ethereum VM
 
-description of project
+Ursa is a decentralised voting application build on the Ethereum platform which allows a user to create an election by entering a name, expiration time, candidates and a whitelist of voter addresses.
 
 ### Getting Started
 
@@ -36,8 +36,21 @@ Information on how to deploy the app
 
 ### Built With
 
+- [NodeJS](https://nodejs.org/en/)
+
+  Back End
+
+- [Truffle](https://truffleframework.com/truffle)
+- [Ganache](https://truffleframework.com/ganache)
+- [OpenZeppelin Tokens](https://openzeppelin.org/api/docs/get-started.html)
+
+Front End
+
 - [React](https://reactjs.org/)
-  Other things in the tech stack
+- [React Router](https://reacttraining.com/react-router/)
+- [Drizzle](https://truffleframework.com/drizzle)
+- [Moment](https://momentjs.com/)
+- [Styled Components](https://www.styled-components.com/)
 
 ### Authors
 
