@@ -1,28 +1,30 @@
 import React, { Component } from 'react';
 import { Content, Button } from '../GlobalStyle';
 const moment = require('moment');
-const electionId = 1;
 
 class Vote extends Component {
   state = {
+    electionId: null,
     electionName: null,
     loading: false,
     drizzleState: null,
     candidatesData: [],
-    time: null,
+    currentTime: null,
     unixEnd: null
   };
 
   render() {
-    const { candidatesData, electionName, unixEnd, time } = this.state;
-    let countDown = moment.unix(unixEnd - time).format('H:mm:ss');
-
+    const { candidatesData, electionName, unixEnd, currentTime } = this.state;
+    let countDown = moment.unix(unixEnd - currentTime).format('H:mm:ss');
     return (
       <div>
         <h2>{`vote on ${electionName}`}</h2>
         <h3>{`end time: ${moment.unix(unixEnd).calendar()}`}</h3>
         <h3>
-          vote {time > unixEnd ? 'now closed' : `open: ${countDown} remaining`}
+          vote{' '}
+          {currentTime > unixEnd
+            ? 'now closed'
+            : `open: ${countDown} remaining`}
         </h3>
         <Button onClick={() => this.logString()}>smoke test</Button>
         <Button onClick={() => this.callNewElection()}>
@@ -49,21 +51,24 @@ class Vote extends Component {
   }
 
   componentDidMount() {
-    this.clock();
-    const { loading } = this.props;
-    // if (loading) return;
-    this.getElectionData().then(data => {
-      let { expirationTime, electionName } = data;
-      let unixEnd = expirationTime;
-      this.setState({ electionName, unixEnd });
-      this.retrieveCandidates();
+    console.log('mounted');
+    this.setState({ electionId: this.props.match.params.id }, () => {
+      this.clock();
+      console.log(this.state);
+      this.getElectionData().then(data => {
+        console.log(data);
+        let { expirationTime, electionName } = data;
+        let unixEnd = expirationTime;
+        this.setState({ electionName, unixEnd });
+        this.retrieveCandidates();
+      });
     });
   }
 
   clock = () => {
     setInterval(() => {
-      let time = moment(Date.now()).unix();
-      this.setState({ time });
+      let currentTime = moment(Date.now()).unix();
+      this.setState({ currentTime });
     }, 1000);
   };
 
@@ -91,17 +96,20 @@ class Vote extends Component {
 
   voteForCandidate = async candId => {
     const { methods } = this.props.parentState.drizzle.contracts.Vote;
+    const { electionId } = this.state;
     const response = await methods.voteForCandidate(candId, electionId).send();
     await this.retrieveCandidates();
   };
 
   getElectionData = async () => {
+    const { electionId } = this.state;
     const { methods } = this.props.parentState.drizzle.contracts.Vote;
     const data = await methods.elections(electionId).call();
     return data;
   };
 
   retrieveCandidates = async () => {
+    const { electionId } = this.state;
     const { methods } = this.props.parentState.drizzle.contracts.Vote;
     const candidates = await methods.getElectionCandidates(electionId).call();
     const promiseArray = [];

@@ -8,7 +8,7 @@ class ElectionCard extends Component {
     return (
       <div>
         <Button>
-          <Link to={{pathname: '/vote', search: `?id=${this.props.electionid[3]}`}}>
+          <Link to={{pathname: `/vote/${this.props.electionid[3]}`}}>
           Election Name: {this.props.electionid.electionName}
           </Link>
         </Button>
