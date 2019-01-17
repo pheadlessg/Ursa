@@ -1,8 +1,9 @@
-import React, { Component } from 'react';
-import { Content } from '../GlobalStyle';
-import styled from 'styled-components';
-import { PieChart } from 'react-easy-chart';
-const moment = require('moment');
+import React, { Component } from "react";
+import { Content } from "../GlobalStyle";
+import styled from "styled-components";
+import { PieChart } from "react-easy-chart";
+import remove_non_ascii from "../utils";
+const moment = require("moment");
 
 const Table = styled.table`
   width: 100%;
@@ -46,7 +47,7 @@ class Vote extends Component {
       currentTime,
       isWhiteListed
     } = this.state;
-    let countDown = moment.unix(unixEnd - currentTime).format('H:mm:ss');
+    let countDown = moment.unix(unixEnd - currentTime).format("H:mm:ss");
     return (
       <Voter>
         <h2>{`Poll: ${electionName}`}</h2>
@@ -67,19 +68,19 @@ class Vote extends Component {
               </tr>
               <tbody>
                 {candidatesData.map(candidate => (
-                  <tr key={candidate['0']}>
+                  <tr key={candidate["0"]}>
                     <th>
-                      <div>{candidate['0']}</div>
+                      <div>{candidate["0"]}</div>
                     </th>
                     <th>
-                      <div>{this.hexTranslate(candidate['1'])}</div>
+                      <div>{this.hexTranslate(candidate["1"])}</div>
                     </th>
                     <th>
-                      <div>{candidate['2']}</div>
+                      <div>{candidate["2"]}</div>
                     </th>
                     {isWhiteListed && currentTime < unixEnd ? (
                       <VoteButton
-                        onClick={() => this.voteForCandidate(candidate['0'])}
+                        onClick={() => this.voteForCandidate(candidate["0"])}
                       >
                         vote
                       </VoteButton>
@@ -88,7 +89,7 @@ class Vote extends Component {
                 ))}
               </tbody>
             </Table>
-            {isWhiteListed ? null : 'you are not registered to vote'}
+            {isWhiteListed ? null : "you are not registered to vote"}
           </div>
         ) : (
           "empty"
@@ -115,8 +116,8 @@ class Vote extends Component {
   formatCandidateData = data => {
     return data.reduce((acc, cand) => {
       const result = {
-        key: cand['0'],
-        value: cand['2']
+        key: cand["0"],
+        value: cand["2"]
       };
       acc.push(result);
       return acc;
@@ -146,7 +147,6 @@ class Vote extends Component {
     const { methods } = this.props.parentState.drizzle.contracts.Vote;
     console.log(await methods.smokeTest().call());
   };
-
 
   voteForCandidate = async candId => {
     const { methods } = this.props.parentState.drizzle.contracts.Vote;
@@ -189,7 +189,9 @@ class Vote extends Component {
     let hex = str.toString();
     let out = "";
     for (let i = 0; i < hex.length; i += 2) {
-      out += String.fromCharCode(parseInt(hex.substr(i, 2), 16));
+      if (hex[i] !== "0") {
+        out += String.fromCharCode(parseInt(hex.substr(i, 2), 16));
+      }
     }
     return out;
   }
