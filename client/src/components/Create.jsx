@@ -5,7 +5,46 @@ import {Redirect} from 'react-router-dom';
 
 const CreateScreen = styled.div`
 margin: auto;
+display: grid;
+  grid-template-rows: 1fr 1fr;
+  grid-template-columns: 2fr 1fr;
 `;
+
+const CreateForm = styled.form`
+// display: flex;
+grid-column: 1;
+grid-row:1/span2`;
+
+const DisplayCandidates = styled.div`
+grid-column: 2;
+grid-row: 1;
+`;
+
+const DisplayVoters = styled.div`
+grid-column: 2;
+grid-row: 2;
+`;
+
+const List = styled.ul`
+list-style: none;
+margin: 0px;
+padding: 0px;
+// Scrolling effect in here
+`;
+
+const HFive = styled.h5`
+margin-bottom: 0px;
+`
+
+const ListItem = styled.li`
+&:hover {
+  curson: pointer;
+}
+background: #2EC1E2
+margin-left: -10px;
+margin-top: 3px;
+`;
+
 
 const InputField = styled.div`
 margin: 10px;`;
@@ -32,8 +71,8 @@ class Create extends Component {
     }
     return (
       <CreateScreen>
-        <h2>Create new Election</h2>
-        <form>
+        {/* <Title>Create new Election</Title> */}
+        <CreateForm>
           <InputField>
           <label htmlFor="electionName">Election Name</label>
           <br />
@@ -48,7 +87,7 @@ class Create extends Component {
           
           <InputField>
           <label htmlFor="expirationTime">
-            How long do you want the election to last for?
+            Election Length
           </label>
           <br />
           <input
@@ -79,31 +118,31 @@ class Create extends Component {
             onChange={this.handleChange}
           />
           </InputField>
-          <Button onClick={this.submitElection}>START ELECTION</Button>
-        </form>
-        <h5>Candidates:</h5>
-        <ul>
+          <Button center onClick={this.submitElection}>START ELECTION</Button>
+        </CreateForm>
+        <DisplayCandidates>
+        <HFive>Candidates:</HFive>
+        <List>
           {this.state.election.candidates.map(candi => (
-            <li>{candi}</li>
+            <ListItem key={candi} onClick={(e) => this.removeItem(e, 'candidates')}>{candi}</ListItem>
           ))}
-        </ul>
-        <h5>Voters:</h5>
-        <ul>
+        </List>
+        </DisplayCandidates>
+        <DisplayVoters>
+        <HFive>Voters:</HFive>
+        <List>
           {this.state.election.whiteList.map(voter => (
-            <li>{voter}</li>
+            <ListItem key={voter} onClick={(e) => this.removeItem(e, 'whiteList')}>{voter}</ListItem>
           ))}
-        </ul>
+        </List>
+        </DisplayVoters>
       </CreateScreen>
     );
   }
 
-  componentDidMount() {
-    const { router, params, location, routes } = this.props;
-  }
+   //         '0x994DD176fA212730D290465e659a7c7D0549e384',
+  //         '0xe7BA88433E60C53c69b19f503e00851B98891551'
 
-  componentDidUpdate() {
-    
-  }
   handleChange = event => {
     const { value, name } = event.target;
     this.setState(prevState => ({
@@ -116,34 +155,36 @@ class Create extends Component {
     if (event.key == 'Enter') {
       event.preventDefault();
       if (event.target.name == 'newCandidate') {
-        this.addCandidate(this.state.election.newCandidate);
+        this.addItem(this.state.election.newCandidate, 'candidates');
         event.target.value = '';
       }
       if (event.target.name == 'newVoter') {
-        this.addVoter(this.state.election.newVoter);
+        this.addItem(this.state.election.newVoter, 'whiteList');
         event.target.value = '';
       }
     }
   };
 
-  addCandidate = candidateName => {
-    const hexCandiBoi = this.stringTranslate(candidateName)
-    this.setState(prevState => ({
-      election: {
-        ...prevState.election,
-        candidates: [...prevState.election.candidates, candidateName]
-      }
-    }));
-  };
+  addItem = (item, array) => {
+    if (this.state.election[array].includes(item)) alert('only unique inputs, ese')
+    else {
+        this.setState(prevState => ({
+          election: {
+            ...prevState.election,
+            [array]: [...prevState.election[array], item]
+          }
+        }));
+    }
+  }
 
-  addVoter = voter => {
+  removeItem = (item, array) => {
+    const toRemove = item.target.innerHTML;
+    const newArray = this.state.election[array].filter(li => li !== toRemove)
+    console.log(newArray)
     this.setState(prevState => ({
-      election: {
-        ...prevState.election,
-        whiteList: [...prevState.election.whiteList, voter]
-      }
-    }));
-  };
+      election: {...prevState.election, [array]: newArray }
+    }))
+  }
 
   submitElection = async (event) => {
     event.preventDefault();
@@ -170,19 +211,6 @@ class Create extends Component {
 
   }
 
-  //         '0x994DD176fA212730D290465e659a7c7D0549e384',
-  //         '0xe7BA88433E60C53c69b19f503e00851B98891551'
-
-
-  hexTranslate(str) {
-    const array = [];
-    for (let i = 0; i < str.length; i++) {
-      const hex = Number(str.charCodeAt(i)).toString(16);
-      array.push(hex);
-    }
-    return array.join('');
-  }
-
   stringTranslate = str => {
     const out = [];
     for (let i = 0; i < str.length; i++) {
@@ -190,14 +218,6 @@ class Create extends Component {
       out.push(hex);
     }
     return `0x${out.join('')}`;
-  };
-
-
-
-  logElection = async () => {
-    const { methods } = this.props.parentState.drizzle.contracts.Vote;
-    const key = await methods.elections(1).call();
-    console.log(key);
   };
 
   handleSubmit = event => {

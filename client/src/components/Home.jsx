@@ -20,7 +20,7 @@ class Home extends Component {
       <HomeScreen>
         <h2>welcome to ursa</h2>
         <br />
-        <h3>the blockchain voting application</h3>
+        <h3>a blockchain voting application</h3>
         <Button primary><StyledLink to="/create">Create New Election</StyledLink></Button>
         <Button><StyledLink to="/links">Choose an Election</StyledLink></Button>
       </HomeScreen  >);
