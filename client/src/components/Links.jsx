@@ -3,7 +3,7 @@ import ElectionCard from './ElectionCard';
 
 class Links extends Component {
   state = {
-    electionCount: null,
+    electionCount: 0,
     electionArr: []
   };
   render() {
@@ -24,8 +24,9 @@ class Links extends Component {
       .electionCount()
       .call()
       .then(data => {
-        this.setState({ electionCount: data });
-        this.createElectionArray();
+        this.setState({ electionCount: data }, () => {
+          this.createElectionArray();
+        });
       });
   };
 

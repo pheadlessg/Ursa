@@ -1,6 +1,29 @@
 import React, { Component } from 'react';
-import { Content, Button } from '../GlobalStyle';
+import { Content } from '../GlobalStyle';
+import styled from 'styled-components';
+import { PieChart } from 'react-easy-chart';
 const moment = require('moment');
+
+const Table = styled.table`
+  width: 100%;
+  border: 1px solid black;
+`;
+
+const Voter = styled.div`
+  width: 100%;
+`;
+
+const VoteButton = styled.button`
+  border: 1px solid black;
+  width: 30px;
+  height: 30px;
+  padding: 0px;
+`;
+
+const ResultChart = styled(PieChart)`
+  height: 50px;
+`;
+const TableColumn = styled.tc;
 
 class Vote extends Component {
   state = {
@@ -10,53 +33,77 @@ class Vote extends Component {
     drizzleState: null,
     candidatesData: [],
     currentTime: null,
-    unixEnd: null
+    unixEnd: null,
+    isWhiteListed: false,
+    isLoaded: false
   };
 
   render() {
-    const { candidatesData, electionName, unixEnd, currentTime } = this.state;
+    const {
+      candidatesData,
+      electionName,
+      unixEnd,
+      currentTime,
+      isWhiteListed
+    } = this.state;
     let countDown = moment.unix(unixEnd - currentTime).format('H:mm:ss');
     return (
-      <div>
-        <h2>{`vote on ${electionName}`}</h2>
-        <h3>{`end time: ${moment.unix(unixEnd).calendar()}`}</h3>
+      <Voter>
+        <h2>{`Poll: ${electionName}`}</h2>
+        <h3>{`polls close: ${moment.unix(unixEnd).calendar()}`}</h3>
         <h3>
           vote{' '}
           {currentTime > unixEnd
             ? 'now closed'
             : `open: ${countDown} remaining`}
         </h3>
-        <Button onClick={() => this.logString()}>smoke test</Button>
-        <Button onClick={() => this.callNewElection()}>
-          call new election
-        </Button>
-        {candidatesData.length ? (
+        {true ? (
           <div>
-            {candidatesData.map(candidate => (
-              <div key={candidate['0']}>
-                <div>{`id: ${candidate['0']}`}</div>
-                <div>{this.hexTranslate(candidate['1'])}</div>
-                <div>{`votes: ${candidate['2']}`}</div>
-                <Button onClick={() => this.voteForCandidate(candidate['0'])}>
-                  vote
-                </Button>
-              </div>
-            ))}
+            <Table>
+              <tr>
+                <th>#id</th>
+                <th>Candidate</th>
+                <th>Count</th>
+              </tr>
+              <tbody>
+                {candidatesData.map(candidate => (
+                  <tr key={candidate['0']}>
+                    <th>
+                      <div>{candidate['0']}</div>
+                    </th>
+                    <th>
+                      <div>{this.hexTranslate(candidate['1'])}</div>
+                    </th>
+                    <th>
+                      <div>{candidate['2']}</div>
+                    </th>
+                    {isWhiteListed && currentTime < unixEnd ? (
+                      <VoteButton
+                        onClick={() => this.voteForCandidate(candidate['0'])}
+                      >
+                        vote
+                      </VoteButton>
+                    ) : null}
+                  </tr>
+                ))}
+              </tbody>
+            </Table>
+            {isWhiteListed ? null : 'you are not registered to vote'}
           </div>
         ) : (
           'empty'
         )}
-      </div>
+        <ResultChart data={this.formatCandidateData(candidatesData)} />
+      </Voter>
     );
   }
 
   componentDidMount() {
     console.log('mounted');
     this.setState({ electionId: this.props.match.params.id }, () => {
+      this.isWhiteListed();
       this.clock();
-      console.log(this.state);
       this.getElectionData().then(data => {
-        console.log(data);
         let { expirationTime, electionName } = data;
         let unixEnd = expirationTime;
         this.setState({ electionName, unixEnd });
@@ -65,11 +112,34 @@ class Vote extends Component {
     });
   }
 
+  formatCandidateData = data => {
+    return data.reduce((acc, cand) => {
+      const result = {
+        key: cand['0'],
+        value: cand['2']
+      };
+      acc.push(result);
+      return acc;
+    }, []);
+  };
+
   clock = () => {
     setInterval(() => {
       let currentTime = moment(Date.now()).unix();
       this.setState({ currentTime });
     }, 1000);
+  };
+
+  isWhiteListed = async () => {
+    const user = this.props.parentState.drizzle.web3.eth.accounts.givenProvider
+      .selectedAddress;
+    const { electionId } = this.state;
+    const { methods } = this.props.parentState.drizzle.contracts.Vote;
+    const whiteList = await methods.getWhiteList(electionId).call();
+    whiteList.forEach(account => {
+      if (account.toLowerCase() === user.toLowerCase())
+        this.setState({ isWhiteListed: true });
+    });
   };
 
   logString = async () => {
@@ -91,7 +161,6 @@ class Vote extends Component {
         ]
       )
       .send();
-    console.log(response);
   };
 
   voteForCandidate = async candId => {
@@ -118,7 +187,9 @@ class Vote extends Component {
       promiseArray.push(candidateData);
     }
     const candidatesData = await Promise.all(promiseArray);
-    this.setState({ candidatesData });
+    this.setState({ candidatesData, isLoaded: true }, () => {
+      this.formatCandidateData(this.state.candidatesData);
+    });
   };
 
   stringTranslate = str => {
