@@ -1,16 +1,15 @@
-import React, { Component } from 'react';
-import { Link } from 'react-router-dom';
-import { Button } from '../GlobalStyle';
+import React, { Component } from "react";
+import { Link } from "react-router-dom";
+import { wideButton } from "../GlobalStyle";
 
 class ElectionCard extends Component {
   render() {
     return (
       <div>
-        <Button>
-          <Link to={{ pathname: `/vote/${this.props.electionid + 1}` }}>
+        <wideButton> <Link to={{ pathname: `/vote/${this.props.electionid + 1}` }}>
             Election Name: {this.props.electiondata.electionName}
           </Link>
-        </Button>
+        </wideButton>
       </div>
     );
   }

@@ -52,9 +52,9 @@ class Vote extends Component {
         <h2>{`Poll: ${electionName}`}</h2>
         <h3>{`polls close: ${moment.unix(unixEnd).calendar()}`}</h3>
         <h3>
-          vote{' '}
+          vote{" "}
           {currentTime > unixEnd
-            ? 'now closed'
+            ? "now closed"
             : `open: ${countDown} remaining`}
         </h3>
         {true ? (
@@ -91,7 +91,7 @@ class Vote extends Component {
             {isWhiteListed ? null : 'you are not registered to vote'}
           </div>
         ) : (
-          'empty'
+          "empty"
         )}
         <ResultChart data={this.formatCandidateData(candidatesData)} />
       </Voter>
@@ -99,7 +99,7 @@ class Vote extends Component {
   }
 
   componentDidMount() {
-    console.log('mounted');
+    console.log("mounted");
     this.setState({ electionId: this.props.match.params.id }, () => {
       this.isWhiteListed();
       this.clock();
@@ -147,21 +147,6 @@ class Vote extends Component {
     console.log(await methods.smokeTest().call());
   };
 
-  callNewElection = async () => {
-    console.log('uncomment me if you want another election instance');
-    const { methods } = this.props.parentState.drizzle.contracts.Vote;
-    const response = await methods
-      .startElection(
-        'Test',
-        9999,
-        ['0x63616e646964617465206f6e65', '0x63616e6469646174652074776f'],
-        [
-          '0x994DD176fA212730D290465e659a7c7D0549e384',
-          '0xe7BA88433E60C53c69b19f503e00851B98891551'
-        ]
-      )
-      .send();
-  };
 
   voteForCandidate = async candId => {
     const { methods } = this.props.parentState.drizzle.contracts.Vote;
@@ -198,11 +183,11 @@ class Vote extends Component {
       let hex = Number(str.charCodeAt(i)).toString(16);
       out.push(hex);
     }
-    return out.join('');
+    return out.join("");
   };
   hexTranslate(str) {
     let hex = str.toString();
-    let out = '';
+    let out = "";
     for (let i = 0; i < hex.length; i += 2) {
       out += String.fromCharCode(parseInt(hex.substr(i, 2), 16));
     }

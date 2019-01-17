@@ -6,6 +6,7 @@ import loading from "../loading.gif";
 
 const CreateScreen = styled.div`
   margin: auto;
+  margin-top: 0px;
   display: grid;
   grid-template-rows: 1fr 1fr;
   grid-template-columns: 2fr 1fr;
@@ -13,6 +14,7 @@ const CreateScreen = styled.div`
 
 const CreateForm = styled.form`
   // display: flex;
+  margin-top: 0px;
   grid-column: 1;
   grid-row: 1 / span2;
 `;
@@ -28,7 +30,8 @@ const DisplayVoters = styled.div`
 `;
 
 const InputField = styled.div`
-  margin: 10px;
+  text-align: left;
+  padding: 5px;
 `;
 
 const LoadingScreen = styled.div`
@@ -49,14 +52,31 @@ z-index: 10;
 `
 
 
+const Inputs = styled.div`
+  flex-grow: 1;
+  display: flex;
+  flex-direction: column;
+`;
+
+const Input = styled.input`
+  height: 40px;
+  width: 200px;
+  border-radius: 5px;
+  font-family: inherit;
+  font-size: 1.1rem;
+  border: 0;
+  background: #fefefe;
+  box-shadow: none;
+`;
+
 class Create extends Component {
   state = {
     election: {
-      electionName: '',
-      expirationTime: '',
-      newCandidate: '',
+      electionName: "",
+      expirationTime: "",
+      newCandidate: "",
       candidates: [],
-      newVoter: '',
+      newVoter: "",
       whiteList: []
     },
     electionId: 0,
@@ -82,60 +102,64 @@ class Create extends Component {
       <CreateScreen>
         {/* <Title>Create new Election</Title> */}
         <CreateForm>
-          <InputField>
-            <label htmlFor="electionName">Election Name</label>
-            <br />
-            <input
-              name="electionName"
-              type="text"
-              value={this.state.value}
-              onKeyPress={this.handleKeyPress}
-              onChange={this.handleChange}
-            />
-          </InputField>
+          <Inputs>
+            <InputField>
+              <label htmlFor="electionName">Election Name</label>
+              <br />
+              <Input
+                name="electionName"
+                type="text"
+                value={this.state.value}
+                onKeyPress={this.handleKeyPress}
+                onChange={this.handleChange}
+              />
+            </InputField>
 
-          <InputField>
-            <label htmlFor="expirationTime">Election Length</label>
-            <br />
-            <input
-              name="expirationTime"
-              type="text"
-              value={this.state.value}
-              onKeyPress={this.handleKeyPress}
-              onChange={this.handleChange}
-            />
-          </InputField>
-          <InputField>
-            <label htmlFor="newCandidate">Add Candidate</label>
-            <br />
-            <input
-              name="newCandidate"
-              type="text"
-              onKeyPress={this.handleKeyPress}
-              onChange={this.handleChange}
-            />
-          </InputField>
-          <InputField>
-            <label htmlFor="newVoter">Add Voter</label>
-            <br />
-            <input
-              name="newVoter"
-              type="text"
-              onKeyPress={this.handleKeyPress}
-              onChange={this.handleChange}
-            />
-          </InputField>
-          <Button center onClick={this.submitElection}>
-            START ELECTION
-          </Button>
+            <InputField>
+              <label htmlFor="expirationTime">Election Length</label>
+              <br />
+              <Input
+                name="expirationTime"
+                type="text"
+                value={this.state.value}
+                onKeyPress={this.handleKeyPress}
+                onChange={this.handleChange}
+              />
+            </InputField>
+            <InputField>
+              <label htmlFor="newCandidate">
+                Add Candidate - hit return to add
+              </label>
+              <br />
+              <Input
+                name="newCandidate"
+                type="text"
+                onKeyPress={this.handleKeyPress}
+                onChange={this.handleChange}
+              />
+            </InputField>
+            <InputField>
+              <label htmlFor="newVoter">Add Voter - hit return to add</label>
+              <br />
+              <Input
+                name="newVoter"
+                type="text"
+                onKeyPress={this.handleKeyPress}
+                onChange={this.handleChange}
+              />
+            </InputField>
+            <Button center onClick={this.submitElection}>
+              START ELECTION
+            </Button>
+          </Inputs>
         </CreateForm>
         <DisplayCandidates>
-          <HFive>Candidates:</HFive>
+          <HFive>Candidates: (Click to remove) </HFive>
           <List>
             {this.state.election.candidates.map(candi => (
               <ListItem
                 key={candi}
-                onClick={e => this.removeItem(e, 'candidates')}
+                onClick={e => this.removeItem(e, "candidates")}
               >
                 {candi}
               </ListItem>
@@ -143,12 +167,12 @@ class Create extends Component {
           </List>
         </DisplayCandidates>
         <DisplayVoters>
-          <HFive>Voters:</HFive>
+          <HFive>Voters (Click to remove):</HFive>
           <List>
             {this.state.election.whiteList.map(voter => (
               <ListItem
                 key={voter}
-                onClick={e => this.removeItem(e, 'whiteList')}
+                onClick={e => this.removeItem(e, "whiteList")}
               >
                 {voter}
               </ListItem>
@@ -171,22 +195,22 @@ class Create extends Component {
 
   // prevent default on enter press and add to array in state
   handleKeyPress = event => {
-    if (event.key == 'Enter') {
+    if (event.key === "Enter") {
       event.preventDefault();
-      if (event.target.name == 'newCandidate') {
-        this.addItem(this.state.election.newCandidate, 'candidates');
-        event.target.value = '';
+      if (event.target.name === "newCandidate") {
+        this.addItem(this.state.election.newCandidate, "candidates");
+        event.target.value = "";
       }
-      if (event.target.name == 'newVoter') {
-        this.addItem(this.state.election.newVoter, 'whiteList');
-        event.target.value = '';
+      if (event.target.name === "newVoter") {
+        this.addItem(this.state.election.newVoter, "whiteList");
+        event.target.value = "";
       }
     }
   };
 
   addItem = (item, array) => {
     if (this.state.election[array].includes(item))
-      alert('only unique inputs, ese');
+      alert("only unique inputs, ese");
     else {
       this.setState(prevState => ({
         election: {
@@ -230,7 +254,7 @@ class Create extends Component {
           this.setState({ electionConfirmed: true, electionId: id });
         });
     } else {
-      alert('please fill out all fields');
+      alert("please fill out all fields");
     }
   };
 
@@ -240,7 +264,7 @@ class Create extends Component {
       let hex = Number(str.charCodeAt(i)).toString(16);
       out.push(hex);
     }
-    return `0x${out.join('')}`;
+    return `0x${out.join("")}`;
   };
 
   handleSubmit = event => {

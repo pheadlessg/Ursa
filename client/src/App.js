@@ -15,11 +15,12 @@ class App extends Component {
     if (this.state.loading) return 'Loading Drizzle...';
     return (
       <div className="App">
+      <Router>
         <MainContainer>
           <HeaderContainer>
-            <Header main />
+            <Link to='/'><Header main /></Link>
           </HeaderContainer>
-          <Router>
+          
             <Content>
               <Route
                 exact
@@ -54,8 +55,8 @@ class App extends Component {
                 )}
               />
             </Content>
-          </Router>
         </MainContainer>
+        </Router>
       </div>
     );
   }
