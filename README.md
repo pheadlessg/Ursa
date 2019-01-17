@@ -28,7 +28,7 @@ How do you interact with it?
 
 ### Can I test it?
 
-Run through of solidity testing and explaination of how to test
+Run through of solidity testing and explaination of how to test with mocha and chai
 
 ### Deployment
 
