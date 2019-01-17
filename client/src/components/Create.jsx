@@ -1,7 +1,7 @@
-import React, { Component } from 'react';
-import { Content, Button, List, HFive, ListItem } from '../GlobalStyle';
-import styled from 'styled-components';
-import { Redirect } from 'react-router-dom';
+import React, { Component } from "react";
+import { Content, Button, List, HFive, ListItem } from "../GlobalStyle";
+import styled from "styled-components";
+import { Redirect } from "react-router-dom";
 
 const CreateScreen = styled.div`
   margin: auto;
@@ -41,11 +41,11 @@ const LoadingScreen = styled.div`
 class Create extends Component {
   state = {
     election: {
-      electionName: '',
-      expirationTime: '',
-      newCandidate: '',
+      electionName: "",
+      expirationTime: "",
+      newCandidate: "",
       candidates: [],
-      newVoter: '',
+      newVoter: "",
       whiteList: []
     },
     electionId: 0,
@@ -121,7 +121,7 @@ class Create extends Component {
             {this.state.election.candidates.map(candi => (
               <ListItem
                 key={candi}
-                onClick={e => this.removeItem(e, 'candidates')}
+                onClick={e => this.removeItem(e, "candidates")}
               >
                 {candi}
               </ListItem>
@@ -134,7 +134,7 @@ class Create extends Component {
             {this.state.election.whiteList.map(voter => (
               <ListItem
                 key={voter}
-                onClick={e => this.removeItem(e, 'whiteList')}
+                onClick={e => this.removeItem(e, "whiteList")}
               >
                 {voter}
               </ListItem>
@@ -157,22 +157,22 @@ class Create extends Component {
 
   // prevent default on enter press and add to array in state
   handleKeyPress = event => {
-    if (event.key == 'Enter') {
+    if (event.key === "Enter") {
       event.preventDefault();
-      if (event.target.name == 'newCandidate') {
-        this.addItem(this.state.election.newCandidate, 'candidates');
-        event.target.value = '';
+      if (event.target.name === "newCandidate") {
+        this.addItem(this.state.election.newCandidate, "candidates");
+        event.target.value = "";
       }
-      if (event.target.name == 'newVoter') {
-        this.addItem(this.state.election.newVoter, 'whiteList');
-        event.target.value = '';
+      if (event.target.name === "newVoter") {
+        this.addItem(this.state.election.newVoter, "whiteList");
+        event.target.value = "";
       }
     }
   };
 
   addItem = (item, array) => {
     if (this.state.election[array].includes(item))
-      alert('only unique inputs, ese');
+      alert("only unique inputs, ese");
     else {
       this.setState(prevState => ({
         election: {
@@ -216,7 +216,7 @@ class Create extends Component {
           this.setState({ electionConfirmed: true, electionId: id });
         });
     } else {
-      alert('please fill out all fields');
+      alert("please fill out all fields");
     }
   };
 
@@ -226,7 +226,7 @@ class Create extends Component {
       let hex = Number(str.charCodeAt(i)).toString(16);
       out.push(hex);
     }
-    return `0x${out.join('')}`;
+    return `0x${out.join("")}`;
   };
 
   handleSubmit = event => {
