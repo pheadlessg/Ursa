@@ -2,7 +2,6 @@ import React, { Component } from "react";
 import { Content } from "../GlobalStyle";
 import styled from "styled-components";
 import { PieChart } from "react-easy-chart";
-import remove_non_ascii from "../utils";
 const moment = require("moment");
 
 const Table = styled.table`
@@ -47,7 +46,7 @@ class Vote extends Component {
       currentTime,
       isWhiteListed
     } = this.state;
-    let countDown = moment.unix(unixEnd - currentTime).format("H:mm:ss");
+    let countDown = moment.unix(unixEnd - currentTime - 3600).format("H:mm:ss");
     return (
       <Voter>
         <h2>{`Poll: ${electionName}`}</h2>
@@ -126,7 +125,7 @@ class Vote extends Component {
 
   clock = () => {
     setInterval(() => {
-      let currentTime = moment(Date.now()).unix();
+      let currentTime = moment(Date.now() / 1000);
       this.setState({ currentTime });
     }, 1000);
   };

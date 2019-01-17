@@ -84,8 +84,10 @@ contract("Vote", accounts => {
     });
     describe("voteForCandidate", () => {
       it("tansfers the token back to the owner", async () => {
+        let balance = await instance.balanceOf(accounts[1]);
+        expect(balance.toNumber()).to.equal(1);
         await instance.voteForCandidate(1, 1, { from: accounts[1] });
-        let balance = await instance.balanceOf(accounts[0]);
+        balance = await instance.balanceOf(accounts[0]);
         expect(balance.toNumber()).to.equal(1);
         balance = await instance.balanceOf(accounts[1]);
         expect(balance.toNumber()).to.equal(0);
