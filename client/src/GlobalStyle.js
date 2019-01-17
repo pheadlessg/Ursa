@@ -51,11 +51,25 @@ const Button = styled.button`
   }
 `;  
 
+const List = styled.ul`
+list-style: none;
+margin: 0px;
+padding: 0px;
+// Scrolling effect in here
+`;
+
+const HFive = styled.h5`
+margin-bottom: 0px;
+`
+
+const ListItem = styled.li`
+&:hover {
+  curson: pointer;
+}
+background: #2EC1E2
+margin-left: -10px;
+margin-top: 3px;
+`;
 
 
-
-
-
-
-
-export {Button, Header, Content, HeaderContainer}
+export {Button, Header, Content, HeaderContainer, List, HFive, ListItem}

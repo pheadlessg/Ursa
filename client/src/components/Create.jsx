@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Content, Button } from '../GlobalStyle';
+import { Content, Button, List, HFive, ListItem } from '../GlobalStyle';
 import styled from "styled-components";
 import {Redirect} from 'react-router-dom';
 
@@ -25,25 +25,7 @@ grid-column: 2;
 grid-row: 2;
 `;
 
-const List = styled.ul`
-list-style: none;
-margin: 0px;
-padding: 0px;
-// Scrolling effect in here
-`;
 
-const HFive = styled.h5`
-margin-bottom: 0px;
-`
-
-const ListItem = styled.li`
-&:hover {
-  curson: pointer;
-}
-background: #2EC1E2
-margin-left: -10px;
-margin-top: 3px;
-`;
 
 
 const InputField = styled.div`
@@ -75,7 +57,7 @@ class Create extends Component {
   };
 
   render() {
-    if (!this.state.electionConfirmed) {
+    if (this.state.electionConfirmed) {
       return (
         <Redirect
           to={{
