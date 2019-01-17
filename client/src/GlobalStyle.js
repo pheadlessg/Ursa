@@ -2,15 +2,14 @@ import styled from "styled-components";
 import media from "./media";
 import logo from "./logo.png";
 
-
 const HeaderContainer = styled.div`
   grid-column: 2;
   grid-row: 1;
 `;
 
 const Header = styled.img.attrs({
-    src: logo
-  })`
+  src: logo
+})`
     padding-top: 3vh;
     padding-bottom: 3vh;
     border: none;
@@ -29,14 +28,18 @@ const Header = styled.img.attrs({
   `;
 
 const Content = styled.div`
-// background-color: #FFBD19;
-display: flex;
-text-align: center;
+  // background-color: #FFBD19;
+  display: flex;
+  text-align: center;
   grid-column: 2;
-  grid-row: ${props => (props.main ? '2' : '2 / span 2')};
+  grid-row: ${props => (props.main ? "2" : "2 / span 2")};
 `;
 
+const Form = styled.form``;
+
 const Button = styled.button`
+  @import url("https://fonts.googleapis.com/css?family=Montserrat|Montserrat+Alternates:400,800");
+  font-family: "Montserrat-Alternates", sans-serif;
   background: ${props => (props.primary ? "#2EC1E2" : "#11414D")};
   color: ${props => (props.primary ? "#091316" : "#FEFEFE")};
   font-size: 1em;
@@ -49,27 +52,28 @@ const Button = styled.button`
     curson: pointer;
     box-shadow: 3px 3px 10px #888888;
   }
-`;  
+`;
 
 const List = styled.ul`
-list-style: none;
-margin: 0px;
-padding: 0px;
-// Scrolling effect in here
+  list-style: none;
+  margin: 0px;
+  padding: 0px;
+  // Scrolling effect in here
 `;
 
 const HFive = styled.h5`
-margin-bottom: 0px;
-`
+  @import url("https://fonts.googleapis.com/css?family=Montserrat+Alternates:400,800");
+  margin-bottom: 0px;
+`;
 
 const ListItem = styled.li`
 &:hover {
   curson: pointer;
 }
+@import url('https://fonts.googleapis.com/css?family=Montserrat');
 background: #2EC1E2
 margin-left: -10px;
 margin-top: 3px;
 `;
 
-
-export {Button, Header, Content, HeaderContainer, List, HFive, ListItem}
+export { Button, Header, Content, HeaderContainer, List, HFive, ListItem };
