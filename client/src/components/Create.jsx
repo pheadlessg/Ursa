@@ -49,6 +49,14 @@ margin-top: 3px;
 const InputField = styled.div`
 margin: 10px;`;
 
+const LoadingScreen = styled.div`
+z-index: 10;
+background: rgba(195, 212, 219, 0.4);
+opacity: 0.5;
+height: 100vh;
+width: 100vw;
+`;
+
 class Create extends Component {
   state = {
     election: {
@@ -60,16 +68,23 @@ class Create extends Component {
       whiteList: []
     },
     electionId: 0,
+    voteLoading: false,
     electionConfirmed: false,
     loading: false,
     drizzleState: null
   };
 
   render() {
+    // If everything is successful, re-route to vote page
     if (this.state.electionConfirmed) {
       return <Redirect to={{pathname: '/vote', search: `?id=${this.state.electionId}`}} />
     }
+    // While waiting for a response, cover page with loadingscreen
+    if (this.state.voteLoading) {
+      return <LoadingScreen></LoadingScreen>
+    }
     return (
+      // {this.state.voteLoading ? `<LoadingScreen></LoadingScreen>` : ''}
       <CreateScreen>
         {/* <Title>Create new Election</Title> */}
         <CreateForm>
@@ -140,7 +155,7 @@ class Create extends Component {
     );
   }
 
-   //         '0x994DD176fA212730D290465e659a7c7D0549e384',
+  //         '0x994DD176fA212730D290465e659a7c7D0549e384',
   //         '0xe7BA88433E60C53c69b19f503e00851B98891551'
 
   handleChange = event => {
@@ -191,6 +206,7 @@ class Create extends Component {
     const {election} = this.state
     if(election.electionName && election.expirationTime && election.candidates.length > 0 && election.whiteList.length > 0) {
     const {methods} = this.props.parentState.drizzle.contracts.Vote;
+    this.setState({voteLoading: true});
     const response = await methods
       .startElection(
         election.electionName,
@@ -202,7 +218,7 @@ class Create extends Component {
       .then(() => methods.electionCount()
       .call())
       .then((id) => {
-          this.setState({electionConfirmed: true, electionId: id})
+          this.setState({ electionConfirmed: true, electionId: id})
         })
       }
       else {
