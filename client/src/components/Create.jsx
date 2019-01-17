@@ -60,6 +60,7 @@ class Create extends Component {
     if (this.state.electionConfirmed) {
       return (
         <Redirect
+          id={this.state.electionId}
           to={{
             pathname: `/vote`,
             search: `?id=${this.state.electionId}`,
