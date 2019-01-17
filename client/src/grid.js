@@ -2,7 +2,7 @@ import styled, { css } from "styled-components";
 import media from "./media";
 
 const MainContainer = styled.div`
-@import url("https://fonts.googleapis.com/css?family=Montserrat+Alternates:400,800");
+@import url("https://fonts.googleapis.com/css?family=Montserrat");
 font-family: 'Montserrat Alternates', sans-serif;
   height: 100%;
   width: 100%;
