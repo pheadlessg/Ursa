@@ -75,9 +75,16 @@ class Create extends Component {
   };
 
   render() {
-    // If everything is successful, re-route to vote page
-    if (this.state.electionConfirmed) {
-      return <Redirect to={{pathname: '/vote', search: `?id=${this.state.electionId}`}} />
+    if (!this.state.electionConfirmed) {
+      return (
+        <Redirect
+          to={{
+            pathname: `/vote`,
+            search: `?id=${this.state.electionId}`,
+            state: { id: this.state.electionId }
+          }}
+        />
+      );
     }
     // While waiting for a response, cover page with loadingscreen
     if (this.state.voteLoading) {
@@ -201,7 +208,7 @@ class Create extends Component {
     }))
   }
 
-  submitElection = async (event) => {
+  submitElection = async event => {
     event.preventDefault();
     const {election} = this.state
     if(election.electionName && election.expirationTime && election.candidates.length > 0 && election.whiteList.length > 0) {
