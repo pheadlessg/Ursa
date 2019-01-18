@@ -68,12 +68,11 @@ class Vote extends Component {
     return (
       <Voter>
         <h2>{`Poll: ${electionName}`}</h2>
-        <h3>{`polls close: ${moment.unix(unixEnd).calendar()}`}</h3>
+        <h3>{`Polls close: ${moment.unix(unixEnd).calendar()}`}</h3>
         <h3>
-          vote{' '}
           {currentTime > unixEnd
-            ? 'now closed'
-            : `open: ${countDown} remaining`}
+            ? 'Results:'
+            : `Vote open: ${countDown} remaining`}
         </h3>
         {true ? (
           <div>
@@ -106,7 +105,7 @@ class Vote extends Component {
                 ))}
               </tbody>
             </Table>
-            {isWhiteListed ? null : 'you are not registered to vote'}
+            {isWhiteListed ? null : 'You are not registered to vote'}
           </div>
         ) : (
           'empty'
@@ -146,8 +145,9 @@ class Vote extends Component {
 
   formatCandidateData = data => {
     return data.reduce((acc, cand) => {
+      // console.log(cand['2'])
       const result = {
-        key: this.hexTranslate(cand['1']),
+        key: cand['2'] > 0 ? this.hexTranslate(cand['1']) : null,
         value: cand['2']
       };
       acc.push(result);

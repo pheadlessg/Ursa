@@ -13,7 +13,7 @@ class Home extends Component {
   render() {
     return (
       <HomeScreen>
-        <h2>welcome to ursa</h2>
+        <h2>Welcome to ursa, </h2>
         <h3>a blockchain voting application</h3>
         <StyledLink main to="/create">
           <Button primary>Create New Election</Button>
