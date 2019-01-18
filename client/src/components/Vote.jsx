@@ -1,8 +1,8 @@
-import React, { Component } from "react";
-import { Content, LoadingScreen, Img, HFive } from "../GlobalStyle";
-import styled from "styled-components";
-import { PieChart } from "react-easy-chart";
-const moment = require("moment");
+import React, { Component } from 'react';
+import { Content, LoadingScreen, Img, HFive } from '../GlobalStyle';
+import styled from 'styled-components';
+import { PieChart } from 'react-easy-chart';
+const moment = require('moment');
 
 const Table = styled.table`
   width: 100%;
@@ -26,8 +26,8 @@ const ResultChart = styled(PieChart)`
 `;
 const TableColumn = styled.tc;
 
-const TableHeader= styled.th`
-border-bottom: 1px solid black;
+const TableHeader = styled.th`
+  border-bottom: 1px solid black;
 `;
 
 class Vote extends Component {
@@ -41,8 +41,7 @@ class Vote extends Component {
     unixEnd: null,
     isWhiteListed: false,
     isLoaded: false,
-    voteLoading: false,
-
+    voteLoading: false
   };
 
   render() {
@@ -53,13 +52,15 @@ class Vote extends Component {
       currentTime,
       isWhiteListed
     } = this.state;
-    let countDown = moment.unix(unixEnd - currentTime - 3600).format("H:mm:ss");
+    let countDown = moment.unix(unixEnd - currentTime - 3600).format('H:mm:ss');
 
     if (this.state.voteLoading) {
-      return <LoadingScreen>
-        <Img/>
-        <HFive>mining a new block - this could take a few minutes...</HFive>
-      </LoadingScreen>;
+      return (
+        <LoadingScreen>
+          <Img />
+          <HFive>mining a new block - this could take a few minutes...</HFive>
+        </LoadingScreen>
+      );
     }
 
     return (
@@ -67,9 +68,9 @@ class Vote extends Component {
         <h2>{`Poll: ${electionName}`}</h2>
         <h3>{`polls close: ${moment.unix(unixEnd).calendar()}`}</h3>
         <h3>
-          vote{" "}
+          vote{' '}
           {currentTime > unixEnd
-            ? "now closed"
+            ? 'now closed'
             : `open: ${countDown} remaining`}
         </h3>
         {true ? (
@@ -82,19 +83,19 @@ class Vote extends Component {
               </tr>
               <tbody>
                 {candidatesData.map(candidate => (
-                  <tr key={candidate["0"]}>
+                  <tr key={candidate['0']}>
                     <th>
-                      <div>{candidate["0"]}</div>
+                      <div>{candidate['0']}</div>
                     </th>
                     <th>
-                      <div>{this.hexTranslate(candidate["1"])}</div>
+                      <div>{this.hexTranslate(candidate['1'])}</div>
                     </th>
                     <th>
-                      <div>{candidate["2"]}</div>
+                      <div>{candidate['2']}</div>
                     </th>
                     {isWhiteListed && currentTime < unixEnd ? (
                       <VoteButton
-                        onClick={() => this.voteForCandidate(candidate["0"])}
+                        onClick={() => this.voteForCandidate(candidate['0'])}
                       >
                         vote
                       </VoteButton>
@@ -103,10 +104,10 @@ class Vote extends Component {
                 ))}
               </tbody>
             </Table>
-            {isWhiteListed ? null : "you are not registered to vote"}
+            {isWhiteListed ? null : 'you are not registered to vote'}
           </div>
         ) : (
-          "empty"
+          'empty'
         )}
         <ResultChart data={this.formatCandidateData(candidatesData)} />
       </Voter>
@@ -114,7 +115,7 @@ class Vote extends Component {
   }
 
   componentDidMount() {
-    console.log("mounted");
+    console.log('mounted');
     this.setState({ electionId: this.props.match.params.id }, () => {
       this.isWhiteListed();
       this.clock();
@@ -123,21 +124,29 @@ class Vote extends Component {
         let unixEnd = expirationTime;
         this.setState({ electionName, unixEnd });
         this.retrieveCandidates();
+        this.liveUpdate();
       });
     });
   }
-  componentDidUpdate(prevProps, prevState){
-    if(this.state.candidatesData !== prevState.candidatesData){
-    this.setState({
-      voteLoading: false
-    })}
+  componentDidUpdate(prevProps, prevState) {
+    if (this.state.candidatesData !== prevState.candidatesData) {
+      this.setState({
+        voteLoading: false
+      });
+    }
   }
+
+  liveUpdate = () => {
+    setInterval(() => {
+      this.retrieveCandidates();
+    }, 5000);
+  };
 
   formatCandidateData = data => {
     return data.reduce((acc, cand) => {
       const result = {
-        key: cand["0"],
-        value: cand["2"]
+        key: cand['0'],
+        value: cand['2']
       };
       acc.push(result);
       return acc;
@@ -173,7 +182,7 @@ class Vote extends Component {
     const { electionId } = this.state;
 
     // Loading Screen
-    this.setState({voteLoading: true})
+    this.setState({ voteLoading: true });
     // Not sure when to turn off
     const response = await methods.voteForCandidate(candId, electionId).send();
     await this.retrieveCandidates();
@@ -196,9 +205,7 @@ class Vote extends Component {
       promiseArray.push(candidateData);
     }
     const candidatesData = await Promise.all(promiseArray);
-    this.setState({ candidatesData, isLoaded: true }, () => {
-      this.formatCandidateData(this.state.candidatesData);
-    });
+    this.setState({ candidatesData, isLoaded: true }, () => {});
   };
 
   stringTranslate = str => {
@@ -207,13 +214,13 @@ class Vote extends Component {
       let hex = Number(str.charCodeAt(i)).toString(16);
       out.push(hex);
     }
-    return out.join("");
+    return out.join('');
   };
   hexTranslate(str) {
     let hex = str.toString();
-    let out = "";
+    let out = '';
     for (let i = 0; i < hex.length; i += 2) {
-      if (hex[i] !== "0") {
+      if (hex[i] !== '0') {
         out += String.fromCharCode(parseInt(hex.substr(i, 2), 16));
       }
     }
