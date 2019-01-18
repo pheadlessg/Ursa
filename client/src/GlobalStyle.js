@@ -18,6 +18,7 @@ const HeaderContainer = styled.div`
 
 const Container = styled.div`
 margin: auto;
+margin-top: 50px;
 `;
 
 const Header = styled.img.attrs({
