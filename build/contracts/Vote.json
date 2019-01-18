@@ -469,21 +469,14 @@
   "ast": {
     "absolutePath": "/Users/seanfisher/Northcoders/Project/SmartVote/contracts/Vote.sol",
     "exportedSymbols": {
-      "Vote": [
-        403
-      ]
+      "Vote": [403]
     },
     "id": 404,
     "nodeType": "SourceUnit",
     "nodes": [
       {
         "id": 58,
-        "literals": [
-          "solidity",
-          "^",
-          "0.5",
-          ".0"
-        ],
+        "literals": ["solidity", "^", "0.5", ".0"],
         "nodeType": "PragmaDirective",
         "src": "0:23:1"
       },
@@ -519,19 +512,12 @@
             "src": "123:5:1"
           }
         ],
-        "contractDependencies": [
-          963,
-          1032
-        ],
+        "contractDependencies": [963, 1032],
         "contractKind": "contract",
         "documentation": null,
         "fullyImplemented": true,
         "id": 403,
-        "linearizedBaseContracts": [
-          403,
-          963,
-          1032
-        ],
+        "linearizedBaseContracts": [403, 963, 1032],
         "name": "Vote",
         "nodeType": "ContractDefinition",
         "nodes": [
@@ -990,9 +976,7 @@
                   "src": "728:15:1"
                 },
                 {
-                  "assignments": [
-                    113
-                  ],
+                  "assignments": [113],
                   "declarations": [
                     {
                       "constant": false,
@@ -1958,9 +1942,7 @@
                   },
                   "id": 187,
                   "initializationExpression": {
-                    "assignments": [
-                      147
-                    ],
+                    "assignments": [147],
                     "declarations": [
                       {
                         "constant": false,
@@ -2340,9 +2322,7 @@
                   },
                   "id": 216,
                   "initializationExpression": {
-                    "assignments": [
-                      189
-                    ],
+                    "assignments": [189],
                     "declarations": [
                       {
                         "constant": false,
@@ -3399,9 +3379,7 @@
                     "src": "2175:484:1",
                     "statements": [
                       {
-                        "assignments": [
-                          297
-                        ],
+                        "assignments": [297],
                         "declarations": [
                           {
                             "constant": false,
@@ -4060,9 +4038,7 @@
                         },
                         "id": 351,
                         "initializationExpression": {
-                          "assignments": [
-                            303
-                          ],
+                          "assignments": [303],
                           "declarations": [
                             {
                               "constant": false,
@@ -4408,9 +4384,7 @@
               "src": "2828:89:1",
               "statements": [
                 {
-                  "assignments": [
-                    370
-                  ],
+                  "assignments": [370],
                   "declarations": [
                     {
                       "constant": false,
@@ -4898,21 +4872,14 @@
   "legacyAST": {
     "absolutePath": "/Users/seanfisher/Northcoders/Project/SmartVote/contracts/Vote.sol",
     "exportedSymbols": {
-      "Vote": [
-        403
-      ]
+      "Vote": [403]
     },
     "id": 404,
     "nodeType": "SourceUnit",
     "nodes": [
       {
         "id": 58,
-        "literals": [
-          "solidity",
-          "^",
-          "0.5",
-          ".0"
-        ],
+        "literals": ["solidity", "^", "0.5", ".0"],
         "nodeType": "PragmaDirective",
         "src": "0:23:1"
       },
@@ -4948,19 +4915,12 @@
             "src": "123:5:1"
           }
         ],
-        "contractDependencies": [
-          963,
-          1032
-        ],
+        "contractDependencies": [963, 1032],
         "contractKind": "contract",
         "documentation": null,
         "fullyImplemented": true,
         "id": 403,
-        "linearizedBaseContracts": [
-          403,
-          963,
-          1032
-        ],
+        "linearizedBaseContracts": [403, 963, 1032],
         "name": "Vote",
         "nodeType": "ContractDefinition",
         "nodes": [
@@ -5419,9 +5379,7 @@
                   "src": "728:15:1"
                 },
                 {
-                  "assignments": [
-                    113
-                  ],
+                  "assignments": [113],
                   "declarations": [
                     {
                       "constant": false,
@@ -6387,9 +6345,7 @@
                   },
                   "id": 187,
                   "initializationExpression": {
-                    "assignments": [
-                      147
-                    ],
+                    "assignments": [147],
                     "declarations": [
                       {
                         "constant": false,
@@ -6769,9 +6725,7 @@
                   },
                   "id": 216,
                   "initializationExpression": {
-                    "assignments": [
-                      189
-                    ],
+                    "assignments": [189],
                     "declarations": [
                       {
                         "constant": false,
@@ -7828,9 +7782,7 @@
                     "src": "2175:484:1",
                     "statements": [
                       {
-                        "assignments": [
-                          297
-                        ],
+                        "assignments": [297],
                         "declarations": [
                           {
                             "constant": false,
@@ -8489,9 +8441,7 @@
                         },
                         "id": 351,
                         "initializationExpression": {
-                          "assignments": [
-                            303
-                          ],
+                          "assignments": [303],
                           "declarations": [
                             {
                               "constant": false,
@@ -8837,9 +8787,7 @@
               "src": "2828:89:1",
               "statements": [
                 {
-                  "assignments": [
-                    370
-                  ],
+                  "assignments": [370],
                   "declarations": [
                     {
                       "constant": false,
