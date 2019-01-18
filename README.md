@@ -7,6 +7,7 @@ Ursa is a decentralised application ([dapp](https://en.wikipedia.org/wiki/Decent
 ### Prerequisites
 
 [MetaMask](https://metamask.io/).
+
 [Ganache](https://truffleframework.com/ganache) if you intend to only use the project locally for testing.
 
 ### Getting Started
