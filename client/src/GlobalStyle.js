@@ -70,7 +70,7 @@ const LoadingScreen = styled.div`
   z-index: 9;
   background: ${props => (props.main ? "radial-gradient(circle, rgba(254,254,254,1) 0%, rgba(227,225,226,1) 34%, rgba(218,220,219,1) 100%)" : "")};
   opacity: ${props => (props.main ? "1" : "0.5")};
-  display: flex;
+  display: ${props => (props.main ? "flex" : "")};;
   height: 100vh;
   width: 100vw;
 `;
