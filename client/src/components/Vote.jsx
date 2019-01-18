@@ -41,7 +41,8 @@ class Vote extends Component {
     unixEnd: null,
     isWhiteListed: false,
     isLoaded: false,
-    voteLoading: false
+    voteLoading: false,
+    hasVoted: false
   };
 
   render() {
@@ -50,7 +51,8 @@ class Vote extends Component {
       electionName,
       unixEnd,
       currentTime,
-      isWhiteListed
+      isWhiteListed,
+      hasVoted
     } = this.state;
     let countDown = moment.unix(unixEnd - currentTime - 3600).format('H:mm:ss');
 
@@ -93,7 +95,7 @@ class Vote extends Component {
                     <th>
                       <div>{candidate['2']}</div>
                     </th>
-                    {isWhiteListed && currentTime < unixEnd ? (
+                    {isWhiteListed && currentTime < unixEnd && !hasVoted ? (
                       <VoteButton
                         onClick={() => this.voteForCandidate(candidate['0'])}
                       >
@@ -186,6 +188,7 @@ class Vote extends Component {
     // Not sure when to turn off
     const response = await methods.voteForCandidate(candId, electionId).send();
     await this.retrieveCandidates();
+    this.setState({ hasVoted: true });
   };
 
   getElectionData = async () => {
