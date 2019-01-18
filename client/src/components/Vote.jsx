@@ -111,7 +111,7 @@ class Vote extends Component {
         ) : (
           'empty'
         )}
-        <ResultChart data={this.formatCandidateData(candidatesData)} />
+        <ResultChart padding={50} labels  size={400} innerHoleSize={225} data={this.formatCandidateData(candidatesData)} />
       </Voter>
     );
   }
@@ -147,7 +147,7 @@ class Vote extends Component {
   formatCandidateData = data => {
     return data.reduce((acc, cand) => {
       const result = {
-        key: cand['0'],
+        key: this.hexTranslate(cand['1']),
         value: cand['2']
       };
       acc.push(result);
