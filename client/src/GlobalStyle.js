@@ -58,7 +58,6 @@ const Button = styled.button`
 `;
 const Img = styled.img.attrs({
   src: loading
-  
 })`
 margin-top: 150px;
 margin: auto;
@@ -68,7 +67,9 @@ z-index: 10;
 const LoadingScreen = styled.div`
   margin: auto;
   z-index: 9;
-  opacity: 0.5;
+  background: ${props => (props.main ? "radial-gradient(circle, rgba(254,254,254,1) 0%, rgba(227,225,226,1) 34%, rgba(218,220,219,1) 100%)" : "")};
+  opacity: ${props => (props.main ? "1" : "0.5")};
+  display: flex;
   height: 100vh;
   width: 100vw;
 `;

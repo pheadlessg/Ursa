@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { BrowserRouter as Router, Route, Link } from 'react-router-dom';
-import { Header, HeaderContainer, Content } from './GlobalStyle';
+import { Header, HeaderContainer, Content, LoadingScreen, Img } from './GlobalStyle';
 import MainContainer from './grid';
 import './App.css';
 import Home from './components/Home';
@@ -12,7 +12,7 @@ class App extends Component {
   state = { loading: true, drizzleState: null };
 
   render() {
-    if (this.state.loading) return 'Loading Drizzle...';
+    if (this.state.loading) return <LoadingScreen main><Img></Img></LoadingScreen>
     return (
       <div className="App">
       <Router>
