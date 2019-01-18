@@ -2,6 +2,8 @@ import styled from "styled-components";
 import media from "./media";
 import { Link } from "react-router-dom";
 import logo from "./logo.png";
+import loading from "./loading.gif";
+
 
 
 const StyledLink = styled(Link)`
@@ -54,6 +56,22 @@ const Button = styled.button`
     cursor: pointer;
   }
 `;
+const Img = styled.img.attrs({
+  src: loading
+  
+})`
+margin-top: 150px;
+margin: auto;
+height: 200px;
+z-index: 10;
+`
+const LoadingScreen = styled.div`
+  margin: auto;
+  z-index: 9;
+  opacity: 0.5;
+  height: 100vh;
+  width: 100vw;
+`;
 
 const WideButton = styled.button`
 background-color: #2EC1E2;
@@ -80,7 +98,7 @@ const List = styled.ul`
 const HFive = styled.h5`
   @import url("https://fonts.googleapis.com/css?family=Montserrat:400,800");
   margin-bottom: 0px;
-  text-align: left;
+  text-align: center;
 `;
 
 const smallLabel = styled.body`
@@ -104,11 +122,13 @@ const ListItem = styled.li`
 
 export {
   Button,
+  LoadingScreen,
   Header,
   Container,
   Content,
   HeaderContainer,
   List,
+  Img,
   HFive,
   ListItem,
   WideButton,
